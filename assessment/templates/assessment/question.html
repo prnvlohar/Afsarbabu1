@@ -1,0 +1,28 @@
+
+{% extends "users/base.html" %}
+{% load static %}
+{% block title %}Question{% endblock title %}
+{% block main %}
+
+<div class="main container">
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Question</th>
+            <th scope="col">Delete</th>
+            <th scope="col">Update</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for question in object_list %}
+          <tr>
+            <td>{{question.question}}</td>
+            {% comment %} <td><a href="{% url "show-quiz" a.id %}">{{a.title}}</a></td> {% endcomment %}
+            <td><span><a href="{% url "delete-question" question.id %}" class="btn btn-danger">Delete</a></span></td>
+            <td><span><a href="{% url "update-question" question.id %}" class="btn btn-success">Update</a></span></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock main %}

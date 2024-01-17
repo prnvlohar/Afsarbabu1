@@ -1,0 +1,25 @@
+
+{% extends "users/base.html" %}
+{% load static %}
+{% block title %}Delete Confirm{% endblock title %}
+{% block main %}
+
+<div class="main-form container">
+    <h1>confirm delete</h1>
+    <p>Are you sure ?</p>
+    <form action="" method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary"> confirm</button>
+    </form>
+    {% if messages %}
+
+    {% for message in messages %}
+    <div class="alert alert-info">
+        {{ message }}
+    </div>
+    {% endfor %}
+
+    {% endif %}
+</div>
+
+{% endblock main %}

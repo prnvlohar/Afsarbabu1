@@ -1,0 +1,225 @@
+{% comment %} {% extends "users/base.html" %} {% endcomment %}
+{% comment %} {% load static %} {% endcomment %}
+{% comment %} {% block title %}Quiz{% endblock title %} {% endcomment %}
+{% block main %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic MCQ Quiz</title>
+    <!-- Include Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+      body {
+          background-color: #f7f7f7;
+      }
+      #quiz {
+          background-color: #ffffff;
+          border-radius: 10px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          margin-top: 50px;
+      }
+      .card-title {
+          color: #333333;
+      }
+      .form-check-input {
+          cursor: pointer;
+      }
+      .form-check-label {
+          cursor: pointer;
+          margin-bottom: 0; /* Align labels properly with the radio buttons */
+      }
+      .btn-primary {
+          background-color: #007bff;
+          border-color: #007bff;
+      }
+      .btn-primary:hover {
+          background-color: #0056b3;
+          border-color: #004085;
+      }
+      .btn-secondary {
+          background-color: #6c757d;
+          border-color: #6c757d;
+      }
+      .btn-secondary:hover {
+          background-color: #545b62;
+          border-color: #4e555b;
+      }
+      .container {
+          padding-bottom: 50px; /* Space at the bottom of the quiz */
+      }
+      .form-check {
+        position: relative;
+        display: block;
+        padding-left: 35px;
+        margin-bottom: 10px;
+        cursor: pointer;
+        font-size: 18px;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+    .form-check-input {
+        position: absolute;
+        margin-top: 0.3em;
+        margin-left: -35px;
+        cursor: pointer;
+    }
+    .form-check-input:checked + .form-check-label {
+        color: #007bff;
+        font-weight: bold;
+    }
+    .form-check-label {
+        margin-bottom: 0;
+        cursor: pointer;
+        color: #333333;
+    }
+    .form-check:hover .form-check-label {
+        color: #007bff;
+    }
+    .animated-submit-button {
+      background-color: #007bff; /* Bootstrap primary color */
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      transition: all 0.3s ease; /* Animation transition */
+      cursor: pointer;
+      box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2);
+  }
+  .animated-submit-button:hover,
+  .animated-submit-button:focus {
+      background-color: #0056b3; /* Darker blue on hover/focus */
+      box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.3); /* Larger shadow on hover/focus */
+      transform: translateY(-2px); /* Slight lift on hover/focus */
+  }
+  .animated-submit-button:active {
+      background-color: #004085; /* Even darker blue on active click */
+      box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2); /* Reset shadow on active click */
+      transform: translateY(0); /* Reset position on active click */
+  }
+  </style>
+  </head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+    <a class="navbar-brand ml-auto" href="#" style="font-size: 1.5rem; font-weight: bold;">{{assessment.title}} - MCQ Assessment</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item" id="timer" style="font-size: 1.5rem; font-weight: bold;">
+                {{assessment.duration}}
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<script>
+  var assessmentSubmitted = false; // Set to true when the assessment is submitted
+
+  // Add event listener for keydown event
+  window.addEventListener('keydown', function (e) {
+    // Check if Ctrl+Shift+R is pressed (key code 82) and prevent default behavior
+    if (e.ctrlKey && e.shiftKey && e.keyCode === 82) {
+      e.preventDefault();
+      if (!assessmentSubmitted) {
+        // Display a confirmation message
+        var confirmationMessage = 'Are you sure you want to refresh? Your assessment progress may be lost.';
+        alert(confirmationMessage);
+      }
+    }
+  });
+</script>
+
+
+  {% if not passfail.status %}
+    <div class="container my-5">
+        <div id="quiz">
+          <form action="" method="POST">
+            {% csrf_token %}
+            <h2 class="text-center mb-4"></h2>
+            <div class="card">
+              {% for q in questions %}
+                <div class="card-body">
+                    <h5 class="card-title">Question {{forloop.counter}}: {{q.question}}</h5>
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" value="{{q.option1}}" name="{{q.id}}" id="{{q.id}}one">
+                            <label class="form-check-label" for="{{q.id}}one">{{q.option1}}</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" value="{{q.option2}}" name="{{q.id}}" id="{{q.id}}two">
+                            <label class="form-check-label" for="{{q.id}}two">{{q.option2}}</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" value="{{q.option3}}" name="{{q.id}}" id="{{q.id}}three">
+                            <label class="form-check-label" for="{{q.id}}three">{{q.option3}}</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" value="{{q.option4}}" name="{{q.id}}" id="{{q.id}}four">
+                            <label class="form-check-label" for="{{q.id}}four">{{q.option4}}</label>
+                        </div>
+                    </div>
+                </div>
+
+                {% endfor %}
+            </div>
+            <center><button type="submit" class="animated-submit-button mt-3">Submit</button></center>
+          </form>
+        </div>
+    </div>
+    {% else %}
+    <h1>As you passed this test so you are not eligible to give these test again Thank You</h1>
+    {% endif %}
+    <!-- Include Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html> 
+
+<script>
+  startTimer();
+
+  function startTimer() {
+    var presentTime = document.getElementById('timer').innerHTML;
+    var timeArray = presentTime.split(/[:]+/);
+    var h = parseInt(timeArray[0]);
+    var m = parseInt(timeArray[1]);
+    var s = checkSecond(parseInt(timeArray[2]) - 1);
+  
+    if (s == 59) {
+      m = m - 1;
+    }
+    if (m < 0) {
+      h = h - 1;
+      m = 59;  // Set minutes to 59 when hours decrement
+    }
+    if (h < 0) {
+      // Optionally, you can stop the timer or perform some other action here
+      console.log('Timer expired');
+      return;
+    }
+  
+    document.getElementById('timer').innerHTML = h + ":" + m + ":" + s;
+    setTimeout(startTimer, 1000);
+  }
+  
+  function checkSecond(sec) {
+    if (sec < 10 && sec >= 0) {
+      sec = "0" + sec;
+    } else if (sec < 0) {
+      sec = "59";
+    }
+    return sec;
+  }
+  
+  window.onbeforeunload = function(){
+    return "dfghjkl";
+  };
+</script>
+
+{% endblock main %}

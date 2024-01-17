@@ -1,0 +1,78 @@
+
+{% extends "users/base.html" %}
+{% load static %}
+{% block title %}Score{% endblock title %}
+{% block main %}
+
+<div class="main-form container">
+
+    <h1>score:- {{ score }} </h1>
+
+    <form action="{% url "rating" %}" method="post" id="rating-form">
+        {% csrf_token %}
+
+        {{form}}
+        <div class="card"> 
+            <h1>Rating for Quiz</h1> 
+            <br/> 
+            <div class="parent">
+                <span onclick="gfg(1)" 
+                class="star">★ 
+                </span> 
+                <span onclick="gfg(2)" 
+                        class="star">★ 
+                </span> 
+                <span onclick="gfg(3)" 
+                        class="star">★ 
+                </span> 
+                <span onclick="gfg(4)" 
+                        class="star">★ 
+                </span> 
+                <span onclick="gfg(5)" 
+                        class="star">★ 
+                </span>
+            </div> 
+            <h3 id="output"> 
+                Rating is: 0/5 
+            </h3> 
+        </div> 
+        <input type="hidden" name="user" id="user" value="{{user.id}}">
+        <input type="hidden" name="assessment" id="assessment" value="{{assessment.id}}">
+        <input type="hidden" name="rating" id="rating" value="{{n}}">
+    </form>
+
+    <div class = "alert alert-info" id = "msg" style = "display : none">
+    </div>
+
+    {% if messages %}
+
+    {% for message in messages %}
+    <div class="alert alert-info">
+        {{ message }}
+    </div>
+    {% endfor %}
+  
+    {% endif %}
+</div>
+
+{% endblock main %}
+
+
+{% comment %} 
+                <input type="radio" name="{{rating}}" onclick="gfg(1)" 
+                    class="star"  value="1"><span>★</span> 
+                </input> 
+                <input type="radio" name="{{rating}}" onclick="gfg(2)" 
+                    class="star"  value="2"><span>★</span> 
+                </input> 
+                <input type="radio" name="{{rating}}" onclick="gfg(3)" 
+                    class="star"  value="3"><span>★</span>  
+                </input> 
+                <input type="radio" name="{{rating}}" onclick="gfg(4)" 
+                    class="star"  value="4"><span>★</span> 
+                </input> 
+                <input type="radio" name="{{rating}}" onclick="gfg(5)" 
+                    class="star"  value="5"><span>★</span>
+                </input>
+ {% endcomment %}
+
