@@ -11,7 +11,7 @@ from django.views import View
 from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
                                   UpdateView)
 from django.shortcuts import get_object_or_404
-from assessment.forms import (AssessmentForm, QuestionForm, RatingForm)
+from assessment.forms import (AssessmentForm, QuestionForm, RatingForm, SubtopicForm, TopicForm)
 from assessment.models import ( Assessment, Question,
                                Rating, PassFailStatus, Topic, Subtopic)
 from assessment.utils import send_email_with_marks
@@ -20,12 +20,17 @@ from django.db.models import Value, Case, When, CharField
 from django.db.models.functions import Concat
 
 
+
+
+
 class TopicListView(ListView):
 
     " Showing all topic present in project "
     model = Topic
     template_name = 'assessment/topic.html'
     context_object_name = "Topics"
+
+
 
 class SubTopicListView(ListView):
 
@@ -37,6 +42,11 @@ class SubTopicListView(ListView):
     # overide method to send only that subtopic which belong to that topic
     def get_queryset(self):
         return Subtopic.objects.filter(topic=self.kwargs['pk'])
+    
+    def get_context_data(self, **kwargs: Any):
+        p=super().get_context_data(**kwargs)
+        p['id']= self.kwargs['pk']
+        return p
 
 class AssessmentListView(ListView):
 
@@ -49,11 +59,13 @@ class AssessmentListView(ListView):
     def get_queryset(self):
         return Assessment.objects.filter(subtopic=self.kwargs['pk'])
     
-    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+    def get_context_data(self, **kwargs: Any):
         p=super().get_context_data(**kwargs)
-        p['id']= self.kwargs['pk']
-        print(p['id'])
+        p['id'] = self.kwargs['pk']
+        topic_id = Subtopic.objects.get(id=self.kwargs['pk']).topic.id
+        p['id1'] = topic_id
         return p
+    
 
 class QuestionListView(ListView):
     
@@ -77,7 +89,7 @@ class QuestionListView(ListView):
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         p=super().get_context_data(**kwargs)
         p['id']= self.kwargs['pk']
-        print(p['id'])
+        p['id1'] = Assessment.objects.get(id=self.kwargs['pk']).subtopic.id
         return p
 
 
@@ -124,32 +136,6 @@ class ShowAssessmentView(View):
         return render(request, self.template_name, {'assessment': assessment,})
 
 
-# class AddAssessmentView(View):
-
-#     " Define assessment type and course "
-
-#     form_class = AssessmentForm
-#     template_name = 'assessment/addassessment.html'
-
-#     def get(self, request, *args, **kwargs):
-#         form = self.form_class()
-#         return render(request, self.template_name, {'form': form})
-
-#     def post(self, request, *args, **kwargs):
-#         form = self.form_class(request.POST)
-#         user = request.user
-
-#         if user.type == 'instructor':
-#             if form.is_valid():
-#                 form.save()
-#                 return JsonResponse({'message': 'Assessment added successfully'})
-#             else:
-#                 print(form.errors)
-#                 return JsonResponse({'message': 'Assessment added failed'})
-#         else:
-#             return JsonResponse({'message': 'user is not instructor'})
-
-
 class AddQuestionView(View):
 
     " Adding questions for assessment "
@@ -162,7 +148,7 @@ class AddQuestionView(View):
         assessment = get_object_or_404(Assessment, id=assessment_id)
         count = Question.objects.filter(assessment=assessment).count()
         form = self.form_class()
-        return render(request, self.template_name, {'form': form, 'count':count,'assessment':assessment})
+        return render(request, self.template_name, {'form': form, 'count':count,'assessment':assessment,'id':self.kwargs['pk']})
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
@@ -184,6 +170,7 @@ class AddQuestionView(View):
         else:
             messages.error(request, 'User is not instructor.')
             return HttpResponseRedirect(reverse('index'))
+        
 
 
 class ShowQuizView(View):
@@ -277,10 +264,36 @@ def rating_quiz(request):
 
 class QuestionDeleteView(DeleteView):
     model = Question
-    success_url = '/assessment/show-question/'
     template_name = "assessment/question_confirm_delete.html"
+    def get_success_url(self) -> str:
+        assessment_id = self.object.assessment.id
+        success_url = f"/assessment/qestion-list/{assessment_id}/"
+        return success_url
+    
+class AssessmentDeleteView(DeleteView):
+    model = Assessment
+    template_name = "assessment/question_confirm_delete.html"
+    def get_success_url(self) -> str:
+        # add assessment id to success url
+        subtopic_id = self.object.subtopic.id
+        success_url = f"/assessment/assessment-list/{subtopic_id}/"
+        return success_url
+    
+class SubtopicDeleteView(DeleteView):
+    model = Subtopic
+    template_name = "assessment/question_confirm_delete.html"
+    def get_success_url(self) -> str:
+        # add assessment id to success url
+        subtopic_id = self.object.topic.id
+        success_url = f"/assessment/sub-topic-list/{subtopic_id}/"
+        return success_url
 
-
+class TopicDeleteView(DeleteView):
+    model = Topic
+    success_url = '/assessment/topic-list'
+    template_name = "assessment/question_confirm_delete.html"
+    
+    
 class QuestionUpdateView(UpdateView):
     model = Question
     fields = ['question', 'option1', 'option2', 'option3', 'option4', 'answer']
@@ -291,6 +304,11 @@ class QuestionUpdateView(UpdateView):
         assessment_id = self.object.assessment.id
         success_url = f"/assessment/qestion-list/{assessment_id}/"
         return success_url
+
+    def get_context_data(self, **kwargs: Any):
+        p=super().get_context_data(**kwargs)
+        p['id']= self.kwargs['pk']
+        return p
 
 class AssessmentUpdateView(UpdateView):
     model = Assessment
@@ -303,13 +321,18 @@ class AssessmentUpdateView(UpdateView):
         success_url = f"/assessment/assessment-list/{assessment_id}/"
         return success_url
     
+    def get_context_data(self, **kwargs: Any):
+        p=super().get_context_data(**kwargs)
+        p['id']= self.kwargs['pk']
+        return p
+    
 class AddAssessmentView(CreateView):
     form_class = AssessmentForm
     template_name = 'assessment/addassessment.html'
 
     def get_success_url(self) -> str:
         # add assessment id to success url
-        assessment_id = self.object.id
+        assessment_id = self.object.subtopic.id
         success_url = f"/assessment/assessment-list/{assessment_id}/"
         return success_url
     
@@ -323,3 +346,65 @@ class AddAssessmentView(CreateView):
         topic_id = Subtopic.objects.get(id=self.kwargs.get('pk')).topic.id
         form.instance.topic_id = topic_id
         return super().form_valid(form) 
+
+    def get_context_data(self, **kwargs: Any):
+        p=super().get_context_data(**kwargs)
+        p['id']= self.kwargs['pk']
+        return p
+
+
+
+
+class AddSubtopicView(CreateView):
+    form_class = SubtopicForm
+    template_name = 'assessment/addsubtopic.html'
+    
+    def get_success_url(self) -> str:
+        # add assessment id to success url
+        subtopic_id = self.object.topic.id
+        success_url = f"/assessment/sub-topic-list/{subtopic_id}/"
+        return success_url
+    
+    def form_valid(self, form):
+        topic = Topic.objects.get(id=self.kwargs.get('pk'))
+        form.instance.topic = topic
+        return super().form_valid(form)
+    
+    def get_context_data(self, **kwargs: Any):
+        p=super().get_context_data(**kwargs)
+        p['id']= self.kwargs['pk']
+        return p
+    
+class UpdateSubtopicView(UpdateView):
+    model = Subtopic
+    fields = ['title']
+    template_name = 'assessment/update_subtopic.html'
+    
+    def get_success_url(self) -> str:
+        # add assessment id to success url
+        subtopic_id = self.object.topic.id
+        success_url = f"/assessment/sub-topic-list/{subtopic_id}/"
+        return success_url
+    
+    def get_context_data(self, **kwargs: Any):
+        p=super().get_context_data(**kwargs)
+        p['id']= self.kwargs['pk']
+        return p
+    
+    
+    
+class AddTopicView(CreateView):
+    form_class = TopicForm
+    template_name = 'assessment/add_topic.html'
+    success_url = '/assessment/topic-list'
+
+class UpdateTopicView(UpdateView):
+    model = Topic
+    fields = ['title']
+    template_name = 'assessment/update_topic.html'
+    success_url = '/assessment/topic-list'
+
+    def get_context_data(self, **kwargs: Any):
+        p=super().get_context_data(**kwargs)
+        p['id']= self.kwargs['pk']
+        return p

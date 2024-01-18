@@ -1,15 +1,16 @@
 
 {% extends "users/base.html" %}
 {% load static %}
-{% block title %}Question update{% endblock title %}
+{% block title %}Assessment update{% endblock title %}
 {% block main %}
+<br><br>
 
 <div class="container mt-3">
-    <a href="{% url 'question-list' id %}" class="btn btn-secondary">Back</a>
-  </div>
+    <a href="{% url 'sub-topic-list' id %}" class="btn btn-secondary">Back</a>
+</div>
 
 <div class="main-form container">
-    <h1>Update here</h1>
+    <h1>Update Subtopic here</h1>
     <form action="" method="post">
         {% csrf_token %}
         {% comment %} {{form.as_p}} {% endcomment %}
@@ -17,7 +18,7 @@
         <label for="{{ f.id_for_label }}">{{ f.label|title }}</label>
         <input type="text", name="{{f.name}}", value="{{f.value}}" class="form-control"> <br>
         {% endfor %}
-        <button type="submit" class="btn btn-primary auto">Update</button> <a href="{% url 'delete-question' id %}" class="btn btn-danger">Delete this question</a>
+        <button type="submit" class="btn btn-primary auto">Update</button> <a href="{% url 'delete-subtopic' id %}" class="btn btn-danger">Delete this subtopic</a>
     </form>
     {% if messages %}
 

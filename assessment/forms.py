@@ -1,7 +1,7 @@
 
 from django import forms
 
-from assessment.models import Assessment, Question, Rating
+from assessment.models import Assessment, Question, Rating, Subtopic, Topic
 
 
 class AssessmentForm(forms.ModelForm):
@@ -21,6 +21,16 @@ class QuestionForm(forms.ModelForm):
         # fields = '__all__'
         exclude = ['assessment']
 
+
+class SubtopicForm(forms.ModelForm):
+    class Meta:
+        model = Subtopic
+        fields = ['title']
+
+class TopicForm(forms.ModelForm):
+    class Meta:
+        model = Topic
+        fields = ['title']
 
 class RatingForm(forms.ModelForm):
 

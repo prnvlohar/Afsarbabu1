@@ -3,6 +3,10 @@
 {% block title %}Question{% endblock title %}
 {% block main %}
 
+<div class="container mt-3">
+    <a href="{% url 'question-list' id %}" class="btn btn-secondary">Back</a>
+  </div>
+
 <div class="main-form container mt-5">
     <br>
 
@@ -30,7 +34,7 @@
         {% endfor %}
 
         <div class="text-center">
-            <button type="submit" class="btn btn-primary btn-lg">Add Question</button>
+            <button type="submit" class="btn btn-primary btn-lg">Add Question</button> 
         </div>
     </form>
 

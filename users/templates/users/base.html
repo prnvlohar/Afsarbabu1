@@ -18,7 +18,7 @@
     <title>{% block title %}{% endblock title %}</title>
 
       <!-- Template Main CSS File -->
-    <link href="{% static "/static/users/css/base.css" %}" rel="stylesheet">
+    <link href="{% static "users/css/base.css" %}" rel="stylesheet">
 
   </head>
   <body>
@@ -46,20 +46,7 @@
           </li>
           {% endif %}
           {% if user.type == 'instructor' %}
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Assessment
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              {% comment %} <a type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticBackdropAssessment">
-                Quiz
-              </a> {% endcomment %}
-              <a class="dropdown-item" href="{% url "show-assessment" %}">Quiz</a>
-              <a class="dropdown-item" href="{% url "show-question" %}">All Questions</a>
-              <div class="dropdown-divider"></div>
-              {% comment %} <a class="dropdown-item" href="{% url "add-assessment" %}">Add Assessment</a> {% endcomment %}
-            </div>
-          </li>
+          
           <li class="nav-item active">
             <a class="nav-link" href="{% url "topic-list" %}">Assessments <span class="sr-only">(current)</span></a>
           </li>
