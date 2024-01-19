@@ -4,11 +4,12 @@
 {% block title %}Question update{% endblock title %}
 {% block main %}
 
-<div class="container mt-3">
-    <a href="{% url 'question-list' id %}" class="btn btn-secondary">Back</a>
-  </div>
+
 
 <div class="main-form container">
+    <div class="container mt-3">
+        <a href="{% url 'question-list' id %}" class="btn btn-secondary">Back</a>
+      </div><br>
     <h1>Update here</h1>
     <form action="" method="post">
         {% csrf_token %}

@@ -86,7 +86,7 @@ class QuestionListView(ListView):
 
         return queryset
     
-    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+    def get_context_data(self, **kwargs: Any):
         p=super().get_context_data(**kwargs)
         p['id']= self.kwargs['pk']
         p['id1'] = Assessment.objects.get(id=self.kwargs['pk']).subtopic.id

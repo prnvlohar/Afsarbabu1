@@ -14,18 +14,13 @@ def contact(request):
 def pricing(request):
     return render(request, 'portal/pricing.html')
 
-def faq(request):
-    return render(request, 'portal/faq.html')
 
 def blogHome(request):
     return render(request, 'portal/blog-home.html')
 
-def blogPost(request):
-    return render(request, 'portal/blog-post.html')
-
-def portfolioItem(request):
-    return render(request, 'portal/portfolio-item.html')
-
-def portfolioOverview(request):
-    return render(request, 'portal/portfolio-overview.html')
-# /home/developer/Desktop/Temp-Project/Sharma-Academy/portal/templates/portal/index.html
+def blogPost1(request):
+    return render(request, 'portal/blog-post1.html')
+def blogPost2(request):
+    return render(request, 'portal/blog-post2.html')
+def blogPost3(request):
+    return render(request, 'portal/blog-post3.html')
