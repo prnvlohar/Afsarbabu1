@@ -1,3 +1,105 @@
+/* body {
+  display: grid;
+  grid-template-rows: 1fr auto; 
+  min-height: 100vh;
+  margin: 0;
+} */
+@import url('https://fonts.googleapis.com/css2?family=PT+Sans:wght@700&family=Poppins:wght@600&display=swap');
+
+body {
+  display: grid;
+  background-color: #f2f2f2;
+  /* background-color: black; */
+  grid-template-rows: 1fr auto;
+  min-height: 100vh;
+  margin: 0;
+}
+
+* {
+    box-sizing: border-box
+}
+
+
+.h2 {
+    color: #444;
+    font-family: 'PT Sans', sans-serif
+}
+
+thead {
+    font-family: 'Poppins', sans-serif;
+    font-weight: bolder;
+    font-size: 20px;
+    color: #666
+}
+
+.name {
+    display: inline-block
+}
+
+.bg-blue {
+    background-color: #EBF5FB;
+    border-radius: 8px
+}
+
+.fa-check,
+.fa-minus {
+    color: blue
+}
+
+.bg-blue:hover {
+    background-color: #3e64ff;
+    color: #eee;
+    cursor: pointer
+}
+
+.bg-blue:hover .fa-check,
+.bg-blue:hover .fa-minus {
+    background-color: #3e64ff;
+    color: #eee
+}
+
+.table thead th,
+.table td {
+    border: none
+}
+
+.table tbody td:first-child {
+    border-bottom-left-radius: 10px;
+    border-top-left-radius: 10px
+}
+
+.table tbody td:last-child {
+    border-bottom-right-radius: 10px;
+    border-top-right-radius: 10px
+}
+
+#spacing-row {
+    height: 10px
+}
+
+@media(max-width:575px) {
+    .container {
+        width: 125%;
+        padding: 20px 10px
+    }
+}
+.topic-link {
+    text-decoration: none; /* Remove underline */
+    color: inherit; /* Inherit text color from the parent */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 .section{
   padding-top: 70px;
   padding-bottom: 70px;
@@ -45,6 +147,7 @@
   color: #fff;
   background-color: #34495e;
   padding: 20px 0;
+  /* position: fixed; */
 }
 .footer-widget h4:after{
   content: "";
