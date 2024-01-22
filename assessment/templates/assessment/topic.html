@@ -8,14 +8,19 @@
     </div><br>
     <div class="d-flex justify-content-between align-items-center mb-3">
         <div class="h2 font-weight-bold">Topics</div>
+        {% if user.type == 'instructor' %}
         <a href="{% url 'add_topic' %}" class="btn btn-primary">add topic</a>
+                    {% endif %}
+        
     </div>
     <div class="table-responsive">
         <table class="table">
             <thead>
                 <tr>
                     <th scope="col">Title</th>
+                    {% if user.type == 'instructor' %}
                     <th scope="col">Edit</th>
+                    {% endif %}
                 </tr>
             </thead>
             <tbody>
@@ -25,7 +30,10 @@
                         <div class="pl-lg-5 pl-md-5 pl-1 name"><a href="{% url "sub-topic-list" topic.id %}" class="topic-link">{{ topic.title }}</a>
                         </div>
                     </td>
+                    {% if user.type == 'instructor' %}
                     <td class="pl-lg-5 pl-md-5 pl-1 name"><a href="{% url 'update_topic' topic.id %}">Edit</a></td>
+                    {% endif %}
+                    
                 </tr>
                 <tr id="spacing-row">
                     <td></td>

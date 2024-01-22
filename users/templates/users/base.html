@@ -42,7 +42,7 @@
             {% comment %} <a type="button" class="nav-link" data-bs-toggle="modal" data-bs-target="#staticBackdropAssessment">
               Quiz
             </a> {% endcomment %}
-            <a class="nav-link" href="{% url "show-assessment" %}">Quiz</a>
+            <a class="nav-link" href="{% url "topic-list" %}">Quiz</a>
           </li>
           {% endif %}
           {% if user.type == 'instructor' %}

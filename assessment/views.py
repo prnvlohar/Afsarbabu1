@@ -18,12 +18,13 @@ from assessment.utils import send_email_with_marks
 from django.db.models.functions import Substr, Length
 from django.db.models import Value, Case, When, CharField
 from django.db.models.functions import Concat
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 
 
 
-class TopicListView(ListView):
+class TopicListView(LoginRequiredMixin, ListView):
 
     " Showing all topic present in project "
     model = Topic
@@ -32,7 +33,7 @@ class TopicListView(ListView):
 
 
 
-class SubTopicListView(ListView):
+class SubTopicListView(LoginRequiredMixin, ListView):
 
     " Showing all topic present in project "
     model = Subtopic
@@ -48,7 +49,7 @@ class SubTopicListView(ListView):
         p['id']= self.kwargs['pk']
         return p
 
-class AssessmentListView(ListView):
+class AssessmentListView(LoginRequiredMixin, ListView):
 
     " Showing all assessment present in project "
     model = Assessment
@@ -67,7 +68,7 @@ class AssessmentListView(ListView):
         return p
     
 
-class QuestionListView(ListView):
+class QuestionListView(LoginRequiredMixin, ListView):
     
     model = Question
     template_name = "assessment/new_questions.html"
@@ -109,7 +110,7 @@ class QuestionListView(ListView):
 
 
 
-class ListAssessment(View):
+class ListAssessment(LoginRequiredMixin, View):
 
     " Showing all assessment present in project "
 
@@ -119,7 +120,7 @@ class ListAssessment(View):
         assessment = Assessment.objects.all()       
         return render(request, self.template_name, {'assessment': assessment,})
 
-class ShowAssessmentView(View):
+class ShowAssessmentView(LoginRequiredMixin, View):
 
     " Showing all assessment present in project "
 
@@ -136,7 +137,7 @@ class ShowAssessmentView(View):
         return render(request, self.template_name, {'assessment': assessment,})
 
 
-class AddQuestionView(View):
+class AddQuestionView(LoginRequiredMixin, View):
 
     " Adding questions for assessment "
 
@@ -173,7 +174,7 @@ class AddQuestionView(View):
         
 
 
-class ShowQuizView(View):
+class ShowQuizView(LoginRequiredMixin, View):
 
     " Showing quiz according to user request "
 
@@ -262,7 +263,7 @@ def rating_quiz(request):
 #     template_name = "assessment/question_detail.html"
 
 
-class QuestionDeleteView(DeleteView):
+class QuestionDeleteView(LoginRequiredMixin, DeleteView):
     model = Question
     template_name = "assessment/question_confirm_delete.html"
     def get_success_url(self) -> str:
@@ -270,7 +271,7 @@ class QuestionDeleteView(DeleteView):
         success_url = f"/assessment/qestion-list/{assessment_id}/"
         return success_url
     
-class AssessmentDeleteView(DeleteView):
+class AssessmentDeleteView(LoginRequiredMixin, DeleteView):
     model = Assessment
     template_name = "assessment/question_confirm_delete.html"
     def get_success_url(self) -> str:
@@ -279,7 +280,7 @@ class AssessmentDeleteView(DeleteView):
         success_url = f"/assessment/assessment-list/{subtopic_id}/"
         return success_url
     
-class SubtopicDeleteView(DeleteView):
+class SubtopicDeleteView(LoginRequiredMixin, DeleteView):
     model = Subtopic
     template_name = "assessment/question_confirm_delete.html"
     def get_success_url(self) -> str:
@@ -288,13 +289,13 @@ class SubtopicDeleteView(DeleteView):
         success_url = f"/assessment/sub-topic-list/{subtopic_id}/"
         return success_url
 
-class TopicDeleteView(DeleteView):
+class TopicDeleteView(LoginRequiredMixin, DeleteView):
     model = Topic
     success_url = '/assessment/topic-list'
     template_name = "assessment/question_confirm_delete.html"
     
     
-class QuestionUpdateView(UpdateView):
+class QuestionUpdateView(LoginRequiredMixin, UpdateView):
     model = Question
     fields = ['question', 'option1', 'option2', 'option3', 'option4', 'answer']
     template_name = "assessment/question_confirm_update.html"
@@ -310,7 +311,7 @@ class QuestionUpdateView(UpdateView):
         p['id']= self.kwargs['pk']
         return p
 
-class AssessmentUpdateView(UpdateView):
+class AssessmentUpdateView(LoginRequiredMixin, UpdateView):
     model = Assessment
     fields = ['title', 'duration']
     template_name = "assessment/update_assessment.html"
@@ -326,7 +327,7 @@ class AssessmentUpdateView(UpdateView):
         p['id']= self.kwargs['pk']
         return p
     
-class AddAssessmentView(CreateView):
+class AddAssessmentView(LoginRequiredMixin, CreateView):
     form_class = AssessmentForm
     template_name = 'assessment/addassessment.html'
 
@@ -355,7 +356,7 @@ class AddAssessmentView(CreateView):
 
 
 
-class AddSubtopicView(CreateView):
+class AddSubtopicView(LoginRequiredMixin, CreateView):
     form_class = SubtopicForm
     template_name = 'assessment/addsubtopic.html'
     
@@ -375,7 +376,7 @@ class AddSubtopicView(CreateView):
         p['id']= self.kwargs['pk']
         return p
     
-class UpdateSubtopicView(UpdateView):
+class UpdateSubtopicView(LoginRequiredMixin, UpdateView):
     model = Subtopic
     fields = ['title']
     template_name = 'assessment/update_subtopic.html'
@@ -393,12 +394,12 @@ class UpdateSubtopicView(UpdateView):
     
     
     
-class AddTopicView(CreateView):
+class AddTopicView(LoginRequiredMixin, CreateView):
     form_class = TopicForm
     template_name = 'assessment/add_topic.html'
     success_url = '/assessment/topic-list'
 
-class UpdateTopicView(UpdateView):
+class UpdateTopicView(LoginRequiredMixin, UpdateView):
     model = Topic
     fields = ['title']
     template_name = 'assessment/update_topic.html'
@@ -408,3 +409,8 @@ class UpdateTopicView(UpdateView):
         p=super().get_context_data(**kwargs)
         p['id']= self.kwargs['pk']
         return p
+    
+    
+    
+def guidelines(request,pk):
+    return render(request, 'assessment/guidelines.html')
