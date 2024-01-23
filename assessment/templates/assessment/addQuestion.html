@@ -3,11 +3,12 @@
 {% block title %}Question{% endblock title %}
 {% block main %}
 
-<div class="container mt-3">
-    <a href="{% url 'question-list' id %}" class="btn btn-secondary">Back</a>
-  </div>
+
 
 <div class="main-form container mt-5">
+    <div class="container mt-3">
+        <a href="{% url 'question-list' id %}" class="btn btn-secondary">Back</a>
+      </div>
     <br>
 
     <form action="" method="post" class="mt-4">

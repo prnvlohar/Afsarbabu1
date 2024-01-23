@@ -62,9 +62,10 @@ class RegisterView(View):
             message = EmailMultiAlternatives(
                 to=[user.email], subject=subject, body=plain_text)
             message.content_subtype = "html"
+            message.attach_alternative(html_content, "text/html")
             message.send()
             messages.success(request, 'verify your email.')
-            return redirect("/")
+            return redirect("login")
         else:
             err = form.errors
             messages.error(
@@ -94,7 +95,7 @@ class LoginView(View):
             # print()
             messages.success(
                 request, 'Please verify email or check email / password')
-            return redirect('/')
+            return redirect('login')
         else:
             login(request, user)
             return redirect('/index/')
@@ -140,7 +141,7 @@ class ActivateView(View):
             user.save()
         return HttpResponseRedirect(reverse('login'))
 
-
+@login_required
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse('login'))

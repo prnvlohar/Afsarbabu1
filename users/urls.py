@@ -8,7 +8,7 @@ from users.views import (ActivateView, LoginView, RegisterView, index,
                          logout_view)
 
 urlpatterns = [
-    path('', LoginView.as_view(), name='login'),
+    path('login/', LoginView.as_view(), name='login'),
     path('register/', RegisterView.as_view(), name='register'),
     path('activate/<uidb64>/<token>',
          ActivateView.as_view(), name='activate'),

@@ -1,15 +1,22 @@
+<<<<<<< HEAD
 /* body {
   display: grid;
   grid-template-rows: 1fr auto; 
   min-height: 100vh;
   margin: 0;
 } */
+=======
+
+>>>>>>> 203bf8247b93340bb64dcbc60f3a09620b1ea841
 @import url('https://fonts.googleapis.com/css2?family=PT+Sans:wght@700&family=Poppins:wght@600&display=swap');
 
 body {
   display: grid;
   background-color: #f2f2f2;
+<<<<<<< HEAD
   /* background-color: black; */
+=======
+>>>>>>> 203bf8247b93340bb64dcbc60f3a09620b1ea841
   grid-template-rows: 1fr auto;
   min-height: 100vh;
   margin: 0;
@@ -84,8 +91,13 @@ thead {
     }
 }
 .topic-link {
+<<<<<<< HEAD
     text-decoration: none; /* Remove underline */
     color: inherit; /* Inherit text color from the parent */
+=======
+    text-decoration: none;
+    color: inherit;
+>>>>>>> 203bf8247b93340bb64dcbc60f3a09620b1ea841
 }
 
 
@@ -219,17 +231,12 @@ thead {
 
 
 
-/* #main{
-margin-top: 70px;
-} */
+
 
 .main-form{
 width: 900px;
 height: 650px;
 background-color: #f8f3f6;
-/* filter: brightness(90%); */
-/* lighting-color: #ffffff; */
-/* background-color: #ffffff; */
 border-radius: 15px;
 margin: auto;
 margin-top: 80;

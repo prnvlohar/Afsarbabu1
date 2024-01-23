@@ -23,12 +23,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-ghv#+wl($1jh8f4%x7k9g6ohvs4^iyc9bah(ev7)=*ixlgh1du'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'afsarbabu.in',"*"]
+
+SESSION_COOKIE_SECURE = True  # Use secure cookies for session
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+CSRF_TRUSTED_ORIGINS = ['https://afsarbabu.in']
+
 
 
 # Application definition
@@ -45,7 +51,7 @@ INSTALLED_APPS = [
     'users',
     'assessment',
     'business',
-
+    'boto3',
     # extra packages
     'crispy_forms',
     'crispy_bootstrap4',
@@ -165,8 +171,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = "afsarbabu010124@gmail.com"   
-EMAIL_HOST_PASSWORD = "wlzs pway sorw hhuz"
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER') 
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
@@ -180,9 +186,9 @@ if ENV_FILE:
 # settings.py
 
 # Use Amazon S3 for storage for static files.
-AWS_STORAGE_BUCKET_NAME = 'afsarbabu-static-files'
-AWS_ACCESS_KEY_ID = 'AKIAWJEYBUYPLRZEKP7R'
-AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
+AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
 AWS_S3_REGION_NAME = 'ap-south-1'  # e.g., us-east-1
 
 AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
