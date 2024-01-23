@@ -56,7 +56,7 @@
         
         if (termsCheckbox.checked) {
             alert("Test started!");
-            window.location.href = "#";
+            window.location.href = "{% url 'test' id %}";
         } else {
             alert("Please agree to the terms and conditions before starting the test.");
         }

@@ -8,7 +8,7 @@ from assessment.views import (AddAssessmentView,
                               SubTopicListView, AssessmentListView, QuestionListView,
                               AssessmentUpdateView, AddSubtopicView, UpdateSubtopicView,
                               AddTopicView, UpdateTopicView, QuestionDeleteView, AssessmentDeleteView,
-                              SubtopicDeleteView, TopicDeleteView, guidelines)
+                              SubtopicDeleteView, TopicDeleteView, guidelines, TestShow, result)
 
 urlpatterns = [
     path('show-assessment/', ShowAssessmentView.as_view(), name='show-assessment'),
@@ -39,6 +39,8 @@ urlpatterns = [
     path('delete-subtopic/<int:pk>/', SubtopicDeleteView.as_view(), name = "delete-subtopic"),
     path('delete-topic/<int:pk>/', TopicDeleteView.as_view(), name = "delete-topic"),
     path('guideline/<int:pk>/', guidelines, name = "guideline"),
+    path('test/<int:pk>/', TestShow.as_view(), name = "test"),
+    path('result/<int:pk>/', result, name = "result"),
     
     
 ]

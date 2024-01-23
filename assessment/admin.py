@@ -5,8 +5,11 @@ from assessment.models import Assessment, Question, Rating, PassFailStatus, Topi
 # Register your models here.
 
 admin.site.register(Assessment)
-admin.site.register(Question)
 admin.site.register(Rating)
 admin.site.register(PassFailStatus)
 admin.site.register(Topic)
 admin.site.register(Subtopic)
+@admin.register(Question)
+class questionadmin(admin.ModelAdmin):
+    list_display = ('id','question')
+

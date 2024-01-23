@@ -413,4 +413,27 @@ class UpdateTopicView(LoginRequiredMixin, UpdateView):
     
     
 def guidelines(request,pk):
-    return render(request, 'assessment/guidelines.html')
+    return render(request, 'assessment/guidelines.html',context={'id':pk})
+
+class TestShow(View):
+    queryset = Question.objects.all()
+    def get(self, request, *args, **kwargs):
+        
+        context = {
+            'questions': self.queryset.filter(assessment=self.kwargs['pk']),
+        }
+        return render(request, 'assessment/test.html', context)
+    
+    def post(self, request, *args, **kwargs):
+        queryset = self.queryset.filter(assessment=self.kwargs['pk'])
+        print(request.POST)
+        count = 0
+        for i in queryset:
+            if i.answer == request.POST.get(str(i.id),None):
+                print("ertyuio")
+                count+=1
+        percentage = count/len(queryset)*100
+        return render(request, 'assessment/result.html', {'id':kwargs['pk'],'percentage':percentage})
+
+def result(request, pk, count):
+    return render(request, 'assessment/result.html', {'id':pk,'count':count})
