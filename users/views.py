@@ -44,6 +44,7 @@ class RegisterView(View):
         form = self.form_class(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
+            user.type = 'student'
             user.password = make_password(user.password)
             user.is_active = False
 

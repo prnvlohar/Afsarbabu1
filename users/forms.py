@@ -18,7 +18,7 @@ class RegisterForm(forms.ModelForm):
             # 'password': forms.PasswordInput(),
             'phone': forms.NumberInput(),
         }
-        fields = ['email', 'phone', 'password', 'type']
+        fields = ['email', 'phone', 'password']
 
         def clean_phone(self):
             phone = self.cleaned_data.get('phone')
