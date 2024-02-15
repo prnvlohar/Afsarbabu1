@@ -10,10 +10,11 @@
 <div class="main-form container">
   <div class="container mt-3">
     <a href="{% url 'sub-topic-list' id %}" class="btn btn-secondary">Back</a>
-  </div><br>
+  </div><br>  
 
     <div class="py-4">
       <div class="row">
+        <a href="{% url "add-question" a.id %}" class="btn btn-warning">upload a json file</a>
           <form class="form-inline my-2 my-lg-0" action="{% url "show-assessment" %}">
              <div class="col-4">
               <input class="form-control mr-sm-2 border border-primary" name="q" type="search" placeholder="Search" aria-label="Search">

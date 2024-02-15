@@ -20,7 +20,7 @@ django.setup()
 # Set the email configuration
 email_config = {
     'sender_email': 'afsarbabu010124@gmail.com',
-    'receiver_email': 'pranav.lohar@codiatic.com',
+    'receiver_email': 'afsarbabu010124@gmail.com',
     'email_password': 'wlzs pway sorw hhuz',
     'smtp_server': 'smtp.gmail.com',
     'smtp_port': 587,
@@ -30,11 +30,7 @@ email_config = {
 def backup_and_email():
     # Create a backup of the SQLite database
     backup_filename = f"backup_{datetime.now().strftime('%Y%m%d%H%M%S')}.json"
-    backup_path = os.path.join(django_project_path, backup_filename)
-    
-    # Run Django management command to dumpdata
-    # Change this line
-    
+    backup_path = os.path.join(django_project_path, backup_filename)   
     try:
         with open(backup_path, 'w') as backup_file:
             subprocess.run(

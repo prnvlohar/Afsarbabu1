@@ -19,8 +19,9 @@ from django.db.models.functions import Substr, Length
 from django.db.models import Value, Case, When, CharField
 from django.db.models.functions import Concat
 from django.contrib.auth.mixins import LoginRequiredMixin
-
-
+import json
+from django.urls import reverse
+from urllib.parse import urlencode
 
 
 
@@ -68,6 +69,8 @@ class AssessmentListView(LoginRequiredMixin, ListView):
         return p
     
 
+    
+
 class QuestionListView(LoginRequiredMixin, ListView):
     
     model = Question
@@ -83,7 +86,6 @@ class QuestionListView(LoginRequiredMixin, ListView):
         # Process queryset to truncate question_text without using annotate
         for question in queryset:
             question.short_question = question.question[:57] + '...' if len(question.question) > 60 else question.question
-            print(question.short_question)
 
         return queryset
     
@@ -92,6 +94,32 @@ class QuestionListView(LoginRequiredMixin, ListView):
         p['id']= self.kwargs['pk']
         p['id1'] = Assessment.objects.get(id=self.kwargs['pk']).subtopic.id
         return p
+    
+    def post(self, request, *args, **kwargs):
+        assessment = Assessment.objects.get(id=kwargs['pk'])
+        redirect_url = reverse('question-list', kwargs={'pk': kwargs['pk']})
+
+        # Handle the uploaded JSON file
+        if 'json_file' in request.FILES:
+            json_file = request.FILES['json_file']
+            try:
+                # Assuming the JSON file contains a list of assessments
+                assessments_data = json.load(json_file)
+                for i in assessments_data:
+                    question = i['question']
+                    option1 = i['options'][0]
+                    option2 = i['options'][1]
+                    option3 = i['options'][2]
+                    option4 = i['options'][3]
+                    answer = i['answer']
+                    Question.objects.create(assessment=assessment,question=question,option1=option1,option2=option2,option3=option3,option4=option4,answer=answer)
+                messages.success(request, 'Questions added successfully.')
+                
+            except:
+                return_url = urlencode({'error': 'Invalid JSON file, format of json file provided by you is not valid please check that you miss something'})        
+                redirect_url = f'{redirect_url}?{return_url}'
+
+        return redirect(redirect_url)
 
 
 
@@ -202,21 +230,15 @@ class ShowQuizView(LoginRequiredMixin, View):
             return HttpResponseRedirect(reverse("show-assessment"))
         
         score = 0
-        print("score")
         payload = request.POST
         questions = Question.objects.filter(assessment=assessment)
         for q in questions:
             if str(q.id) in payload:
-                print("rtyuio")
-                print(payload[str(q.id)], q.answer)
                 if payload[str(q.id)] == q.answer:
-                    print("inner")
                     score += 1
         
-        print(score)
         # convert score into percentage
         score = score / len(questions) * 100
-        print(score)
         #check score is above 80 and change status of passfail model
         if score > 80:
             try:
@@ -340,7 +362,6 @@ class AddAssessmentView(LoginRequiredMixin, CreateView):
     # overrirde create method to add field manually
     def save(self, request, *args, **kwargs):
         self.object = self.get_object()
-        print(super().save(request, *args, **kwargs)())
         return super().save(request, *args, **kwargs)
     def form_valid(self, form):
         form.instance.subtopic_id = self.kwargs.get('pk')
@@ -426,14 +447,13 @@ class TestShow(View):
     
     def post(self, request, *args, **kwargs):
         queryset = self.queryset.filter(assessment=self.kwargs['pk'])
-        print(request.POST)
         count = 0
         for i in queryset:
             if i.answer == request.POST.get(str(i.id),None):
-                print("ertyuio")
                 count+=1
         percentage = count/len(queryset)*100
         return render(request, 'assessment/result.html', {'id':kwargs['pk'],'percentage':percentage})
 
 def result(request, pk, count):
     return render(request, 'assessment/result.html', {'id':pk,'count':count})
+

@@ -10,15 +10,16 @@
     body {
         background: #c4c4c4;    
         font-family: 'Font1', sans-serif;
+        margin:0;
     }
 
     .container {
-        width: 95%;
+        width: 100%;
         max-width: 64rem;
         background: #fff;
         padding: 0.8rem;
         border-radius: 1rem;
-        overflow: auto;
+        {% comment %} overflow: auto; {% endcomment %}
         position: absolute;
         top: 50%;
         left: 50%;
@@ -73,12 +74,12 @@
     }
 
     .answer-item.checked {
-        background: #aabdff;
+        background: #4563c8;
         color: #fff;
     }
 
     .answer-item.wrong {
-        background: #da4955;
+        background: #4563c8 ;
         color: #fff;
     }
 
@@ -219,18 +220,21 @@
             top: 0%;
             left: 0%;
             transform: translate(0%, 0%);
+
         }
     }
 
     @media (max-width: 38rem) {
         .container {
-            position: static;
-            width: 100%;
-            padding: 0.8rem;
+            grid-template-rows: 0.1fr 1fr 1fr;
             border-radius: 0;
+            position: static;
+            height: 100vh;
+            width: 100%;
             top: 0%;
             left: 0%;
             transform: translate(0%, 0%);
+
 
             grid-template-columns: 1fr;
             grid-template-rows: 0.1fr 1fr 1fr auto;
@@ -274,7 +278,7 @@
                 <div class="answer">
                     <label class="answer-item">
                         <input type="radio" name="{{q.id}}" onchange="toggleParentClass(this)" value="{{q.option1}}" id="">
-                        <span>{{q.option1}}yyyyyyyyyyyyytrertghrfertyyvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy</span>
+                        <span>{{q.option1}}</span>
                     </label>
                     <label class="answer-item">
                         <input type="radio" name="{{q.id}}" onchange="toggleParentClass(this)" value="{{q.option2}}" id="">
