@@ -112,7 +112,8 @@ class QuestionListView(LoginRequiredMixin, ListView):
                     option3 = i['options'][2]
                     option4 = i['options'][3]
                     answer = i['answer']
-                    Question.objects.create(assessment=assessment,question=question,option1=option1,option2=option2,option3=option3,option4=option4,answer=answer)
+                    explanation = i['explanation']
+                    Question.objects.create(assessment=assessment,question=question,option1=option1,option2=option2,option3=option3,option4=option4,answer=answer,explanation=explanation)
                 messages.success(request, 'Questions added successfully.')
                 
             except:
@@ -276,14 +277,6 @@ def rating_quiz(request):
             return HttpResponseRedirect(reverse("show-assessment"))
 
 
-# class QuestionListView(ListView):
-#     model = Question
-#     template_name = "assessment/question.html"
-
-# class QuestionDetailView(DetailView):
-#     model = Question
-#     template_name = "assessment/question_detail.html"
-
 
 class QuestionDeleteView(LoginRequiredMixin, DeleteView):
     model = Question
@@ -319,7 +312,7 @@ class TopicDeleteView(LoginRequiredMixin, DeleteView):
     
 class QuestionUpdateView(LoginRequiredMixin, UpdateView):
     model = Question
-    fields = ['question', 'option1', 'option2', 'option3', 'option4', 'answer']
+    fields = ['question', 'option1', 'option2', 'option3', 'option4', 'answer','explanation']
     template_name = "assessment/question_confirm_update.html"
 
     def get_success_url(self) -> str:
@@ -330,7 +323,8 @@ class QuestionUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs: Any):
         p=super().get_context_data(**kwargs)
-        p['id']= self.kwargs['pk']
+        p['id'] = self.kwargs['pk']
+        p['id1'] = Question.objects.get(id=self.kwargs['pk']).assessment.id 
         return p
 
 class AssessmentUpdateView(LoginRequiredMixin, UpdateView):

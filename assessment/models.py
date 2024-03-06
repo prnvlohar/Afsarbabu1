@@ -39,6 +39,7 @@ class Question(models.Model):
     option3 = models.CharField(max_length=1024, null=True)
     option4 = models.CharField(max_length=1024, null=True)
     answer = models.CharField(max_length=1024, null=True)
+    explanation = models.CharField(max_length=2024, null=True)
 
     def __str__(self) -> str:
         return self.question
