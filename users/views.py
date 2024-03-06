@@ -36,6 +36,8 @@ class RegisterView(View):
     template_name = "users/registration.html"
 
     def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect("/index?login=True")
         form = self.form_class()
         return render(request, self.template_name, {"form": form})
 
@@ -82,6 +84,8 @@ class LoginView(View):
     template_name = "users/login.html"
 
     def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect("/index?login=True")
         login_form = self.form_class()
         return render(request, self.template_name, {"login_form": login_form})
 
@@ -103,7 +107,7 @@ class LoginView(View):
 
 
 @login_required
-def index(request):
+def index_view(request):
     assessments = Assessment.objects.all()
     users = CustomUser.objects.all()
     return render(request, 'users/index.html', {

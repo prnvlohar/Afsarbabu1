@@ -4,7 +4,7 @@ from django.contrib.auth.views import (PasswordResetCompleteView,
                                        PasswordResetView)
 from django.urls import path
 
-from users.views import (ActivateView, LoginView, RegisterView, index,
+from users.views import (ActivateView, LoginView, RegisterView, index_view,
                          logout_view)
 
 urlpatterns = [
@@ -12,7 +12,7 @@ urlpatterns = [
     path('register/', RegisterView.as_view(), name='register'),
     path('activate/<uidb64>/<token>',
          ActivateView.as_view(), name='activate'),
-    path('index/', index, name='index'),
+    path('index/', index_view, name='index'),
     path('logout/', logout_view, name='logout'),
 
     # forgot password urls
