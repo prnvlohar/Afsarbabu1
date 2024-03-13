@@ -1,360 +1,530 @@
 <!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link
+  rel="stylesheet"
+  href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+/>
 <style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
+  * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+  }
 
-    body {
-        background: #c4c4c4;    
-        font-family: 'Font1', sans-serif;
-        margin:0;
-    }
+  body {
+      background: #c4c4c4;
+      font-family: 'Font1', sans-serif;
+      margin:0;
+  }
 
-    .container {
-        width: 100%;
-        max-width: 64rem;
-        background: #fff;
-        padding: 0.8rem;
-        border-radius: 1rem;
-        {% comment %} overflow: auto; {% endcomment %}
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
+  .container {
+      width: 100%;
+      max-width: 64rem;
+      background: #fff;
+      padding: 0.8rem;
+      border-radius: 1rem;
+      {% comment %} overflow: auto; {% endcomment %}
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
 
-        display: grid;
-        gap: 1rem;
-        grid-template-columns: 2fr 2fr 1.5fr;
-        grid-template-rows: 0.1fr 2fr 1fr;
-        grid-template-areas:
-            "quiz-title quiz-title quiz-title"
-            "question-section question-section questions-nav-section"
-            "explanation-section explanation-section questions-nav-section";
-    }
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: 2fr 2fr 1.5fr;
+      grid-template-rows: 0.1fr 2fr 1fr;
+      grid-template-areas:
+          "quiz-title quiz-title quiz-title"
+          "question-section question-section questions-nav-section"
+          "explanation-section explanation-section questions-nav-section";
+  }
 
-    .quiz-title {
-        grid-area: quiz-title;
-        font-weight: 800;
-        font-size: 1rem;
-        text-align: center;
-        margin-bottom: 1rem;
-    }
+  .quiz-title {
+      grid-area: quiz-title;
+      font-weight: 800;
+      font-size: 1rem;
+      text-align: center;
+      margin-bottom: 1rem;
+  }
 
-    .question-section {
-        grid-area: question-section
-    }
+  .question-section {
+      grid-area: question-section
+  }
 
-    .question {
-        padding: 0.5rem;
-        border: 2px solid #799efe;
-        border-radius: 0.5rem;
-        margin-bottom: 1rem;
-    }
+  .question {
+      padding: 0.5rem;
+      border: 2px solid #799efe;
+      border-radius: 0.5rem;
+      margin-bottom: 1rem;
+  }
 
-    .question .question-text {
-        margin-bottom: 0.5rem;
-    }
+  .question .question-text {
+      margin-bottom: 0.5rem;
+  }
 
-    .question .question-num {
-        font-weight: 700;
-        font-size: 0.9rem;
-        margin-bottom: 1rem;
-    }
+  .question .question-num {
+      font-weight: 700;
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+  }
 
-    .answer-item {
-        padding: 1rem 0;
-        display: block;
-        box-shadow: 0 7px 7px rgba(0, 0, 0, 0.1);
-        border-radius: 0.5rem;
-        margin-bottom: 0.5rem;
-        cursor: pointer;
-    }
+  .answer-item {
+      padding: 1rem 0;
+      display: block;
+      box-shadow: 0 7px 7px rgba(0, 0, 0, 0.1);
+      border-radius: 0.5rem;
+      margin-bottom: 0.5rem;
+      cursor: pointer;
+  }
 
-    .answer-item.checked {
-        background: #4563c8;
-        color: #fff;
-    }
+  .answer-item.checked {
+      background: #4563c8;
+      color: #fff;
+  }
 
-    .answer-item.wrong {
-        background: #4563c8 ;
-        color: #fff;
-    }
+  .answer-item.wrong {
+      background: #4563c8 ;
+      color: #fff;
+  }
 
-    .answer-item span {
-        display: block;
-        padding-left: 2rem;
-        overflow-wrap: break-word;
-    }
+  .answer-item span {
+      display: block;
+      padding-left: 2rem;
+      overflow-wrap: break-word;
+  }
 
-    .answer-item:hover,
-    .answer-item:active {
-        background: #aabdff;
-        color: #fff;
-    }
+  .answer-item:hover,
+  .answer-item:active {
+      background: #aabdff;
+      color: #fff;
+  }
 
-    .answer-item input[type="radio"] {
-        display: none;
-    }
+  .answer-item input[type="radio"] {
+      display: none;
+  }
 
-    .action1 {
-        margin-top: 1rem;
-        margin-bottom: 1rem;
-        text-align: center;
-    }
+  .action1 {
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+      text-align: center;
+  }
 
-    .btn {
-        background: inherit;
-        border: 0;
-        border-radius: 0.5rem;
-        box-shadow: 0 7px 7px rgba(0, 0, 0, 0.1);
-        padding: 0.5rem 1rem;
-        margin-right: 1.5rem;
-        font-weight: 700;
-        cursor: pointer;
-    }
+  .btn {
+      background: inherit;
+      border: 0;
+      border-radius: 0.5rem;
+      box-shadow: 0 7px 7px rgba(0, 0, 0, 0.1);
+      padding: 0.5rem 1rem;
+      margin-right: 1.5rem;
+      font-weight: 700;
+      cursor: pointer;
+  }
 
-    .btn:hover,
-    .btn:active {
-        background: #aabdff;
-        color: #fff;
-    }
+  .btn:hover,
+  .btn:active {
+      background: #aabdff;
+      color: #fff;
+  }
 
-    .explanation-section {
-        grid-area: explanation-section;
-        padding: 0.5rem;
-        border-radius: 0.5rem;
-        box-shadow: 0 7px 7px rgba(0, 0, 0, 0.1);
-    }
+  .explanation-section {
+      grid-area: explanation-section;
+      padding: 0.5rem;
+      border-radius: 0.5rem;
+      box-shadow: 0 7px 7px rgba(0, 0, 0, 0.1);
+  }
 
-    .explanation-section .section-title {
-        font-weight: 700;
-        font-size: 0.9rem;
-        margin-bottom: 1rem;
-    }
+  .explanation-section .section-title {
+      font-weight: 700;
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+  }
 
-    .explanation-section .explanation-text {
-        margin-right: 1rem;
-        margin-left: 1rem;
-        margin-bottom: 1.5rem;
-    }
+  .explanation-section .explanation-text {
+      margin-right: 1rem;
+      margin-left: 1rem;
+      margin-bottom: 1.5rem;
+  }
 
-    .questions-nav-section {
-        grid-area: questions-nav-section;
-        padding: 1rem;
-        box-shadow: 0 7px 7px rgba(0, 0, 0, 0.1);
-        border-radius: 0.5rem;
-    }
+  .questions-nav-section {
+      grid-area: questions-nav-section;
+      padding: 1rem;
+      box-shadow: 0 7px 7px rgba(0, 0, 0, 0.1);
+      border-radius: 0.5rem;
+  }
 
-    .questions-nav-section .question-nums-list {
-        /* max-width: 100%; */
-        display: grid;
-        grid-template-columns: repeat(5, 1fr);
-        grid-auto-rows: minmax(0, 1fr);
-        gap: 10px;
-        list-style: none;
-        padding: 0;
-        margin: 0;
-    }
+  .questions-nav-section .question-nums-list {
+      /* max-width: 100%; */
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      grid-auto-rows: minmax(0, 1fr);
+      gap: 10px;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+  }
 
-    .questions-nav-section .question-nums-list a {
-        text-decoration: none;
-        color: inherit;
-        padding: 0.5rem;
-        background: #c4c4c4;
-        border-radius: 50%;
-        display: inline-block;
-        width: 2.5rem;
-        height: 2.5rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: 700;
-        color: #fff;
-    }
+  .questions-nav-section .question-nums-list a {
+      text-decoration: none;
+      color: inherit;
+      padding: 0.5rem;
+      background: #c4c4c4;
+      border-radius: 50%;
+      display: inline-block;
+      width: 2.5rem;
+      height: 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: #fff;
+  }
 
-    .questions-nav-section .question-nums-list a:hover {
-        filter: brightness(0.9)
-    }
+  .questions-nav-section .question-nums-list a:hover {
+      filter: brightness(0.9)
+  }
 
-    .questions-nav-section .question-nums-list a.done {
-        background: #b9dd27;
-    }
+  .questions-nav-section .question-nums-list a.active {
+      background: #007bff;
+      color: #fff;
+  }
 
-    .questions-nav-section .question-nums-list a.active {
-        background: #f45757;
-    }
+  .questions-nav-section .question-nums-list a.selected {
+    background: #4caf50;
+  }
 
-    .question-context {
-        margin-bottom: 2rem;
-        display: flex;
-        justify-content: space-between;
-    }
+  .questions-nav-section .question-nums-list a.not-selected {
+    background: #ff6b6b;
+  }
 
-    .question-context a {
-        font-weight: 700;
-        font-size: 0.9rem;
-        text-decoration: none;
-        color: inherit;
-    }
 
-    .question-context a:hover {
-        color: #aabdff;
-    }
+  .question-context {
+      margin-bottom: 2rem;
+      display: flex;
+      justify-content: space-between;
+  }
 
-    .d-flex {
-        display: flex;
-        justify-content: center;
-        width: 100%;
-    }
+  .question-context a {
+      font-weight: 700;
+      font-size: 0.9rem;
+      text-decoration: none;
+      color: inherit;
+  }
 
-    @media(max-width: 50rem) {
-        .container {
-            grid-template-rows: 0.1fr 1fr 1fr;
-            border-radius: 0;
-            position: static;
-            height: 100vh;
-            width: 100%;
-            top: 0%;
-            left: 0%;
-            transform: translate(0%, 0%);
+  .question-context a:hover {
+      color: #aabdff;
+  }
 
+  .d-flex {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+  }
+
+  @media(max-width: 50rem) {
+      .container {
+          grid-template-rows: 0.1fr 1fr 1fr;
+          border-radius: 0;
+          position: static;
+          height: 100vh;
+          width: 100%;
+          top: 0%;
+          left: 0%;
+          transform: translate(0%, 0%);
+
+      }
+  }
+
+  @media (max-width: 38rem) {
+      .container {function updateAnswerStyles(index) {
+          var answerItems = questions[index].querySelectorAll('.answer-item');
+          var isSelected = selectedOptions[index] !== null;
+
+          answerItems.forEach(function (item, i) {
+            item.classList.remove('checked', 'not-selected');
+
+            if (isSelected && selectedOptions[index] === i + 1) {
+              item.classList.add('checked');
+            } else {
+              item.classList.add('not-selected');
+            }
+          });
         }
-    }
-
-    @media (max-width: 38rem) {
-        .container {
-            grid-template-rows: 0.1fr 1fr 1fr;
-            border-radius: 0;
-            position: static;
-            height: 100vh;
-            width: 100%;
-            top: 0%;
-            left: 0%;
-            transform: translate(0%, 0%);
+          grid-template-rows: 0.1fr 1fr 1fr;
+          border-radius: 0;
+          position: static;
+          height: 100vh;
+          width: 100%;
+          top: 0%;
+          left: 0%;
+          transform: translate(0%, 0%);
 
 
-            grid-template-columns: 1fr;
-            grid-template-rows: 0.1fr 1fr 1fr auto;
-            grid-template-areas:
-                "quiz-title"
-                "questions-nav-section"
-                "question-section"
-                "explanation-section";
-        }
-    }
-    form {
-        margin: 0; /* Remove default margin */
-        padding: 0; /* Remove default padding */
-        border: none; /* Remove default border */
-        display: contents;
-    }
+          grid-template-columns: 1fr;
+          grid-template-rows: 0.1fr 1fr 1fr auto;
+          grid-template-areas:
+              "quiz-title"
+              "questions-nav-section"
+              "question-section"
+              "explanation-section";
+      }
+  }
+  form {
+      margin: 0; /* Remove default margin */
+      padding: 0; /* Remove default padding */
+      border: none; /* Remove default border */
+      display: contents;
+  }
 
-    #sub{
-        background-color: blue;
-    }
-    .sub1{
-        position: fixed;
-        bottom: 3%;
-        width: 25%;
-        color: white;
-        text-align: center;
-    }
+  #sub{
+      background-color: blue;
+  }
+  .sub1{
+      position: fixed;
+      bottom: 3%;
+      width: 25%;
+      color: white;
+      text-align: center;
+  }
 </style>
 <main>
-    <div class="container">
-        <h1 class="quiz-title">Quiz Title</h1>
-        <form id="quizForm" method='post'>
-            {% csrf_token %}
-        <section class="question-section">
-            {% for q in questions %}
-            <div class="question_set">
-                <div class="question">
-                    <h2 class="question-num">Question {{forloop.counter}}</h2>
-                    <p class="question-text">{{q.question}}</p>
-                </div>
-                <div class="answer">
-                    <label class="answer-item">
-                        <input type="radio" name="{{q.id}}" onchange="toggleParentClass(this)" value="{{q.option1}}" id="">
-                        <span>{{q.option1}}</span>
-                    </label>
-                    <label class="answer-item">
-                        <input type="radio" name="{{q.id}}" onchange="toggleParentClass(this)" value="{{q.option2}}" id="">
-                        <span>{{q.option2}}</span>
-                    </label>
-                    <label class="answer-item">
-                        <input type="radio" name="{{q.id}}" onchange="toggleParentClass(this)" value="{{q.option3}}" id="">
-                        <span>{{q.option3}}</span>
-                    </label>
-                    <label class="answer-item">
-                        <input type="radio" name="{{q.id}}" onchange="toggleParentClass(this)" value="{{q.option4}}" id="">
-                        <span>{{q.option4}}</span>
-                    </label>
-                </div>
-            </div>
-            {% endfor %}
-            <div class="action1">
-                <button type="button" class="btn" id="btn-prev">Prev</button>
-                <button type="button" class="btn" id="btn-next">Next</button>
-            </div>
-        </section>
-        </form>
-        {% comment %} <section class="explanation-section">
-            <h2 class="section-title">Explanation</h2>
-            <p class="explanation-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-                velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt
-                in culpa qui officia deserunt mollit anim id est laborum.</p>
-        </section> {% endcomment %}
-        <section class="questions-nav-section">
-            <p class="question-context">
-                <a href="#"><span class="question-num1">1/{{questions|length}}</span></a>
-                <a href="#"><span class="question-help">Need Help?</span></a>
-            </p>
-            <div class="d-flex">
-                <ul class="question-nums-list">
-                    {% for i in questions %}
-                    <li class="no_count"><a id="{{i.id}}" class="" onclick="goto_question({{forloop.counter}})">{{forloop.counter}}</a></li>
-                    {% endfor %}
-                    {% comment %} <li><a class="done" href="#">2</a></li>
-                    <li><a class="done" href="#">3</a></li>
-                    <li><a class="done" href="#">4</a></li>
-                    <li><a class="done" href="#">5</a></li>
-                    <li><a class="done" href="#">6</a></li>
-                    <li><a class="done" href="#">7</a></li>
-                    <li><a class="done" href="#">8</a></li>
-                    <li><a class="done" href="#">9</a></li>
-                    <li><a class="done" href="#">10</a></li>
-                    <li><a class="active" href="#">11</a></li>
-                    <li><a href="#">12</a></li>
-                    <li><a href="#">13</a></li>
-                    <li><a href="#">14</a></li>
-                    <li><a href="#">15</a></li>
-                    <li><a href="#">16</a></li>
-                    <li><a href="#">17</a></li>
-                    <li><a href="#">18</a></li>
-                    <li><a href="#">19</a></li>
-                    <li><a href="#">20</a></li> {% endcomment %}
-                </ul>
-            </div>
-            
-     
-            <div class="sub1">
-                <input type="submit" id="sub" class="btn btn-primary" onclick="submitForm()">
-            </div>
+  <div class="container">
+    <h1 class="quiz-title">Quiz Title</h1>
+    <form id="quizForm" method="post">
+      {% csrf_token %}
+      <section class="question-section">
+        {% for q in questions %}
+        <div class="question_set">
+          <div class="question">
+            <h2 class="question-num">Question {{forloop.counter}}</h2>
+            <p class="question-text">{{q.question}}</p>
+          </div>
+          <div class="answer">
+            <label class="answer-item">
+              <input
+                type="radio"
+                name="{{q.id}}"
+                onchange="toggleParentClass(this)"
+                value="{{q.option1}}"
+                id=""
+              />
+              <span>{{q.option1}}</span>
+            </label>
+            <label class="answer-item">
+              <input
+                type="radio"
+                name="{{q.id}}"
+                onchange="toggleParentClass(this)"
+                value="{{q.option2}}"
+                id=""
+              />
+              <span>{{q.option2}}</span>
+            </label>
+            <label class="answer-item">
+              <input
+                type="radio"
+                name="{{q.id}}"
+                onchange="toggleParentClass(this)"
+                value="{{q.option3}}"
+                id=""
+              />
+              <span>{{q.option3}}</span>
+            </label>
+            <label class="answer-item">
+              <input
+                type="radio"
+                name="{{q.id}}"
+                onchange="toggleParentClass(this)"
+                value="{{q.option4}}"
+                id=""
+              />
+              <span>{{q.option4}}</span>
+            </label>
+          </div>
+        </div>
+        {% endfor %}
+        <div class="action1">
+          <button
+            type="button"
+            class="btn"
+            id="btn-prev"
+            onclick="prev_question()"
+          >
+            Prev
+          </button>
+          <button
+            type="button"
+            class="btn"
+            id="btn-next"
+            onclick="next_question()"
+          >
+            Next
+          </button>
+        </div>
+      </section>
+    </form>
+    <section class="questions-nav-section">
+      <p class="question-context">
+        <a href="#"
+          ><span class="question-num1">1/{{questions|length}}</span></a
+        >
+        <a href="#"><span class="question-help">Need Help?</span></a>
+      </p>
+      <div class="d-flex">
+        <ul class="question-nums-list">
+          {% for i in questions %}
+          <li class="no_count">
+            <a
+              id="{{i.id}}"
+              class=""
+              onclick="goto_question({{forloop.counter}})"
+              >{{forloop.counter}}</a
+            >
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
 
-            {% comment %} <footer class="fixed-bottom">
-                <center>
-                    <input type="submit" id="sub" class="btn btn-primary">
-                </center>
-            </footer> {% endcomment %}
-        </section>
-    </div>
+      <div class="sub1">
+        <input
+          type="submit"
+          id="sub"
+          class="btn btn-primary"
+          onclick="submitForm()"
+        />
+      </div>
+    </section>
+  </div>
 </main>
 
+<script>
+    var questions = document.querySelectorAll(".question_set");
+    var currentQuestionIndex = 0;
+    var selectedOptions = new Array(questions.length).fill(null);
+    
+    document.addEventListener("DOMContentLoaded", function () {
+      function showQuestion(index) {
+        questions.forEach(function (question, i) {
+          if (i === index) {
+            question.style.display = "block";
+            question.classList.add("active-question");
+          } else {
+            question.style.display = "none";
+            question.classList.remove("active-question");
+          }
+        });
+      }
+    
+      function updateNavLinks(index) {
+        var navLinks = document.querySelectorAll(".question-nums-list a");
+        var questionNumSpan = document.querySelector(".question-num1");
+    
+        navLinks.forEach(function (link, i) {
+          link.classList.toggle("active", i === index);
+        });
+        questionNumSpan.textContent = index + 1 + "/" + questions.length;
+      }
+    
+      // Function to go to a specific question
+      window.goto_question = function (index) {
+        currentQuestionIndex = index - 1;
+        showQuestion(currentQuestionIndex);
+        updateNavLinks(currentQuestionIndex);
+      };
+    
+      window.next_question = function () {
+        if (currentQuestionIndex < questions.length - 1) {
+          let currentQuestion = questions[currentQuestionIndex];
+          let navButtons = document.querySelectorAll(".question-nums-list a");
+          let currentNavButton = navButtons[currentQuestionIndex];
+    
+          selectedOptions[currentQuestionIndex] = getSelectedOptionValue();
+    
+          if (selectedOptions[currentQuestionIndex] === null) {
+            currentNavButton.classList.add("not-selected");
+          }
+    
+          currentQuestionIndex++;
+          showQuestion(currentQuestionIndex);
+          updateNavLinks(currentQuestionIndex);
+          toggleParentClass();
+        }
+      };
+    
+      window.prev_question = function () {
+        if (currentQuestionIndex > 0) {
+          let currentQuestion = questions[currentQuestionIndex];
+          let navButtons = document.querySelectorAll(".question-nums-list a");
+          let currentNavButton = navButtons[currentQuestionIndex];
+    
+          selectedOptions[currentQuestionIndex] = getSelectedOptionValue();
+    
+          if (currentQuestion.classList.contains("active-question")) {
+            currentNavButton.classList.add("active");
+          }
+    
+          currentQuestionIndex--;
+          showQuestion(currentQuestionIndex);
+          updateNavLinks(currentQuestionIndex);
+        }
+      };
+    
+    // Function to update selected options when an answer is selected
+    window.toggleParentClass = function (radioInput) {
+        selectedOptions[currentQuestionIndex] = parseInt(radioInput.value);
+  
+        let navButtons = document.querySelectorAll(".question-nums-list a");
+        let currentNavButton = navButtons[currentQuestionIndex];
+  
+        if (selectedOptions[currentQuestionIndex] !== null) {
+          currentNavButton.classList.add("selected");
+          currentNavButton.classList.remove("not-selected");
+        } else {
+          currentNavButton.classList.remove("selected");
+          currentNavButton.classList.add("not-selected");
+        }
+      };
+    
+      // Function to get the value of the selected radio button
+      function getSelectedOptionValue() {
+        var radioButtons = document.querySelectorAll(
+          '.question_set.active-question .answer-item input[type="radio"]:checked'
+        );
+    
+        return radioButtons.length > 0 ? parseInt(radioButtons[0].value) : null;
+      }
+    
+      showQuestion(currentQuestionIndex);
+      updateNavLinks(currentQuestionIndex);
+    
+      // Get all radio buttons
+      var radioButtons = document.querySelectorAll(
+        '.answer-item input[type="radio"]'
+      );
+    
+      // Attach an event listener to each radio button
+      radioButtons.forEach(function (radio) {
+        radio.addEventListener("change", function () {
+          // Remove the 'checked' class from all answer items
+          document
+            .getElementsByClassName("question_set active-question")[0]
+            .querySelectorAll(".answer-item")
+            .forEach(function (item) {
+              item.classList.remove("checked");
+            });
+    
+          // If the current radio button is checked, add the 'checked' class to its parent (.answer-item)
+          if (radio.checked) {
+            radio.closest(".answer-item").classList.add("checked");
+          }
+        });
+      });
+    });
+    function submitForm() {
+      document.getElementById('quizForm').submit();
+  }
+    
+</script>
+
+{% comment %}
 <script>
     
     document.addEventListener('DOMContentLoaded', function () {
@@ -405,65 +575,43 @@
             });
         }); 
     });
-    {% comment %}
-    function toggleOption(direction) {
-        var currentQuestion = questions[currentQuestionIndex];
-        var options = currentQuestion.querySelectorAll('input[type="radio"]');
-        var selectedOptionIndex = Array.from(options).findIndex(option => option.checked);
 
-        if (direction === 'next' && selectedOptionIndex < options.length - 1) {
-            options[selectedOptionIndex + 1].checked = true;
-        } else if (direction === 'prev' && selectedOptionIndex > 0) {
-            options[selectedOptionIndex - 1].checked = true;
-        }
 
-        // Update the parent class based on the new selected option
-        toggleParentClass(options[selectedOptionIndex]);
-    }
-
-    // Event listeners for option navigation buttons (if they exist)
-    document.getElementById('btn-option-prev').addEventListener('click', function () {
-        toggleOption('prev');
-    });
-
-    document.getElementById('btn-option-next').addEventListener('click', function () {
-        toggleOption('next');
- });  {% endcomment %}
-
-    function toggleParentClass(radio) {
-        var parent = radio.parentNode;
-        console.log(parent);    
-        // Remove 'checked' class from all answer-items
-        var answerItems = document.querySelectorAll('.answer-item');
-        
-        for (var i = 0; i < answerItems.length; i++) {
-            if (answerItems[i] !== parent) { 
-              answerItems[i].classList.remove('checked');
-                }
-          } 
-
-        if (radio.checked) {
-            parent.classList.add('checked');
-        }
-        else {
-            parent.classList.remove('checked');
-        }
-    } 
+ function toggleParentClass(radio) {
+    var parent = radio.parentNode;
+    console.log(parent);    
+    // Remove 'checked' class from all answer-items
+    var answerItems = document.querySelectorAll('.answer-item');
     
-    var questions = document.querySelectorAll('.question_set');
-        var currentQuestionIndex = 0;
-        
-        // Function to show a specific question
-        function showQuestion(index) {
-            questions.forEach(function (question, i) {
-                question.style.display = i === index-1 ? 'block' : 'none';
-            });
-        }   
-        function goto_question(index){
-            showQuestion(index);
-        }
-        function submitForm() {
-            document.getElementById('quizForm').submit();
-        }
-        
+    for (var i = 0; i < answerItems.length; i++) {
+        if (answerItems[i] !== parent) { 
+          answerItems[i].classList.remove('checked');
+            }
+      } 
+
+    if (radio.checked) {
+        parent.classList.add('checked');
+    }
+    else {
+        parent.classList.remove('checked');
+    }
+} 
+
+var questions = document.querySelectorAll('.question_set');
+    var currentQuestionIndex = 0;
+    
+    // Function to show a specific question
+    function showQuestion(index) {
+        questions.forEach(function (question, i) {
+            question.style.display = i === index-1 ? 'block' : 'none';
+        });
+    }   
+    function goto_question(index){
+        showQuestion(index);
+    }
+    function submitForm() {
+        document.getElementById('quizForm').submit();
+    }
+    
 </script>
+{% endcomment %}

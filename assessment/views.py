@@ -1,28 +1,21 @@
 from typing import Any
 from django.contrib import messages
-from django.core.paginator import Paginator
 from django.db.models import Avg
-from django.db.models.query import QuerySet
-from django.forms import modelformset_factory
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views import View
 from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
                                   UpdateView)
 from django.shortcuts import get_object_or_404
-from assessment.forms import (AssessmentForm, QuestionForm, RatingForm, SubtopicForm, TopicForm)
-from assessment.models import ( Assessment, Question,
-                               Rating, PassFailStatus, Topic, Subtopic)
-from assessment.utils import send_email_with_marks
-from django.db.models.functions import Substr, Length
-from django.db.models import Value, Case, When, CharField
-from django.db.models.functions import Concat
+from assessment.forms import (
+    AssessmentForm, QuestionForm, RatingForm, SubtopicForm, TopicForm)
+from assessment.models import (Assessment, Question,
+                               PassFailStatus, Topic, Subtopic)
 from django.contrib.auth.mixins import LoginRequiredMixin
 import json
 from django.urls import reverse
 from urllib.parse import urlencode
-
 
 
 class TopicListView(LoginRequiredMixin, ListView):
@@ -33,22 +26,22 @@ class TopicListView(LoginRequiredMixin, ListView):
     context_object_name = "Topics"
 
 
-
 class SubTopicListView(LoginRequiredMixin, ListView):
 
     " Showing all topic present in project "
     model = Subtopic
     template_name = 'assessment/subtopic.html'
     context_object_name = "SubTopics"
-    
+
     # overide method to send only that subtopic which belong to that topic
     def get_queryset(self):
         return Subtopic.objects.filter(topic=self.kwargs['pk'])
-    
+
     def get_context_data(self, **kwargs: Any):
-        p=super().get_context_data(**kwargs)
-        p['id']= self.kwargs['pk']
+        p = super().get_context_data(**kwargs)
+        p['id'] = self.kwargs['pk']
         return p
+
 
 class AssessmentListView(LoginRequiredMixin, ListView):
 
@@ -56,45 +49,42 @@ class AssessmentListView(LoginRequiredMixin, ListView):
     model = Assessment
     template_name = 'assessment/new_assessment.html'
     context_object_name = "Assessments"
-    
+
     # overide method to send only that assessment which belong to that subtopic
     def get_queryset(self):
         return Assessment.objects.filter(subtopic=self.kwargs['pk'])
-    
+
     def get_context_data(self, **kwargs: Any):
-        p=super().get_context_data(**kwargs)
+        p = super().get_context_data(**kwargs)
         p['id'] = self.kwargs['pk']
         topic_id = Subtopic.objects.get(id=self.kwargs['pk']).topic.id
         p['id1'] = topic_id
         return p
-    
 
-    
 
 class QuestionListView(LoginRequiredMixin, ListView):
-    
+
     model = Question
     template_name = "assessment/new_questions.html"
     context_object_name = "Questions"
-    
-    
 
     def get_queryset(self):
-    # Filter questions based on assessment
+        # Filter questions based on assessment
         queryset = Question.objects.filter(assessment=self.kwargs['pk'])
 
         # Process queryset to truncate question_text without using annotate
         for question in queryset:
-            question.short_question = question.question[:57] + '...' if len(question.question) > 60 else question.question
+            question.short_question = question.question[:57] + '...' if len(
+                question.question) > 60 else question.question
 
         return queryset
-    
+
     def get_context_data(self, **kwargs: Any):
-        p=super().get_context_data(**kwargs)
-        p['id']= self.kwargs['pk']
+        p = super().get_context_data(**kwargs)
+        p['id'] = self.kwargs['pk']
         p['id1'] = Assessment.objects.get(id=self.kwargs['pk']).subtopic.id
         return p
-    
+
     def post(self, request, *args, **kwargs):
         assessment = Assessment.objects.get(id=kwargs['pk'])
         redirect_url = reverse('question-list', kwargs={'pk': kwargs['pk']})
@@ -113,30 +103,16 @@ class QuestionListView(LoginRequiredMixin, ListView):
                     option4 = i['options'][3]
                     answer = i['answer']
                     explanation = i['explanation']
-                    Question.objects.create(assessment=assessment,question=question,option1=option1,option2=option2,option3=option3,option4=option4,answer=answer,explanation=explanation)
+                    Question.objects.create(assessment=assessment, question=question, option1=option1,
+                                            option2=option2, option3=option3, option4=option4, answer=answer, explanation=explanation)
                 messages.success(request, 'Questions added successfully.')
-                
+
             except:
-                return_url = urlencode({'error': 'Invalid JSON file, format of json file provided by you is not valid please check that you miss something'})        
+                return_url = urlencode(
+                    {'error': 'Invalid JSON file, format of json file provided by you is not valid please check that you miss something'})
                 redirect_url = f'{redirect_url}?{return_url}'
 
         return redirect(redirect_url)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 class ListAssessment(LoginRequiredMixin, View):
@@ -146,8 +122,9 @@ class ListAssessment(LoginRequiredMixin, View):
     template_name = 'assessment/list_assessment.html'
 
     def get(self, request, *args, **kwargs):
-        assessment = Assessment.objects.all()       
-        return render(request, self.template_name, {'assessment': assessment,})
+        assessment = Assessment.objects.all()
+        return render(request, self.template_name, {'assessment': assessment, })
+
 
 class ShowAssessmentView(LoginRequiredMixin, View):
 
@@ -162,8 +139,8 @@ class ShowAssessmentView(LoginRequiredMixin, View):
         else:
             assessment = Assessment.objects.all()
         assessment = assessment.annotate(
-            avg_rating=Avg('rating__rating', default=0))        
-        return render(request, self.template_name, {'assessment': assessment,})
+            avg_rating=Avg('rating__rating', default=0))
+        return render(request, self.template_name, {'assessment': assessment, })
 
 
 class AddQuestionView(LoginRequiredMixin, View):
@@ -178,7 +155,7 @@ class AddQuestionView(LoginRequiredMixin, View):
         assessment = get_object_or_404(Assessment, id=assessment_id)
         count = Question.objects.filter(assessment=assessment).count()
         form = self.form_class()
-        return render(request, self.template_name, {'form': form, 'count':count,'assessment':assessment,'id':self.kwargs['pk']})
+        return render(request, self.template_name, {'form': form, 'count': count, 'assessment': assessment, 'id': self.kwargs['pk']})
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
@@ -188,7 +165,7 @@ class AddQuestionView(LoginRequiredMixin, View):
             if form.is_valid():
                 assessment_id = kwargs.get('pk')
                 assessment = get_object_or_404(Assessment, id=assessment_id)
-                #insert assessment in form data
+                # insert assessment in form data
                 form.instance.assessment = assessment
                 form.save()
                 messages.error(request, 'Question added successfully.')
@@ -200,7 +177,6 @@ class AddQuestionView(LoginRequiredMixin, View):
         else:
             messages.error(request, 'User is not instructor.')
             return HttpResponseRedirect(reverse('index'))
-        
 
 
 class ShowQuizView(LoginRequiredMixin, View):
@@ -209,15 +185,16 @@ class ShowQuizView(LoginRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
         try:
-            
+
             assessment = Assessment.objects.get(id=self.kwargs['pk'])
-            
+
             questions = assessment.question_set.all()
-            #retrive passfailmodel object
-            passfail = PassFailStatus.objects.filter(user=request.user, assessment=assessment).first()
+            # retrive passfailmodel object
+            passfail = PassFailStatus.objects.filter(
+                user=request.user, assessment=assessment).first()
             return render(request, 'assessment/quiz.html', {'questions': questions,
-                                                                'assessment': assessment,
-                                                                'passfail':passfail,})
+                                                            'assessment': assessment,
+                                                            'passfail': passfail, })
 
         except Exception as e:
             messages.success(
@@ -229,7 +206,7 @@ class ShowQuizView(LoginRequiredMixin, View):
         if assessment.id in request.session:
             messages.success(request, 'Assessment already submitted.')
             return HttpResponseRedirect(reverse("show-assessment"))
-        
+
         score = 0
         payload = request.POST
         questions = Question.objects.filter(assessment=assessment)
@@ -237,32 +214,36 @@ class ShowQuizView(LoginRequiredMixin, View):
             if str(q.id) in payload:
                 if payload[str(q.id)] == q.answer:
                     score += 1
-        
+
         # convert score into percentage
         score = score / len(questions) * 100
-        #check score is above 80 and change status of passfail model
+        # check score is above 80 and change status of passfail model
         if score > 80:
             try:
-                passfail = PassFailStatus.objects.get(assessment=assessment, user=request.user)
+                passfail = PassFailStatus.objects.get(
+                    assessment=assessment, user=request.user)
             except:
-                passfail = PassFailStatus(assessment=assessment, user=request.user)
+                passfail = PassFailStatus(
+                    assessment=assessment, user=request.user)
             passfail.status = True
             passfail.save()
         else:
             try:
-                passfail = PassFailStatus.objects.get(assessment=assessment, user=request.user)
+                passfail = PassFailStatus.objects.get(
+                    assessment=assessment, user=request.user)
             except:
-                passfail = PassFailStatus(assessment=assessment, user=request.user)
+                passfail = PassFailStatus(
+                    assessment=assessment, user=request.user)
             passfail.status = False
             passfail.save()
-        
+
         request.session['assessment.id'] = True
         form = RatingForm
         # send_email_with_marks(request, score)x
         messages.success(
             request, 'Answer submmited successfully. Check your email for score.')
         return render(request, 'assessment/score.html', {'score': score, 'form': form,
-                                                            'assessment': assessment})
+                                                         'assessment': assessment})
 
 
 def rating_quiz(request):
@@ -277,42 +258,48 @@ def rating_quiz(request):
             return HttpResponseRedirect(reverse("show-assessment"))
 
 
-
 class QuestionDeleteView(LoginRequiredMixin, DeleteView):
     model = Question
     template_name = "assessment/question_confirm_delete.html"
+
     def get_success_url(self) -> str:
         assessment_id = self.object.assessment.id
         success_url = f"/assessment/qestion-list/{assessment_id}/"
         return success_url
-    
+
+
 class AssessmentDeleteView(LoginRequiredMixin, DeleteView):
     model = Assessment
     template_name = "assessment/question_confirm_delete.html"
+
     def get_success_url(self) -> str:
         # add assessment id to success url
         subtopic_id = self.object.subtopic.id
         success_url = f"/assessment/assessment-list/{subtopic_id}/"
         return success_url
-    
+
+
 class SubtopicDeleteView(LoginRequiredMixin, DeleteView):
     model = Subtopic
     template_name = "assessment/question_confirm_delete.html"
+
     def get_success_url(self) -> str:
         # add assessment id to success url
         subtopic_id = self.object.topic.id
         success_url = f"/assessment/sub-topic-list/{subtopic_id}/"
         return success_url
 
+
 class TopicDeleteView(LoginRequiredMixin, DeleteView):
     model = Topic
     success_url = '/assessment/topic-list'
     template_name = "assessment/question_confirm_delete.html"
-    
-    
+
+
 class QuestionUpdateView(LoginRequiredMixin, UpdateView):
     model = Question
-    fields = ['question', 'option1', 'option2', 'option3', 'option4', 'answer','explanation']
+    fields = ['question', 'option1', 'option2',
+              'option3', 'option4', 'answer', 'explanation']
     template_name = "assessment/question_confirm_update.html"
 
     def get_success_url(self) -> str:
@@ -322,10 +309,11 @@ class QuestionUpdateView(LoginRequiredMixin, UpdateView):
         return success_url
 
     def get_context_data(self, **kwargs: Any):
-        p=super().get_context_data(**kwargs)
+        p = super().get_context_data(**kwargs)
         p['id'] = self.kwargs['pk']
-        p['id1'] = Question.objects.get(id=self.kwargs['pk']).assessment.id 
+        p['id1'] = Question.objects.get(id=self.kwargs['pk']).assessment.id
         return p
+
 
 class AssessmentUpdateView(LoginRequiredMixin, UpdateView):
     model = Assessment
@@ -337,12 +325,13 @@ class AssessmentUpdateView(LoginRequiredMixin, UpdateView):
         assessment_id = self.object.id
         success_url = f"/assessment/assessment-list/{assessment_id}/"
         return success_url
-    
+
     def get_context_data(self, **kwargs: Any):
-        p=super().get_context_data(**kwargs)
-        p['id']= self.kwargs['pk']
+        p = super().get_context_data(**kwargs)
+        p['id'] = self.kwargs['pk']
         return p
-    
+
+
 class AddAssessmentView(LoginRequiredMixin, CreateView):
     form_class = AssessmentForm
     template_name = 'assessment/addassessment.html'
@@ -352,67 +341,67 @@ class AddAssessmentView(LoginRequiredMixin, CreateView):
         assessment_id = self.object.subtopic.id
         success_url = f"/assessment/assessment-list/{assessment_id}/"
         return success_url
-    
+
     # overrirde create method to add field manually
     def save(self, request, *args, **kwargs):
         self.object = self.get_object()
         return super().save(request, *args, **kwargs)
+
     def form_valid(self, form):
         form.instance.subtopic_id = self.kwargs.get('pk')
         topic_id = Subtopic.objects.get(id=self.kwargs.get('pk')).topic.id
         form.instance.topic_id = topic_id
-        return super().form_valid(form) 
+        return super().form_valid(form)
 
     def get_context_data(self, **kwargs: Any):
-        p=super().get_context_data(**kwargs)
-        p['id']= self.kwargs['pk']
+        p = super().get_context_data(**kwargs)
+        p['id'] = self.kwargs['pk']
         return p
-
-
 
 
 class AddSubtopicView(LoginRequiredMixin, CreateView):
     form_class = SubtopicForm
     template_name = 'assessment/addsubtopic.html'
-    
+
     def get_success_url(self) -> str:
         # add assessment id to success url
         subtopic_id = self.object.topic.id
         success_url = f"/assessment/sub-topic-list/{subtopic_id}/"
         return success_url
-    
+
     def form_valid(self, form):
         topic = Topic.objects.get(id=self.kwargs.get('pk'))
         form.instance.topic = topic
         return super().form_valid(form)
-    
+
     def get_context_data(self, **kwargs: Any):
-        p=super().get_context_data(**kwargs)
-        p['id']= self.kwargs['pk']
+        p = super().get_context_data(**kwargs)
+        p['id'] = self.kwargs['pk']
         return p
-    
+
+
 class UpdateSubtopicView(LoginRequiredMixin, UpdateView):
     model = Subtopic
     fields = ['title']
     template_name = 'assessment/update_subtopic.html'
-    
+
     def get_success_url(self) -> str:
         # add assessment id to success url
         subtopic_id = self.object.topic.id
         success_url = f"/assessment/sub-topic-list/{subtopic_id}/"
         return success_url
-    
+
     def get_context_data(self, **kwargs: Any):
-        p=super().get_context_data(**kwargs)
-        p['id']= self.kwargs['pk']
+        p = super().get_context_data(**kwargs)
+        p['id'] = self.kwargs['pk']
         return p
-    
-    
-    
+
+
 class AddTopicView(LoginRequiredMixin, CreateView):
     form_class = TopicForm
     template_name = 'assessment/add_topic.html'
     success_url = '/assessment/topic-list'
+
 
 class UpdateTopicView(LoginRequiredMixin, UpdateView):
     model = Topic
@@ -421,33 +410,35 @@ class UpdateTopicView(LoginRequiredMixin, UpdateView):
     success_url = '/assessment/topic-list'
 
     def get_context_data(self, **kwargs: Any):
-        p=super().get_context_data(**kwargs)
-        p['id']= self.kwargs['pk']
+        p = super().get_context_data(**kwargs)
+        p['id'] = self.kwargs['pk']
         return p
-    
-    
-    
-def guidelines(request,pk):
-    return render(request, 'assessment/guidelines.html',context={'id':pk})
+
+
+def guidelines(request, pk):
+    return render(request, 'assessment/guidelines.html', context={'id': pk})
+
 
 class TestShow(View):
     queryset = Question.objects.all()
+
     def get(self, request, *args, **kwargs):
-        
+
         context = {
             'questions': self.queryset.filter(assessment=self.kwargs['pk']),
         }
         return render(request, 'assessment/test.html', context)
-    
+
     def post(self, request, *args, **kwargs):
         queryset = self.queryset.filter(assessment=self.kwargs['pk'])
         count = 0
+        print(request.POST)
         for i in queryset:
-            if i.answer == request.POST.get(str(i.id),None):
-                count+=1
+            if i.answer == request.POST.get(str(i.id), None):
+                count += 1
         percentage = count/len(queryset)*100
-        return render(request, 'assessment/result.html', {'id':kwargs['pk'],'percentage':percentage})
+        return render(request, 'assessment/result.html', {'id': kwargs['pk'], 'percentage': percentage})
+
 
 def result(request, pk, count):
-    return render(request, 'assessment/result.html', {'id':pk,'count':count})
-
+    return render(request, 'assessment/result.html', {'id': pk, 'count': count})
