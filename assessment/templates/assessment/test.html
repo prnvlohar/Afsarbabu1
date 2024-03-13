@@ -176,6 +176,7 @@
       justify-content: center;
       font-weight: 700;
       color: #fff;
+      cursor: pointer;
   }
 
   .questions-nav-section .question-nums-list a:hover {
@@ -423,7 +424,26 @@
         questionNumSpan.textContent = index + 1 + "/" + questions.length;
       }
     
-      // Function to go to a specific question
+      function updateSelectedOptions() {
+        let currentQuestion = questions[currentQuestionIndex];
+        let navButtons = document.querySelectorAll(".question-nums-list a");
+        let currentNavButton = navButtons[currentQuestionIndex];
+    
+        selectedOptions[currentQuestionIndex] = getSelectedOptionValue();
+    
+        if (currentQuestion.classList.contains("active-question")) {
+          currentNavButton.classList.add("active");
+        }
+    
+        if (selectedOptions[currentQuestionIndex] !== null) {
+          currentNavButton.classList.add("selected");
+          currentNavButton.classList.remove("not-selected");
+        } else {
+          currentNavButton.classList.remove("selected");
+          currentNavButton.classList.add("not-selected");
+        }
+      }
+    
       window.goto_question = function (index) {
         currentQuestionIndex = index - 1;
         showQuestion(currentQuestionIndex);
@@ -432,95 +452,52 @@
     
       window.next_question = function () {
         if (currentQuestionIndex < questions.length - 1) {
-          let currentQuestion = questions[currentQuestionIndex];
-          let navButtons = document.querySelectorAll(".question-nums-list a");
-          let currentNavButton = navButtons[currentQuestionIndex];
-    
-          selectedOptions[currentQuestionIndex] = getSelectedOptionValue();
-    
-          if (selectedOptions[currentQuestionIndex] === null) {
-            currentNavButton.classList.add("not-selected");
-          }
-    
+          updateSelectedOptions();
           currentQuestionIndex++;
           showQuestion(currentQuestionIndex);
           updateNavLinks(currentQuestionIndex);
-          toggleParentClass();
         }
       };
     
       window.prev_question = function () {
         if (currentQuestionIndex > 0) {
-          let currentQuestion = questions[currentQuestionIndex];
-          let navButtons = document.querySelectorAll(".question-nums-list a");
-          let currentNavButton = navButtons[currentQuestionIndex];
-    
-          selectedOptions[currentQuestionIndex] = getSelectedOptionValue();
-    
-          if (currentQuestion.classList.contains("active-question")) {
-            currentNavButton.classList.add("active");
-          }
-    
+          updateSelectedOptions();
           currentQuestionIndex--;
           showQuestion(currentQuestionIndex);
           updateNavLinks(currentQuestionIndex);
         }
       };
     
-    // Function to update selected options when an answer is selected
-    window.toggleParentClass = function (radioInput) {
+      window.toggleParentClass = function (radioInput) {
         selectedOptions[currentQuestionIndex] = parseInt(radioInput.value);
-  
-        let navButtons = document.querySelectorAll(".question-nums-list a");
-        let currentNavButton = navButtons[currentQuestionIndex];
-  
-        if (selectedOptions[currentQuestionIndex] !== null) {
-          currentNavButton.classList.add("selected");
-          currentNavButton.classList.remove("not-selected");
-        } else {
-          currentNavButton.classList.remove("selected");
-          currentNavButton.classList.add("not-selected");
-        }
+        updateSelectedOptions();
       };
     
-      // Function to get the value of the selected radio button
       function getSelectedOptionValue() {
-        var radioButtons = document.querySelectorAll(
-          '.question_set.active-question .answer-item input[type="radio"]:checked'
-        );
-    
+        var radioButtons = document.querySelectorAll('.question_set.active-question .answer-item input[type="radio"]:checked');
         return radioButtons.length > 0 ? parseInt(radioButtons[0].value) : null;
       }
     
       showQuestion(currentQuestionIndex);
       updateNavLinks(currentQuestionIndex);
-    
-      // Get all radio buttons
-      var radioButtons = document.querySelectorAll(
-        '.answer-item input[type="radio"]'
-      );
-    
-      // Attach an event listener to each radio button
+
+      var radioButtons = document.querySelectorAll('.answer-item input[type="radio"]');
+
       radioButtons.forEach(function (radio) {
         radio.addEventListener("change", function () {
-          // Remove the 'checked' class from all answer items
-          document
-            .getElementsByClassName("question_set active-question")[0]
-            .querySelectorAll(".answer-item")
-            .forEach(function (item) {
-              item.classList.remove("checked");
-            });
-    
-          // If the current radio button is checked, add the 'checked' class to its parent (.answer-item)
+          document.querySelectorAll(".question_set.active-question .answer-item").forEach(function (item) {
+            item.classList.remove("checked");
+          });
           if (radio.checked) {
             radio.closest(".answer-item").classList.add("checked");
           }
         });
       });
     });
+    
     function submitForm() {
       document.getElementById('quizForm').submit();
-  }
+    }
     
 </script>
 
