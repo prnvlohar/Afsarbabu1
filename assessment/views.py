@@ -429,6 +429,7 @@ class TestShow(View):
 
         context = {
             'questions': self.queryset.filter(assessment=self.kwargs['pk']),
+            'assessment': Assessment.objects.get(id=self.kwargs['pk'])
         }
         return render(request, 'assessment/test.html', context)
 
