@@ -20,10 +20,16 @@ class Subtopic(models.Model):
     def __str__(self):
         return self.title
     
+class Exams(models.Model):
+    name = models.CharField(max_length=100)
+    image = models.ImageField(upload_to="exams_images/",null = True)
+    
+    
 class Assessment(models.Model):
 
     topic = models.ForeignKey(Topic, on_delete=models.CASCADE, null = True)
     subtopic = models.ForeignKey(Subtopic, on_delete=models.CASCADE, null = True)
+    exam = models.ForeignKey(Exams, on_delete=models.CASCADE, null = True)
     title = models.CharField(max_length=100, null = True)
     duration = models.DurationField(null = True)
 
@@ -34,6 +40,7 @@ class Question(models.Model):
 
     assessment = models.ForeignKey(Assessment, on_delete=models.CASCADE)
     question = models.CharField(max_length=1024, null=True)
+    images = models.ImageField(upload_to="images/", null = True, blank=True)
     option1 = models.CharField(max_length=1024, null=True)
     option2 = models.CharField(max_length=1024, null=True)
     option3 = models.CharField(max_length=1024, null=True)
@@ -59,3 +66,4 @@ class PassFailStatus(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     assessment = models.ForeignKey(Assessment, on_delete=models.CASCADE)
     status = models.BooleanField()
+    

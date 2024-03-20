@@ -11,9 +11,9 @@ from django.views import View
 from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
                                   UpdateView)
 from django.shortcuts import get_object_or_404
-from assessment.forms import (AssessmentForm, QuestionForm, RatingForm, SubtopicForm, TopicForm)
+from assessment.forms import (AssessmentForm, QuestionForm, RatingForm, SubtopicForm, TopicForm, ExamForm)
 from assessment.models import ( Assessment, Question,
-                               Rating, PassFailStatus, Topic, Subtopic)
+                               Rating, PassFailStatus, Topic, Subtopic, Exams)
 from assessment.utils import send_email_with_marks
 from django.db.models.functions import Substr, Length
 from django.db.models import Value, Case, When, CharField
@@ -181,7 +181,7 @@ class AddQuestionView(LoginRequiredMixin, View):
         return render(request, self.template_name, {'form': form, 'count':count,'assessment':assessment,'id':self.kwargs['pk']})
 
     def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST)
+        form = self.form_class(request.POST, request.FILES)
         user = request.user
 
         if user.type == 'instructor':
@@ -195,6 +195,7 @@ class AddQuestionView(LoginRequiredMixin, View):
                 # return reverse of add-question with assessemnt id
                 return HttpResponseRedirect(reverse('add-question', args=[assessment_id]))
             else:
+                print(form.errors)
                 messages.error(request, 'Question add failed.')
                 return HttpResponseRedirect(reverse('index'))
         else:
@@ -312,7 +313,7 @@ class TopicDeleteView(LoginRequiredMixin, DeleteView):
     
 class QuestionUpdateView(LoginRequiredMixin, UpdateView):
     model = Question
-    fields = ['question', 'option1', 'option2', 'option3', 'option4', 'answer','explanation']
+    fields = ['question','images', 'option1', 'option2', 'option3', 'option4', 'answer','explanation']
     template_name = "assessment/question_confirm_update.html"
 
     def get_success_url(self) -> str:
@@ -451,3 +452,31 @@ class TestShow(View):
 def result(request, pk, count):
     return render(request, 'assessment/result.html', {'id':pk,'count':count})
 
+
+class ExamsListView(ListView):
+    model = Exams
+    template_name = 'assessment/exams_list.html'
+    
+class ExamAddView(View):
+    def get(self, request, *args, **kwargs):
+        form = ExamForm()
+        context = {
+            'form':form,
+        }
+        return render(request, 'assessment/add_exam.html', context)
+    def post(self, request, *args, **kwargs):
+        form = ExamForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('exams')
+        context = {
+            'form':form,
+            'error': 'Something went wrong either name or image is not valid'
+        }
+        return render(request, 'assessment/add_exam.html', context)
+    
+
+class ExamAssessmentListView(View):
+    def get(self, request, *args, **kwargs):
+        assessment = Assessment.objects.filter(exam__id=kwargs['pk'])
+        return render(request, 'assessment/exams_assessment.html', {'Assessments':assessment})

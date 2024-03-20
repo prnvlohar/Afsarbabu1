@@ -1,0 +1,54 @@
+
+{% extends "users/base.html" %}
+{% load static %}
+{% block main %}
+
+<div class="container rounded mt-5 bg-white p-md-5">
+    <div class="container mt-3">
+        <a href="#" class="btn btn-secondary">Back</a>
+    </div><br>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="h2 font-weight-bold">Tests</div>
+        
+    </div>
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">Topic</th>
+                    <th scope="col">Subtopic</th>
+                    <th scope="col">Duration</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for assess in Assessments %}
+                <tr class="bg-blue">
+                    {% if user.type == 'student' %}
+                    <td class="pt-2"> 
+                        <div class="pl-lg-5 pl-md-5 pl-1 name"><a href="{% url "guideline" assess.id %}" class="topic-link">{{ assess.title }}</a>
+                        </div>
+                    </td>
+                    {% else %}
+                    <td class="pt-2"> 
+                        <div class="pl-lg-5 pl-md-5 pl-1 name"><a href="{% url "question-list" assess.id %}" class="topic-link">{{ assess.title }}</a>
+                        </div>
+                    </td>
+                    {% endif %}
+                    <td class="pt-3">{{assess.topic}}</td>
+                    <td class="pt-3">{{assess.subtopic}}</td>
+                    <td class="pt-3">{{assess.duration}}</td>
+                    
+                </tr>
+                <tr id="spacing-row">
+                    <td></td>
+                </tr>
+
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+{% endblock main %}

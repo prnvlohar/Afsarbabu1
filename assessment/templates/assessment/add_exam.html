@@ -1,13 +1,14 @@
 {% extends "users/base.html" %}
 {% load static %}
-{% block title %}Question{% endblock title %}
+{% block title %}Exam{% endblock title %}
 {% block main %}
 
 
+<br>
 
 <div class="main-form container mt-5">
     <div class="container mt-3">
-        <a href="{% url 'question-list' id %}" class="btn btn-secondary">Back</a>
+        <a href="{% url 'exams' %}" class="btn btn-secondary">Back</a>
       </div>
     <br>
 
@@ -35,7 +36,11 @@
         {% endfor %}
 
         <div class="text-center">
-            <button type="submit" class="btn btn-primary btn-lg">Add Question</button> 
+            <button type="submit" class="btn btn-primary btn-lg">Add Exam</button> 
+        </div>
+        <div class="text-center">
+            <h3>{{error}}</h3>
+
         </div>
     </form>
 

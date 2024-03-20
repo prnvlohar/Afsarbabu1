@@ -1,7 +1,7 @@
 
 from django import forms
 
-from assessment.models import Assessment, Question, Rating, Subtopic, Topic
+from assessment.models import Assessment, Question, Rating, Subtopic, Topic, Exams
 
 
 class AssessmentForm(forms.ModelForm):
@@ -13,6 +13,11 @@ class AssessmentForm(forms.ModelForm):
         #     'duration' : forms.TextInput(attrs={'class':'durationInputWidget'})
         # }
 
+class ExamForm(forms.ModelForm):
+
+    class Meta:
+        model = Exams
+        fields = '__all__'
 
 class QuestionForm(forms.ModelForm):
 
