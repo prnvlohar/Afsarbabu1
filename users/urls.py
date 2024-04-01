@@ -4,8 +4,8 @@ from django.contrib.auth.views import (PasswordResetCompleteView,
                                        PasswordResetView)
 from django.urls import path
 
-from users.views import (ActivateView, LoginView, RegisterView, index_view,
-                         logout_view)
+from users.views import (ActivateView, LoginView, RegisterView, create_users, index_view,
+                         logout_view, UsersView)
 
 urlpatterns = [
     path('login/', LoginView.as_view(), name='login'),
@@ -14,6 +14,9 @@ urlpatterns = [
          ActivateView.as_view(), name='activate'),
     path('index/', index_view, name='index'),
     path('logout/', logout_view, name='logout'),
+    path('create_users/<int:num_users>/', 
+         create_users, name='create_users'),
+    path('users/', UsersView.as_view(), name='users'),
 
     # forgot password urls
 
@@ -28,5 +31,5 @@ urlpatterns = [
         name='password_reset_confirm'),
     path('password-reset-complete/', PasswordResetCompleteView.as_view(
         template_name='users/password_reset_complete.html'),
-        name='password_reset_complete'),
+        name='password_reset_complete')
 ]

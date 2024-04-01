@@ -1,0 +1,3 @@
+v/bin/python
+return HttpResponseRedirect(reverse('login'))
+

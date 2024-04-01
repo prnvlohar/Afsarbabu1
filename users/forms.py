@@ -49,3 +49,8 @@ class LoginForm(forms.ModelForm):
             'password': forms.PasswordInput(),
         }
         fields = ['email', 'password']
+
+class UsersForm(forms.Form):
+
+    institute = forms.CharField(max_length=100)
+    students = forms.CharField(max_length=100)
