@@ -155,6 +155,7 @@ import secrets
 import string
 import pandas as pd
 from django.http import HttpResponse
+import os
 
 def generate_random_password(length):
     alphabet = string.ascii_letters + string.digits + string.punctuation
@@ -165,9 +166,9 @@ def create_users(request, num_users, institute):
     users = []
     temp_password = []
     for i in range(num_users):
-        email = f"{institute}{i}_{secrets.token_hex(4)}@example.com"
+        email = f"{institute}{i}_{secrets.token_hex(4)}@afsarbabu.in"
         while CustomUser.objects.filter(email=email).exists():
-            email = f"{institute}{i}_{secrets.token_hex(4)}@example.com"
+            email = f"{institute}{i}_{secrets.token_hex(4)}@afsarbabu.in"
         password = generate_random_password(10)
         temp_password.append(password)
         user = CustomUser(email=email, type='student')
@@ -180,9 +181,7 @@ def create_users(request, num_users, institute):
     filename = "users.xlsx"
     df.to_excel(filename, index=False)
     # download xlsx file in browser
-    response = HttpResponse('/home/developer/Desktop/afsarbabu/Afsarbabu1/users.xlsx', content_type='application/force-download')
-    response['Content-Disposition'] = f'attachment; filename="{filename}"'
-    return response
+    return filename
 
 
 
@@ -200,9 +199,12 @@ class UsersView(View):
         if form.is_valid():
             institute = form.cleaned_data['institute']
             num_users = int(form.cleaned_data['students'])
-            create_users(request, num_users, institute)
-            messages.success(request, 'Users created successfully.')
-            return HttpResponseRedirect(reverse('users'))
+            filename = create_users(request, num_users, institute)
+            with open(f'/home/developer/Desktop/Django/Afsarbabu1/Afsarbabu1/{filename}', 'rb') as fh:
+                response = HttpResponse(fh.read(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+                response['Content-Disposition'] = f'attachment; filename="{institute}_students_credentials.xlsx"'
+                os.remove(filename)
+                return response
         else:
             messages.error(request, 'Users creation failed.')
             return HttpResponseRedirect(reverse('users'))
