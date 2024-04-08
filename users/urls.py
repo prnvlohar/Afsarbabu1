@@ -4,12 +4,15 @@ from django.contrib.auth.views import (PasswordResetCompleteView,
                                        PasswordResetView)
 from django.urls import path
 
-from users.views import (ActivateView, LoginView, RegisterView, create_users, index_view,
+from users.views import (ActivateView, LoginView, RegisterView,
+                         create_users, index_view, LinkView, InstituteRegisterView,
                          logout_view, UsersView)
 
 urlpatterns = [
     path('login/', LoginView.as_view(), name='login'),
     path('register/', RegisterView.as_view(), name='register'),
+    path('link/', LinkView.as_view(), name='link'),
+    path('institute-reg/', InstituteRegisterView.as_view(), name='institute_reg'),
     path('activate/<uidb64>/<token>',
          ActivateView.as_view(), name='activate'),
     path('index/', index_view, name='index'),
@@ -17,6 +20,7 @@ urlpatterns = [
     path('create_users/<int:num_users>/', 
          create_users, name='create_users'),
     path('users/', UsersView.as_view(), name='users'),
+    # path('ref_code/', ReferralCodeView.as_view(), name='ref_code'),
 
     # forgot password urls
 
