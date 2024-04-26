@@ -28,11 +28,16 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'afsarbabu.in',"*"]
-SESSION_COOKIE_SECURE = True  # Use secure cookies for session
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
-CSRF_TRUSTED_ORIGINS = ['https://afsarbabu.in']
+if DEBUG:
+    ALLOWED_HOSTS = ['*']
+    SESSION_COOKIE_SECURE = False
+    CSRF_COOKIE_SECURE = False 
+    CSRF_TRUSTED_ORIGINS = ['http://localhost:8000', 'http://192.168.0.249:8000']
+else:
+    ALLOWED_HOSTS = ['afsarbabu.in']
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    CSRF_TRUSTED_ORIGINS = ['https://afsarbabu.in']
 
 # Application definition
 
@@ -182,21 +187,25 @@ if ENV_FILE:
 
 # settings.py
 
-# Use Amazon S3 for storage for static files.
-AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
-AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
-AWS_S3_REGION_NAME = 'ap-south-1'  # e.g., us-east-1
+# # Use Amazon S3 for storage for static files.
+# AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
+# AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+# AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+# AWS_S3_REGION_NAME = 'ap-south-1'  # e.g., us-east-1
 
-AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
-AWS_S3_OBJECT_PARAMETERS = {
-    'CacheControl': 'max-age=86400',  # Cache static files for one day
-}
+# AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+# AWS_S3_OBJECT_PARAMETERS = {
+#     'CacheControl': 'max-age=86400',  # Cache static files for one day
+# }
 
-# Use Amazon S3 for storage for media files.
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+# # Use Amazon S3 for storage for media files.
+# DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'staticfiles'),
+]
+
 # STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/'
 # STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'

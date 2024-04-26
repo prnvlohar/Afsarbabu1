@@ -9,7 +9,7 @@ from assessment.views import (AddAssessmentView,
                               AssessmentUpdateView, AddSubtopicView, UpdateSubtopicView,
                               AddTopicView, UpdateTopicView, QuestionDeleteView, AssessmentDeleteView,
                               SubtopicDeleteView, TopicDeleteView, guidelines, TestShow, result, ExamsListView,
-                              ExamAddView, ExamAssessmentListView)
+                              ExamAddView, ExamAssessmentListView, search_elasticsearch)
 
 urlpatterns = [
     path('show-assessment/', ShowAssessmentView.as_view(), name='show-assessment'),
@@ -41,4 +41,5 @@ urlpatterns = [
     path('exams/', ExamsListView.as_view(), name = "exams"),
     path('exam-add/', ExamAddView.as_view(), name = "exam-add"),
     path('exam-assessment-list/<int:pk>/', ExamAssessmentListView.as_view(), name = "exam-assessment-list"),
+    path('search-api',search_elasticsearch,name="search_api")
 ]
