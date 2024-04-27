@@ -105,7 +105,7 @@ class QuestionListView(LoginRequiredMixin, ListView):
                     option3 = i['options'][2]
                     option4 = i['options'][3]
                     answer = i['answer']
-                    explanation = i['explanation']
+                    explanation = i.get('explanation', None)
                     Question.objects.create(assessment=assessment, question=question, option1=option1,
                                             option2=option2, option3=option3, option4=option4, answer=answer, explanation=explanation)
                 messages.success(request, 'Questions added successfully.')
