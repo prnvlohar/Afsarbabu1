@@ -259,3 +259,37 @@ class LinkView(View):
         users = CustomUser.objects.exclude(referral_code='').filter(referral_code__isnull=False)
         signup_url = reverse('register')
         return render(request, 'users/link.html', {'signup_url': signup_url, 'users': users})
+
+
+
+from django.shortcuts import render
+from .razorpay import *
+
+def payment_view(request):
+   amount = 100  # Set the amount dynamically or based on your requirements
+   order_id = initiate_payment(amount)
+   context = {
+       'order_id': order_id,
+       'amount': amount
+   }
+   return render(request, 'users/payment.html', context)
+
+
+def payment_success_view(request):
+   order_id = request.POST.get('order_id')
+   payment_id = request.POST.get('razorpay_payment_id')
+   signature = request.POST.get('razorpay_signature')
+   params_dict = {
+       'razorpay_order_id': order_id,
+       'razorpay_payment_id': payment_id,
+       'razorpay_signature': signature
+   }
+   try:
+       client.utility.verify_payment_signature(params_dict)
+       # Payment signature verification successful
+       # Perform any required actions (e.g., update the order status)
+       return HttpResponse("success")
+   except razorpay.errors.SignatureVerificationError as e:
+       # Payment signature verification failed
+       # Handle the error accordingly
+       return HttpResponse("fail")

@@ -6,7 +6,7 @@ from django.urls import path
 
 from users.views import (ActivateView, LoginView, RegisterView,
                          create_users, index_view, LinkView, InstituteRegisterView,
-                         logout_view, UsersView)
+                         logout_view, UsersView, payment_success_view, payment_view)
 
 urlpatterns = [
     path('login/', LoginView.as_view(), name='login'),
@@ -35,5 +35,7 @@ urlpatterns = [
         name='password_reset_confirm'),
     path('password-reset-complete/', PasswordResetCompleteView.as_view(
         template_name='users/password_reset_complete.html'),
-        name='password_reset_complete')
+        name='password_reset_complete'),
+    path('payment/', payment_view, name='payment'),
+    path('payment/success/', payment_success_view, name='payment_success'),
 ]

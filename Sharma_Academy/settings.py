@@ -33,6 +33,8 @@ if DEBUG:
     SESSION_COOKIE_SECURE = False
     CSRF_COOKIE_SECURE = False 
     CSRF_TRUSTED_ORIGINS = ['http://localhost:8000', 'http://192.168.0.249:8000']
+    RAZORPAY_ID = os.getenv('RAZORPAY_ID')
+    RAZORPAY_SECRET_KEY = os.getenv('RAZORPAY_SECRET_KEY')
 else:
     ALLOWED_HOSTS = ['afsarbabu.in']
     SESSION_COOKIE_SECURE = True
