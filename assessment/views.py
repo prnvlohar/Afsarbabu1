@@ -1,7 +1,7 @@
 from typing import Any
 from django.contrib import messages
 from django.db.models import Avg
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views import View
@@ -475,3 +475,18 @@ class ExamAssessmentListView(View):
     def get(self, request, *args, **kwargs):
         assessment = Assessment.objects.filter(exam__id=kwargs['pk'])
         return render(request, 'assessment/exams_assessment.html', {'Assessments':assessment})
+
+def search_elasticsearch(request):
+    query = request.GET.get("query", None)
+    queryset_topic = Topic.objects.all()
+    queryset_assessment = Assessment.objects.all()
+    if query:
+        queryset_topic = queryset_topic.filter(title__icontains=query)
+        queryset_assessment = queryset_assessment.filter(title__icontains=query)
+    topic_results = [{"id": item.id, "name": item.title} for item in queryset_topic]
+    assessment_result = [{"id": item.id, "name": item.title} for item in queryset_assessment]
+    results = {
+        "topic": topic_results,
+        "assessment": assessment_result
+    }
+    return JsonResponse({"results": results})

@@ -11,8 +11,8 @@ from users.managers import CustomUserManager
 class CustomUser(AbstractUser):
 
     TYPE = (
-        ('admin', 'Admin'),
         ('student', 'Student'),
+        ('institute', 'Institute'),
         ('instructor', 'Instructor'),
     )
 
@@ -33,6 +33,24 @@ class CustomUser(AbstractUser):
                                 ])
     type = models.CharField(max_length=100,
                             choices=TYPE, default='student')
+    institute = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True
+    )
+    referral_code = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True
+    )
+
+    recommended_by = models.ForeignKey(
+        'self',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='recommended_users'
+    )
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
@@ -46,10 +64,6 @@ class CustomUser(AbstractUser):
     def validate_password_complexity(self):
         if not any(char.isdigit() for char in self.password):
             raise ValidationError("password must contain atleast one digit")
-
-    # def save(self, *args, **kwargs):
-    #    self.full_clean()
-    #    super().save(*args, **kwargs)
 
     def __str__(self):
         return self.email
