@@ -2,9 +2,8 @@
 {% load static %}
 
 {% block reg_field %}
-  <form method="post" class="register-form" id="register-form" action = "{% url "register" %}">
+  <form method="post" class="register-form" id="register-form">
     {% csrf_token %}
-    <h1>{{temp}}</h1>
     <input type="hidden" name="token" value="{{request.GET.referral_code}}" />
   
     <div class="form-group">

@@ -24,6 +24,9 @@ class Exams(models.Model):
     name = models.CharField(max_length=100)
     image = models.ImageField(upload_to="exams_images/",null = True)
     
+    def __str__(self):
+        return self.name
+    
     
 class Assessment(models.Model):
 
@@ -34,7 +37,7 @@ class Assessment(models.Model):
     duration = models.DurationField(null = True)
 
     def __str__(self):
-        return self.title
+        return f"{self.topic} - {self.subtopic} - {self.title}"
 
 class Question(models.Model):
 
