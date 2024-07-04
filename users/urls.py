@@ -15,7 +15,7 @@ urlpatterns = [
     path('institute-reg/', InstituteRegisterView.as_view(), name='institute_reg'),
     path('activate/<uidb64>/<token>',
          ActivateView.as_view(), name='activate'),
-    path('index/', index_view, name='index'),
+    path('home/', index_view, name='index'),
     path('logout/', logout_view, name='logout'),
     path('create_users/<int:num_users>/', 
          create_users, name='create_users'),
