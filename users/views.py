@@ -37,7 +37,7 @@ class RegisterView(View):
 
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            return redirect("/index?login=True")
+            return redirect(reverse('index')+"?login=True")
         return render(request, self.template_name, {"form": self.form_class()})
 
     def post(self, request):
@@ -89,7 +89,7 @@ class InstituteRegisterView(View):
 
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            return redirect("/index?login=True")
+            return redirect(reverse('index')+"?login=True")
         return render(request, self.template_name, {"form": self.form_class()})
 
     def post(self, request, *args, **kwargs):
@@ -139,7 +139,7 @@ class LoginView(View):
 
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            return redirect("/index?login=True")
+            return redirect(reverse('index')+"?login=True")
         login_form = self.form_class()
         return render(request, self.template_name, {"login_form": login_form})
 
@@ -156,7 +156,7 @@ class LoginView(View):
             return redirect('login')
         else:
             login(request, user)
-            return redirect('/index/')
+            return redirect(reverse('index'))
 
 
 @login_required

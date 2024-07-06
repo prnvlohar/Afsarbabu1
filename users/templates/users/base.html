@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Favicons -->
-    <link href="{% static "users/img/logo_square.png" %}" rel="icon">
+    <link href="{% static "business/images/logo_square.png" %}" rel="icon">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     
@@ -73,7 +73,7 @@
   <!-- ======= Navbar Section Start ======= -->
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <img src="{% static "business/images/logo2.png" %}" alt="logo"  height="50px" width="150px" class="mx-2">
+      <img src="{% static "business/images/main_logo_black.png" %}" alt="logo"  height="50px" width="150px" class="mx-2">
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -90,9 +90,6 @@
               Quiz
             </a> {% endcomment %}
             <a class="nav-link" href="{% url "topic-list" %}">Quiz</a>
-          </li>
-          <li>
-          <a class="nav-link" href="{% url "exams" %}">Exams</a>
           </li>
           {% endif %}
           {% if user.type == 'instructor' %}
@@ -207,7 +204,10 @@ function handleSearch() {
                   anchor.className = "assessment-link"; 
                   const div = document.createElement("div");
                   div.className = "result-item";
-                  div.innerHTML = item.name;
+                  div.innerHTML = "<span>" +
+                    "<p style='display:inline;margin:0;'>" + item.name + "</p>" + "  " +
+                    "<p style='display:inline;margin:0;opacity:0.5;'>" + item.subtopic + "</p>" +
+                    "</span>";
                   anchor.appendChild(div);
                   assessmentSection.appendChild(anchor);  
               });
