@@ -1,17 +1,23 @@
 @import url('https://fonts.googleapis.com/css2?family=PT+Sans:wght@700&family=Poppins:wght@600&display=swap');
 
 body {
-  display: grid;
   background-color: #f2f2f2;
-  grid-template-rows: 1fr auto;
-  min-height: 100vh;
   margin: 0;
 }
 
 * {
   box-sizing: border-box
 }
-
+.container,
+.container-fluid,
+.container-lg,
+.container-md,
+.container-sm,
+.container-xl,
+.container-xxl{
+  padding-left: 0 !important;
+    padding-right: 0 !important;
+}
 
 .h2 {
   color: #444;
@@ -353,42 +359,6 @@ a:hover {
     font-size: 34px;
     margin-bottom: 30px;
   }
-}
-
-#hero .hero-info .btn-get-started,
-#hero .hero-info .btn-services {
-  font-family: "Montserrat", sans-serif;
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: 1px;
-  display: inline-block;
-  padding: 10px 32px;
-  border-radius: 50px;
-  transition: 0.5s;
-  margin: 0 20px 20px 0;
-  color: #fff;
-}
-
-#hero .hero-info .btn-get-started {
-  background: #007bff;
-  border: 2px solid #007bff;
-  color: #fff;
-}
-
-#hero .hero-info .btn-get-started:hover {
-  background: none;
-  border-color: #fff;
-  color: #fff;
-}
-
-#hero .hero-info .btn-services {
-  border: 2px solid #fff;
-}
-
-#hero .hero-info .btn-services:hover {
-  background: #007bff;
-  border-color: #007bff;
-  color: #fff;
 }
 
 /*--------------------------------------------------------------
