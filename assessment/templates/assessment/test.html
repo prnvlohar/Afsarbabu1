@@ -75,42 +75,26 @@
             cursor: pointer;
         }
 
-        
+        .answer-item.checked {
+            background: #4563c8;
+            color: #fff;
+        }
+
         .answer-item.wrong {
-          background: #4563c8 ;
-          color: #fff;
+            background: #4563c8 ;
+            color: #fff;
         }
-        
+
         .answer-item span {
-          display: block;
-          padding-left: 2rem;
-          overflow-wrap: break-word;
+            display: block;
+            padding-left: 2rem;
+            overflow-wrap: break-word;
         }
-        
+
         .answer-item:hover,
         .answer-item:active {
-          background: #aabdff;
-          color: #fff;
-        }
-        
-        .answer-item.checked {
-            background: #4563c8 !important;
-            color: #fff !important;
-        }
-
-        .need-help-text{
-          display: none;
-        }
-
-        @media (max-width: 992px){
-          .need-help-text{
-              display: inline-block;
-              font-size: 15px;
-              margin: auto;
-          }
-          .need-help-text-bottom{
-          display: none;
-        }
+            background: #aabdff;
+            color: #fff;
         }
 
         .answer-item input[type="radio"] {
@@ -129,7 +113,7 @@
           box-shadow: 0 7px 7px rgba(0, 0, 0, 0.1);
           border-radius: 0.5rem;
           overflow: auto;
-          min-height: 40vh;
+          height: 70vh;
         }
 
 
@@ -215,8 +199,7 @@
         }
         .action {
           position: fixed;
-          left: 40%;
-          margin-bottom: 2rem;
+          left: 50%;
           transform: translateX(-50%);
           display: flex;
           justify-content: center;
@@ -237,7 +220,6 @@
           </div>
           <div class="col-4 d-flex justify-content-end">
             <span class="me-3" id="timer">{{ assessment.duration }}</span>
-            <span class="need-help-text">Need help?</span>
           </div>
         </div>
         <div class="row">
@@ -302,7 +284,7 @@
             <div class="navbar navbar-expand-lg navbar-light bg-light">
               <div class="container-fluid">
                 <button
-                  class="navbar-toggler ms-auto mb-2"
+                  class="navbar-toggler"
                   type="button"
                   data-bs-toggle="collapse"
                   data-bs-target="#navbarSupportedContent"
@@ -320,7 +302,7 @@
                     <p class="question-context">
                       <span class="question-num1">1/{{questions|length}}</span>
                       <a href="#"
-                        ><span class="question-help need-help-text-bottom">Need Help?</span></a
+                        ><span class="question-help">Need Help?</span></a
                       >
                     </p>
                     <div class="d-flex">
@@ -356,7 +338,7 @@
 
         <div class="row mt-2">
           <div class="col-12">
-            <div class="action text-center">
+            <div class="action">
               <button
                 type="button"
                 class="btn btn-outline-info me-2"

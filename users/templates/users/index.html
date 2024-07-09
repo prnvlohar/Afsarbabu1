@@ -7,13 +7,13 @@
   const urlParams = new URLSearchParams(window.location.search);
   const keyParam = urlParams.get('login')
   if (keyParam==="True"){
-    alert("You have redirected to Homepage because you have already logged in.");
+    alert("You have redirected to Homepage because you have already logined.");
   }
 </script>
 {% if messages %}
 
   {% for message in messages %}
-  <div class="alert alert-primary">
+  <div class="alert alert-info">
       {{ message }}
   </div>
   {% endfor %}
@@ -31,8 +31,11 @@
       <div class="hero-info" data-aos="zoom-in" data-aos-delay="100">
         <h2>We provide<br><span>Mock Assessments</span><br>for your better score!</h2>
         <div>
+          {% comment %} <a type="button" class="btn-get-started" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">
+            Enroll
+          </a> {% endcomment %}
           <!-- Button trigger modal -->
-          <a href="{% url 'topic-list' %}" class="btn btn-primary rounded-pill" >
+          <a href="{% url 'topic-list' %}" class="btn-services" >
             Mock Quizzes
           </a>
         </div>
@@ -42,10 +45,33 @@
   </section>
   <!-- End Hero Section -->
 
+
+
   <div id="footer">
-    <div class="container text-center">
-      &copy; Copyright <strong>Afsarbabu.in</strong>. All Rights Reserved
+    <div class="container">
+        <div class="row">
+          <center>
+            <div class="col-md-6">
+              &copy; Copyright <strong>Afsarbabu.in</strong>. All Rights Reserved
+            </div>
+          </center>
+        </div>
     </div>
 </div>
+
+
+
+
+
+
+{% comment %} multiple items carousal {% endcomment %}
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+
+
 
 {% endblock main %}

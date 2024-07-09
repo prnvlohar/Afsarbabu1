@@ -4,87 +4,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link href="{% static 'users/css/login.css' %}" rel="stylesheet">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Sign In Form</title>
+    <link href="{% static "business/images/logo_square.png" %}" rel="icon">
+    <!-- Font Icon -->
+    <link rel="stylesheet" href="{% static "users/fonts/material-icon/css/material-design-iconic-font.min.css" %}">
+
+    <!-- Main css -->
+    <link rel="stylesheet" href="{% static "users/css/loginstyle.css" %}">
 </head>
 <body>
-    <div class="wrapper">
-      <div class="title-text">
-        <div class="title login">Login Form</div>
-        <div class="title signup">Signup Form</div>
-      </div>
-      {% if messages %}
 
-        {% for message in messages %}
-        <div class="alert alert-danger">
-            {{ message }}
-        </div>
-        {% endfor %}
+    <div class="main">
 
-      {% endif %}
-      <div class="form-container">
-        <div class="slide-controls">
-          <input type="radio" name="slide" id="login" checked>
-          <input type="radio" name="slide" id="signup">
-          <label for="login" class="slide login">Login</label>
-          <label for="signup" class="slide signup">Signup</label>
-          <div class="slider-tab"></div>
-        </div>
-        <div class="form-inner">
-          <form action = "{% url "login" %}" method = "post" class="login">
-            {% csrf_token %}
-            <div class="field">
-              <input type="email" name="{{login_form.email.name}}" id="your_name" placeholder="YOUR EMAIL"/>
+        <!-- Sing in  Form -->
+        <section class="sign-in">
+            <div class="container">
+                <div class="signin-content">
+                    <div class="signin-image">
+                        <figure><img src="{% static "users/images/signin-image.jpg" %}" alt="sing up image"></figure>
+                        <a href="{% url "register" %}" class="signup-image-link">Create an account</a>
+                    </div>
+
+                    <div class="signin-form">
+                        <h2 class="form-title">Sign In</h2>
+                        {% if messages %}
+
+                        {% for message in messages %}
+                        <div class="alert alert-info">
+                            {{ message }}
+                        </div>
+                        {% endfor %}
+                  
+                        {% endif %}
+                        <form action = "{% url "login" %}" method = "post" class="register-form" id="login-form">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="your_name"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                                <input type="email" name="{{login_form.email.name}}" id="your_name" placeholder="Your email"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="your_pass"><i class="zmdi zmdi-lock"></i></label>
+                                <input type="password" name="{{login_form.password.name}}" id="your_pass" placeholder="Password"/>
+                            </div>
+                            <div class="form-group">
+                                <input type="checkbox" name="remember-me" id="remember-me" class="agree-term" />
+                                <label for="remember-me" class="label-agree-term"><span><span></span></span>Remember me</label>
+                            </div>
+                            <div class="form-group form-button">
+                                <input type="submit" name="signin" id="signin" class="form-submit" value="Sign in"/>
+                            </div>
+                        </form>
+                        <div class="social-login">
+                            <span class="social-label">Or login with</span>
+                            <ul class="socials">
+                                <li><a href="#"><i class="display-flex-center zmdi zmdi-facebook"></i></a></li>
+                                <li><a href="#"><i class="display-flex-center zmdi zmdi-twitter"></i></a></li>
+                                <li><a href="#"><i class="display-flex-center zmdi zmdi-google"></i></a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <a href="{% url "password-reset" %}">forgot password</a>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="field">
-              <input type="password" name="{{login_form.password.name}}" id="your_pass" placeholder="PASSWORD"/>
-            </div>
-            <div class="pass-link"><a href="{% url "password-reset" %}">Forgot password?</a></div>
-            <div class="field btn">
-              <div class="btn-layer"></div>
-              <input type="submit" value="Login">
-            </div>
-            <div class="signup-link">Not a member? <a href="">Signup now</a></div>
-          </form>
-          <form action= "{% url "register" %}" method = "post" class="signup">
-            {% csrf_token %}
-            <div class="field">
-                <input type="email" name="{{form.email.name}}" id="email" placeholder="EMAIL"/>
-            </div>
-            <div class="field">
-                <input type="number" name="{{form.phone.name}}" id="phone" placeholder="CONTACT"/>
-            </div>
-            <div class="field">
-                <input type="password" name="{{form.password.name}}" id="pass" placeholder="PASSWORD"/>
-            </div>
-            <div class="field btn">
-              <div class="btn-layer"></div>
-              <input type="submit" value="Signup">
-            </div>
-          </form>
-        </div>
-      </div>
+        </section>
+
     </div>
 
-    <script>
-      const loginText = document.querySelector(".title-text .login");
-      const loginForm = document.querySelector("form.login");
-      const loginBtn = document.querySelector("label.login");
-      const signupBtn = document.querySelector("label.signup");
-      const signupLink = document.querySelector("form .signup-link a");
-      signupBtn.onclick = (()=>{
-        loginForm.style.marginLeft = "-50%";
-        loginText.style.marginLeft = "-50%";
-      });
-      loginBtn.onclick = (()=>{
-        loginForm.style.marginLeft = "0%";
-        loginText.style.marginLeft = "0%";
-      });
-      signupLink.onclick = (()=>{
-        signupBtn.click();
-        return false;
-      });
-
-    </script>
-</body>
+    <!-- JS -->
+    <script src="{% static "users/vendorLogin/jquery/jquery.min.js" %}"></script>
+    <script src="{% static "users/js/loginmain.js" %}"></script>
+</body><!-- This templates was made by Colorlib (https://colorlib.com) -->
 </html>
