@@ -33,7 +33,7 @@ User = settings.AUTH_USER_MODEL
 
 class RegisterView(View):
     form_class = RegisterForm
-    template_name = "users/login.html"
+    template_name = "users/registration.html"
 
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
@@ -77,7 +77,7 @@ class RegisterView(View):
             return redirect("login")
         else:
             messages.error(request, form.errors)
-            return render(request, self.template_name, {"form": form})
+            return redirect("register")
 
 class InstituteRegisterView(View):
 
