@@ -60,6 +60,14 @@
             margin-bottom: 0.5rem;
         }
 
+        .question-image {
+          max-width: 100%;
+          height: auto;
+          margin-top: 10px;
+          margin-bottom: 10px;
+        }
+
+        
         .question .question-num {
             font-weight: 700;
             font-size: 0.9rem;
@@ -250,6 +258,9 @@
                   <div class="question">
                     <h2 class="question-num">Question {{forloop.counter}}</h2>
                     <p class="question-text">{{q.question}}</p>
+                    {% if q.images and q.images.url %}
+                    <img src="{{ q.images.url }}" alt="Question Image" class="question-image">
+                    {% endif %}
                   </div>
                   <div class="answer">
                     <label class="answer-item">

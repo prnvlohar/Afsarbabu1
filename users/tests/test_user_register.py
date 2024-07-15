@@ -28,7 +28,6 @@ class RegisterViewTest(TestCase):
             'type': 'student',
             'phone': faker.random_number(10)
         }
-        print(data['password'])
 
         response = self.client.post(register_url, data)
 
