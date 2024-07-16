@@ -4,7 +4,7 @@
 {% block title %}Text Quiz{% endblock title %}
 {% block main %}
 
-<div class="main container">
+<div class="main container p-3">
     <form action="{% url "show-quiz" assessment.id %}" method="post" id="short_quiz">
         {% csrf_token %}
         {% if questions %}
