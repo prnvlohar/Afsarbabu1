@@ -2,10 +2,10 @@
 {% load static %}
 {% block main %}
 
-<div class="container rounded mt-5 bg-white p-md-5">
-    <div class="container mt-3">
+<div class="container bg-white p-3">
+    <div class="mb-3">
         <a href="{% url 'index' %}" class="btn btn-secondary">Back</a>
-    </div><br>
+    </div>
     <div class="d-flex justify-content-between align-items-center mb-3">
         <div class="h3 fw-bold">Topics</div>
         {% if user.type == 'instructor' %}
@@ -24,12 +24,12 @@
             </thead>
             <tbody>
                 {% for topic in Topics %}
-                <tr class="text-primary">
-                    <td class="pt-2"> 
-                        <div class="pl-lg-5 pl-md-5 pl-1 name"><a href="{% url 'sub-topic-list' topic.id %}" class="text-black">{{ topic.title }}</a></div>
+                <tr class="bg-blue">
+                    <td class="px-2"> 
+                        <div class="pl-lg-5 pl-md-5 pl-1 name"><a href="{% url 'sub-topic-list' topic.id %}">{{ topic.title }}</a></div>
                     </td>
                     {% if user.type == 'instructor' %}
-                    <td class="pl-lg-5 pl-md-5 pl-1 name"><a href="{% url 'update_topic' topic.id %}" class="text-white">Edit</a></td>
+                    <td class="pl-lg-5 pl-md-5 pl-1 name"><a href="{% url 'update_topic' topic.id %}">Edit</a></td>
                     {% endif %}
                 </tr>
                 <tr class="spacing-row">
