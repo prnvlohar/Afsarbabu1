@@ -1,0 +1,4 @@
+{% for i in assessment %}
+<p>{{i.id}}</p>
+<a href="{% url "add-question" i.id %}" ><p>{{i.title}}</p></a>
+{% endfor %}

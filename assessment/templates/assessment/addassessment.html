@@ -1,0 +1,37 @@
+{% extends "users/base.html" %} 
+{% load static %}
+{% block title %}Add assessment{% endblock title %} 
+{% block main %}
+
+<div class="main-form container p-3">
+  <div class="mb-3">
+    <a href="{% url 'assessment-list' id %}" class="btn btn-secondary">Back</a>
+  </div>
+  <h1>Add Assessment</h1>
+
+  <div>
+    <form action="#" method="post" id="assessment-form">
+      {% csrf_token %} 
+  
+      <div class="form-group">
+        <label for="title">Title :-</label>
+        <input type="text" class="form-control" name="{{form.title.name}}" id="title"
+          placeholder="Title"/>
+      </div>
+      <div class="form-group">
+        <label for="duration">Duration :-</label>
+        <input type="text" step="1" class="form-control" name="{{form.duration.name}}" id="duration"
+          placeholder="Enter time in hh:mm:ss format."/>
+      </div>
+      <button class="btn btn-primary add-assessment">Add</button>
+    </form>
+  </div>
+
+  <div class="alert alert-info" id="msg" style="display: none"></div>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script src="{% static 'assessment/js/addassessment.js' %}"></script>
+{% endblock main %}

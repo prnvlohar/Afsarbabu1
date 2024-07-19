@@ -1,0 +1,155 @@
+{% extends "portal/base1.html" %}
+{% load static %}
+{% block main %}
+
+
+
+<main class="flex-shrink-0">
+<!-- Header-->
+<header class="bg-dark py-5">
+    <div class="container px-5">
+        <div class="row gx-5 align-items-center justify-content-center">
+            <div class="col-lg-8 col-xl-7 col-xxl-6">
+                <div class="my-5 text-center text-xl-start">
+                    <h1 class="display-5 fw-bolder text-white mb-2">अवसर से अफसर तक ...</h1>
+                    <p class="lead fw-normal text-white-50 mb-4">Start your journey towards success with AfsarBabu - Your platform for mock tests and exam preparation. Join us and experience a smarter way to excel in your exams!</p>
+                    <div class="d-grid gap-3 d-sm-flex justify-content-sm-center justify-content-xl-start">
+                        <a class="btn btn-primary btn-lg px-4 me-sm-3" href="{% url 'register' %}">Register</a>
+                        <a class="btn btn-outline-light btn-lg px-4" href="{% url 'login' %}">Login</a>
+                        <li><a class="dropdown-item" href="#">Join as Institute</a></li>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-5 col-xxl-6 d-none d-xl-block text-center"><img class="img-fluid rounded-3 my-5" src="{% static "business/images/business_page_vector.jpg" %}" alt="AfsarBabu Image" /></div>
+        </div>
+    </div>
+</header>
+
+<!-- Features section-->
+<section class="py-5" id="features">
+    <div class="container px-5 my-5">
+        <div class="row gx-5">
+            <div class="col-lg-4 mb-5 mb-lg-0"><h2 class="fw-bolder mb-0">Boost Your Exam Readiness</h2></div>
+            <div class="col-lg-8">
+                <div class="row gx-5 row-cols-1 row-cols-md-2">
+                    <div class="col mb-5 h-100">
+                        <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i class="bi bi-collection"></i></div>
+                        <h2 class="h5">Wide Range of Practice Tests</h2>
+                        <p class="mb-0">Access a diverse collection of mock tests covering various subjects and difficulty levels to prepare for any exam.</p>
+                    </div>
+                    <div class="col mb-5 h-100">
+                        <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i class="bi bi-building"></i></div>
+                        <h2 class="h5">Realistic Exam Environment</h2>
+                        <p class="mb-0">Experience the feel of a real exam with our platform's simulated test environment, helping you build confidence and familiarity.</p>
+                    </div>
+                    <div class="col mb-5 mb-md-0 h-100">
+                        <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i class="bi bi-toggles2"></i></div>
+                        <h2 class="h5">Instant Results and Performance Analytics</h2>
+                        <p class="mb-0">Receive instant feedback on your test performance, along with detailed analytics to identify strengths and weaknesses.</p>
+                    </div>
+                    <div class="col h-100">
+                        <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i class="bi bi-toggles2"></i></div>
+                        <h2 class="h5">Adaptive Learning Paths</h2>
+                        <p class="mb-0">Benefit from adaptive learning paths based on your test results, helping you focus on areas that need improvement for better preparation.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Blog preview section-->
+<section class="py-5">
+    <div class="container px-5 my-5">
+        <div class="row gx-5 justify-content-center">
+            <div class="col-lg-8 col-xl-6">
+                <div class="text-center">
+                    <h2 class="fw-bolder">From our blog</h2>
+                    <p class="lead fw-normal text-muted mb-5">Explore more insightful articles on exam preparation, career guidance, and success strategies by diving into our collection of informative blogs.</p>
+                </div>
+            </div>
+        </div>
+        <div class="row gx-5">
+            <div class="col-lg-4 mb-5">
+                <div class="card h-100 shadow border-0">
+                    <img class="card-img-top" src="{% static "business/images/blog1-small.jpg" %}" alt="..." />
+                    <div class="card-body p-4">
+                        <a class="text-decoration-none link-dark stretched-link" href="{% url 'blog-post1' %}"><h5 class="card-title mb-3">Cracking Indian Government Exams: Strategies, Tips, and the Crucial Role of Mock Tests</h5></a>
+                        <p class="card-text mb-0">In India, government exams such as UPSC, MPSC, PCS, SSC, and many others are considered prestigious and competitive.</p>
+                    </div>
+                    <div class="card-footer p-4 pt-0 bg-transparent border-top-0">
+                        <div class="d-flex align-items-end justify-content-between">
+                            <div class="d-flex align-items-center">
+                                <img class="rounded-circle me-3" style="height: 40px;" src="{% static "business/images/user.png" %}" alt="..." />
+                                <div class="small">
+                                    <div class="fw-bold">Yash Kshirsagar</div>
+                                    <div class="text-muted">March 12, 2023 &middot; 6 min read</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-5">
+                <div class="card h-100 shadow border-0">
+                    <img class="card-img-top" src="{% static "business/images/blog2-small.jpg" %}" alt="..." />
+                    <div class="card-body p-4">
+                        <a class="text-decoration-none link-dark stretched-link" href="{% url 'blog-post2' %}"><h5 class="card-title mb-3">How Mock Tests Improve Your Chances in Exams</h5></a>
+                        <p class="card-text mb-0">Mock tests play a pivotal role in enhancing your chances of success in competitive exams.</p>
+                    </div>
+                    <div class="card-footer p-4 pt-0 bg-transparent border-top-0">
+                        <div class="d-flex align-items-end justify-content-between">
+                            <div class="d-flex align-items-center">
+                                <img class="rounded-circle me-3" style="height: 40px;" src="{% static "business/images/user.png" %}" alt="..." />
+                                <div class="small">
+                                    <div class="fw-bold">Yash Kshirsagar</div>
+                                    <div class="text-muted">March 23, 2023 &middot; 4 min read</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-5">
+                <div class="card h-100 shadow border-0">
+                    <img class="card-img-top" src="{% static "business/images/blog3-small.jpg" %}" alt="..." />
+                    <div class="card-body p-4">
+                        <a class="text-decoration-none link-dark stretched-link" href="{% url 'blog-post3' %}"><h5 class="card-title mb-3">Standing Out in the Competitive World of Government Exams</h5></a>
+                        <p class="card-text mb-0">In the highly competitive realm of government exams, standing out requires a strategic and focused approach.</p>
+                    </div>
+                    <div class="card-footer p-4 pt-0 bg-transparent border-top-0">
+                        <div class="d-flex align-items-end justify-content-between">
+                            <div class="d-flex align-items-center">
+                                <img class="rounded-circle me-3" style="height: 40px;" src="{% static "business/images/user.png" %}" alt="..." />
+                                <div class="small">
+                                    <div class="fw-bold">Yash Kshirsagar</div>
+                                    <div class="text-muted">April 2, 2023 &middot; 10 min read</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Call to action-->
+        <aside class="bg-primary bg-gradient rounded-3 p-4 p-sm-5 mt-5">
+            <div class="d-flex align-items-center justify-content-between flex-column flex-xl-row text-center text-xl-start">
+                <div class="mb-4 mb-xl-0">
+                    <div class="fs-3 fw-bold text-white">New tests, delivered to you.</div>
+                    <div class="text-white-50">Sign up for our newsletter for the latest updates.</div>
+                </div>
+                <div class="ms-xl-4">
+                    <div class="input-group mb-2">
+                        <input class="form-control" type="text" placeholder="Email address..." aria-label="Email address..." aria-describedby="button-newsletter" />
+                        <button class="btn btn-outline-light" id="button-newsletter" type="button">Sign up</button>
+                    </div>
+                    <div class="small text-white-50">We care about privacy, and will never share your data.</div>
+                </div>
+            </div>
+        </aside>
+    </div>
+</section>
+                            
+        </main>
+
+{% endblock main %}

@@ -1,0 +1,51 @@
+
+{% extends "users/base.html" %}
+{% load static %}
+{% block main %}
+
+<div class="container bg-white p-3">
+    <div class="mb-3">
+        <a href="{% url 'topic-list' %}" class="btn btn-secondary">Back</a>
+    </div>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="fs-2 fw-bold">SubTopics</div>
+        {% if user.type == 'instructor' %}
+        <a href="{% url 'add_subtopic' id %}" class="btn btn-primary">add subtopic</a>
+                    {% endif %}
+        
+    </div>
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Title</th>
+                    {% if user.type == 'instructor' %}
+                    <th scope="col">Edit</th>
+                    {% endif %}
+                    
+                </tr>
+            </thead>
+            <tbody>
+                {% for subtopic in SubTopics %}
+                <tr class="bg-blue">
+                    <td class="px-2"> 
+                        <div class="pl-lg-5 pl-md-5 pl-1 name"><a href="{% url "assessment-list" subtopic.id %}">{{ subtopic.title }}</a>
+                        </div>
+                    </td>
+                    {% if user.type == 'instructor' %}
+                    <td class="pl-lg-5 pl-md-5 pl-1 name"><a href="{% url 'update_subtopic' subtopic.id%}">Edit</a></td>
+                    {% endif %}
+                    
+                </tr>
+                <tr id="spacing-row">
+                    <td></td>
+                </tr>
+
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+{% endblock main %}

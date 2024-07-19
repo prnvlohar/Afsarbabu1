@@ -1,0 +1,51 @@
+{% extends "users/base.html" %}
+{% load static %}
+{% block title %}Index{% endblock title %}
+{% block main %}
+
+<script>
+  const urlParams = new URLSearchParams(window.location.search);
+  const keyParam = urlParams.get('login')
+  if (keyParam==="True"){
+    alert("You have redirected to Homepage because you have already logged in.");
+  }
+</script>
+{% if messages %}
+
+  {% for message in messages %}
+  <div class="alert alert-primary">
+      {{ message }}
+  </div>
+  {% endfor %}
+
+{% endif %}
+
+  <!-- Hero Section -->
+  <section id="hero" class="clearfix">
+    <div class="container" data-aos="fade-up">
+
+      <div class="hero-img" data-aos="zoom-out" data-aos-delay="200">
+        <img src="{% static "users/img/hero-img.svg" %}" alt="" class="img-fluid">
+      </div>
+
+      <div class="hero-info" data-aos="zoom-in" data-aos-delay="100">
+        <h2>We provide<br><span>Mock Assessments</span><br>for your better score!</h2>
+        <div>
+          <!-- Button trigger modal -->
+          <a href="{% url 'topic-list' %}" class="btn btn-primary rounded-pill" >
+            Mock Quizzes
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+  <!-- End Hero Section -->
+
+  <div id="footer">
+    <div class="container text-center">
+      &copy; Copyright <strong>Afsarbabu.in</strong>. All Rights Reserved
+    </div>
+</div>
+
+{% endblock main %}

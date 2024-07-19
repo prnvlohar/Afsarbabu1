@@ -1,0 +1,57 @@
+{% extends "users/base.html" %}
+{% load static %}
+
+{% block main %}
+<style>
+    #guidelines-container {
+        border: 1px solid #ccc;
+        margin-top: 0px !important;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+</style>
+
+<div class="container p-3">
+    <div id="guidelines-container" class="bg-light p-4">
+        <h2 class="text-center mb-3">Mock Test Guidelines</h2>
+        
+        <p>Welcome to the mock test! Before you start, please read and agree to the following terms and conditions:</p>
+        
+        <div>
+            <h3>Guidelines:</h3>
+            <ul>
+                <li>This is a practice test and does not contribute to your final score.</li>
+                <li>Ensure a stable internet connection during the test.</li>
+                <li>Do not use any external resources or assistance.</li>
+                {% if additional_guidelines %}
+                    {% for guideline in additional_guidelines %}
+                        <li>{{ guideline }}</li>
+                    {% endfor %}
+                {% endif %}
+                <!-- Add more guidelines as needed -->
+            </ul>
+        </div>
+        
+        <label for="terms-checkbox" class="form-check">
+            <input type="checkbox" id="terms-checkbox" class="form-check-input">
+            I agree to the terms and conditions
+        </label>
+        
+        <button id="start-test-btn" class="btn btn-success w-100 mt-3" onclick="startTest()">Start Test</button>
+    </div>
+</div>
+
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+<script>
+    function startTest() {
+        var termsCheckbox = document.getElementById("terms-checkbox");
+        
+        if (termsCheckbox.checked) {
+            alert("Test started!");
+            window.location.href = "{% url 'test' id %}";
+        } else {
+            alert("Please agree to the terms and conditions before starting the test.");
+        }
+    }
+</script>
+{% endblock main %}

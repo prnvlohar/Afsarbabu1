@@ -1,0 +1,58 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Sign Up Form</title>
+    <link href="{% static "business/images/logo_square.png" %}" rel="icon">
+
+    <!-- Font Icon -->
+    <link rel="stylesheet" href="{% static "users/fonts/material-icon/css/material-design-iconic-font.min.css" %}">
+
+    <!-- Main css -->
+    <link rel="stylesheet" href="{% static "users/css/loginstyle.css" %}">
+</head>
+<body>
+
+    <div class="main">
+
+        <!-- Sign up form -->
+        <section class="signup">
+            <div class="container">
+                <div class="signup-content">
+                    <div class="signup-form">
+                        <h2 class="form-title">Sign Up</h2>
+                        {% if messages %}
+
+                        {% for message in messages %}
+                        <div class="alert alert-info">
+                            {{ message }}
+                        </div>
+                        {% endfor %}
+                  
+                        {% endif %}
+                        {% block reg_field %}
+
+                        {% endblock reg_field %}
+                    </div>
+                    <div class="signup-image">
+
+                      {% block reg_img %}
+    
+                      {% endblock reg_img %}
+
+                        <a href="{% url "login" %}" class="signup-image-link">I am already member</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+    </div>
+
+    <!-- JS -->
+    <script src="{% static "users/vendorLogin/jquery/jquery.min.js" %}"></script>
+    <script src="{% static "users/js/loginmain.js" %}"></script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+{% extends "users/base.html" %}
+{% load static %}
+{% block main %}
+
+
+<br>
+<br>
+<div class="container p-3">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="fs-2 fw-bold">Exams</div>
+        <a href="{% url 'exam-add' %}" class="btn btn-primary">add question</a>
+    </div>
+    <div class="row row-cols-1 row-cols-md-5 g-4">
+        {% for exam in object_list %}
+        <div class="col">
+            <div class="card h-100">
+                <a href="{% url 'exam-assessment-list' exam.id %}">
+                    <img src="{{exam.image.url}}" class="card-img-top" style="max-width: 206px; max-height: 138px;" alt="image"/>
+                    <div class="card-body">
+                        <h5 class="card-title">{{exam.name}}</h5>
+                    </div>
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+    
+
+{% endblock main %}
+
