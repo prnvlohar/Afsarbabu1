@@ -2,24 +2,16 @@
 {% load static %}
 
 {% block main %}
+<style>
+    #guidelines-container {
+        border: 1px solid #ccc;
+        margin-top: 0px !important;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+</style>
 
-    <!-- Bootstrap CSS -->
-    
-    <!-- Custom CSS -->
-    <style>
-        #guidelines-container {
-            margin: auto;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        #start-test-btn {
-            margin-top: 20px;
-        }
-    </style>
-    <br><br>
-<div class="container my-5">
+<div class="container p-3">
     <div id="guidelines-container" class="bg-light p-4">
         <h2 class="text-center mb-3">Mock Test Guidelines</h2>
         
@@ -45,7 +37,7 @@
             I agree to the terms and conditions
         </label>
         
-        <button id="start-test-btn" class="btn btn-success w-100" onclick="startTest()">Start Test</button>
+        <button id="start-test-btn" class="btn btn-success w-100 mt-3" onclick="startTest()">Start Test</button>
     </div>
 </div>
 

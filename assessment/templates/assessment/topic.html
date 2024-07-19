@@ -2,16 +2,15 @@
 {% load static %}
 {% block main %}
 
-<div class="container rounded mt-5 bg-white p-md-5">
-    <div class="container mt-3">
+<div class="container bg-white p-3">
+    <div class="mb-3">
         <a href="{% url 'index' %}" class="btn btn-secondary">Back</a>
-    </div><br>
+    </div>
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <div class="h2 font-weight-bold">Topics</div>
+        <div class="h3 fw-bold">Topics</div>
         {% if user.type == 'instructor' %}
-        <a href="{% url 'add_topic' %}" class="btn btn-primary">add topic</a>
-                    {% endif %}
-        
+            <a href="{% url 'add_topic' %}" class="btn btn-primary">Add topic</a>
+        {% endif %}   
     </div>
     <div class="table-responsive">
         <table class="table">
@@ -26,19 +25,16 @@
             <tbody>
                 {% for topic in Topics %}
                 <tr class="bg-blue">
-                    <td class="pt-2"> 
-                        <div class="pl-lg-5 pl-md-5 pl-1 name"><a href="{% url "sub-topic-list" topic.id %}" class="topic-link">{{ topic.title }}</a>
-                        </div>
+                    <td class="px-2"> 
+                        <div class="pl-lg-5 pl-md-5 pl-1 name"><a href="{% url 'sub-topic-list' topic.id %}">{{ topic.title }}</a></div>
                     </td>
                     {% if user.type == 'instructor' %}
                     <td class="pl-lg-5 pl-md-5 pl-1 name"><a href="{% url 'update_topic' topic.id %}">Edit</a></td>
                     {% endif %}
-                    
                 </tr>
-                <tr id="spacing-row">
+                <tr class="spacing-row">
                     <td></td>
                 </tr>
-
                 {% endfor %}
             </tbody>
         </table>

@@ -1,15 +1,7 @@
 
 from django.urls import path
 
-from assessment.views import (AddAssessmentView,
-                              AddQuestionView, QuestionDeleteView,ListAssessment,
-                              QuestionListView, QuestionUpdateView,
-                              ShowAssessmentView, ShowQuizView, rating_quiz, TopicListView,
-                              SubTopicListView, AssessmentListView, QuestionListView,
-                              AssessmentUpdateView, AddSubtopicView, UpdateSubtopicView,
-                              AddTopicView, UpdateTopicView, QuestionDeleteView, AssessmentDeleteView,
-                              SubtopicDeleteView, TopicDeleteView, guidelines, TestShow, result, ExamsListView,
-                              ExamAddView, ExamAssessmentListView, search_elasticsearch)
+from assessment.views import *
 
 urlpatterns = [
     path('show-assessment/', ShowAssessmentView.as_view(), name='show-assessment'),
@@ -41,5 +33,7 @@ urlpatterns = [
     path('exams/', ExamsListView.as_view(), name = "exams"),
     path('exam-add/', ExamAddView.as_view(), name = "exam-add"),
     path('exam-assessment-list/<int:pk>/', ExamAssessmentListView.as_view(), name = "exam-assessment-list"),
-    path('search-api',search_elasticsearch,name="search_api")
+    path('search-api',search_elasticsearch,name="search_api"),
+    path('get-latest-5-results',get_latest_5_results,name="get_latest_5_results"),
+    path('answer-key/<int:pk>/', answer_key_page, name = "answer-key"),
 ]

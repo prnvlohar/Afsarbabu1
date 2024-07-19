@@ -4,21 +4,24 @@
 {% block main %}
 
 
-<div class="container rounded mt-5 bg-white p-md-5">
-    <div class="container mt-3">
-             
+<div class="container bg-white p-3">
+    <div class="mb-3">
         <a href="{% url 'assessment-list' id1 %}" class="btn btn-secondary">Back</a>
-    </div><br>
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <div class="h2 font-weight-bold">Questions</div>
-        <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            <input type="file" name="json_file" accept=".json">
-            <button type="submit" class="btn btn-success">Upload JSON File</button>
-        </form>
-        
-        <a href="{% url 'add-question' id %}" class="btn btn-primary">add question</a>
     </div>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="fs-2 fw-bold me-2">Questions</div>
+        <form method="post" enctype="multipart/form-data" class="d-flex flex-column align-items-start">
+            {% csrf_token %}
+            <div class="mb-2">
+                <input type="file" name="json_file" accept=".json" class="form-control">
+            </div>
+            <div>
+                <button type="submit" class="btn btn-success">JSON File</button>
+            </div>
+        </form>
+        <a href="{% url 'add-question' id %}" class="btn btn-primary ms-2">Add Question</a>
+    </div>
+
     <p>{{request.GET.error}}</p>
     <div class="table-responsive">
         <table class="table">

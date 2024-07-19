@@ -3,6 +3,12 @@
   $(function() {
 
     Chart.defaults.global.legend.labels.usePointStyle = true;
+    var result_id = document.getElementById('result-id').innerHTML;
+    var result_no_of_questions = document.getElementById('result-no_of_questions').innerHTML;
+    var result_correct = document.getElementById('result-correct').innerHTML;
+    var result_incorrect = document.getElementById('result-incorrect').innerHTML;
+    var result_formatted_created_at = document.getElementById('result-formatted_created_at').innerHTML;
+    console.log(result_id);
     
     if ($("#serviceSaleProgress").length) {
       var bar = new ProgressBar.Circle(serviceSaleProgress, {
@@ -215,106 +221,97 @@
       gradientStrokeRed.addColorStop(1, 'rgba(254, 112, 150, 1)');
       var gradientLegendRed = 'linear-gradient(to right, rgba(255, 191, 150, 1), rgba(254, 112, 150, 1))';
 
-      var myChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: ['JAN', 'FEB', 'MAR'],
-            datasets: [
-              {
-                label: "CHN",
-                borderColor: gradientStrokeViolet,
-                backgroundColor: gradientStrokeViolet,
-                hoverBackgroundColor: gradientStrokeViolet,
-                legendColor: gradientLegendViolet,
-                pointRadius: 0,
-                fill: false,
-                borderWidth: 1,
-                fill: 'origin',
-                data: [20, 40, 15]
+      var res_5= [];
+      jQuery.ajax({
+        type: "GET",
+        url: "/assessment/get-latest-5-results",
+        success: function(data) {
+          res_5 = data;
+          console.log(typeof(res_5),res_5);
+          var labels_date = [];
+          var percentage_list = [];
+          res_5.forEach(element => {
+            labels_date.push(element.created_at);
+            percentage_list.push(element.percentage);
+          })
+          console.log(labels_date,percentage_list);
+          var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+              labels: labels_date,
+              datasets: [
+                {
+                  label: "Percentage %",
+                  borderColor: gradientStrokeViolet,
+                  backgroundColor: gradientStrokeViolet,
+                  hoverBackgroundColor: gradientStrokeViolet,
+                  legendColor: gradientLegendViolet,
+                  pointRadius: 0,
+                  fill: false,
+                  borderWidth: 1,
+                  fill: 'origin',
+                  data: percentage_list
+                }
+              ]
+            },
+            options: {
+              responsive: true,
+              legend: false,
+              legendCallback: function(chart) {
+                var text = [];
+                text.push('<ul>');
+                for (var i = 0; i < chart.data.datasets.length; i++) {
+                  text.push('<li><span class="legend-dots" style="background:' + chart.data.datasets[i].legendColor + '"></span>');
+                  if (chart.data.datasets[i].label) {
+                    text.push(chart.data.datasets[i].label);
+                  }
+                  text.push('</li>');
+                }
+                text.push('</ul>');
+                return text.join('');
               },
-              {
-                label: "USA",
-                borderColor: gradientStrokeRed,
-                backgroundColor: gradientStrokeRed,
-                hoverBackgroundColor: gradientStrokeRed,
-                legendColor: gradientLegendRed,
-                pointRadius: 0,
-                fill: false,
-                borderWidth: 1,
-                fill: 'origin',
-                data: [40, 30, 20]
-              },
-              {
-                label: "UK",
-                borderColor: gradientStrokeBlue,
-                backgroundColor: gradientStrokeBlue,
-                hoverBackgroundColor: gradientStrokeBlue,
-                legendColor: gradientLegendBlue,
-                pointRadius: 0,
-                fill: false,
-                borderWidth: 1,
-                fill: 'origin',
-                data: [70, 10, 30]
-              }
-          ]
-        },
-        options: {
-          responsive: true,
-          legend: false,
-          legendCallback: function(chart) {
-            var text = []; 
-            text.push('<ul>'); 
-            for (var i = 0; i < chart.data.datasets.length; i++) { 
-                text.push('<li><span class="legend-dots" style="background:' + 
-                           chart.data.datasets[i].legendColor + 
-                           '"></span>'); 
-                if (chart.data.datasets[i].label) { 
-                    text.push(chart.data.datasets[i].label); 
-                } 
-                text.push('</li>'); 
-            } 
-            text.push('</ul>'); 
-            return text.join('');
-          },
-          scales: {
-              yAxes: [{
+              scales: {
+                yAxes: [{
                   ticks: {
-                      display: false,
-                      min: 0,
-                      stepSize: 20,
-                      max: 80
+                    display: false,
+                    min: 0,
+                    stepSize: 20,
+                    max: 80
                   },
                   gridLines: {
                     drawBorder: false,
                     color: 'rgba(235,237,242,1)',
                     zeroLineColor: 'rgba(235,237,242,1)'
                   }
-              }],
-              xAxes: [{
+                }],
+                xAxes: [{
                   gridLines: {
-                    display:false,
+                    display: false,
                     drawBorder: false,
                     color: 'rgba(0,0,0,1)',
                     zeroLineColor: 'rgba(235,237,242,1)'
                   },
                   ticks: {
-                      padding: 20,
-                      fontColor: "#9c9fa6",
-                      autoSkip: true,
+                    padding: 20,
+                    fontColor: "#9c9fa6",
+                    autoSkip: true,
                   },
                   categoryPercentage: 0.5,
                   barPercentage: 0.5
-              }]
+                }]
+              }
+            },
+            elements: {
+              point: {
+                radius: 0
+              }
             }
-          },
-          elements: {
-            point: {
-              radius: 0
-            }
-          }
-      })
-      $("#visit-sale-chart-legend").html(myChart.generateLegend());
+          });
+          $("#visit-sale-chart-legend").html(myChart.generateLegend());
+        }
+      });
     }
+    
     if ($("#visit-sale-chart-dark").length) {
       Chart.defaults.global.legend.labels.usePointStyle = true;
       var ctx = document.getElementById('visit-sale-chart-dark').getContext("2d");
@@ -452,7 +449,7 @@
 
       var trafficChartData = {
         datasets: [{
-          data: [30, 30, 40],
+          data: [result_no_of_questions, result_correct, result_incorrect],
           backgroundColor: [
             gradientStrokeBlue,
             gradientStrokeGreen,
@@ -477,11 +474,12 @@
     
         // These labels appear in the legend and in the tooltips when hovering different arcs
         labels: [
-          'Search Engines',
-          'Direct Click',
-          'Bookmarks Click',
+          'Total Questions',
+          'Correct',
+          'Incorrect',
         ]
       };
+      var total_questions = result_no_of_questions + result_correct + result_incorrect
       var trafficChartOptions = {
         responsive: true,
         animation: {
@@ -499,7 +497,7 @@
               if (trafficChartData.labels[i]) { 
                   text.push(trafficChartData.labels[i]); 
               }
-              text.push('<span class="float-right">'+trafficChartData.datasets[0].data[i]+"%"+'</span>')
+              text.push('<span class="float-right"> '+(trafficChartData.datasets[0].data[i])+'</span>')
               text.push('</li>'); 
           } 
           text.push('</ul>'); 

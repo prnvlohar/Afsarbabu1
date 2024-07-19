@@ -3,12 +3,12 @@
 {% load static %}
 {% block main %}
 
-<div class="container rounded mt-5 bg-white p-md-5">
-    <div class="container mt-3">
+<div class="container bg-white p-3">
+    <div class="mb-3">
         <a href="{% url 'topic-list' %}" class="btn btn-secondary">Back</a>
-    </div><br>
+    </div>
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <div class="h2 font-weight-bold">SubTopics</div>
+        <div class="fs-2 fw-bold">SubTopics</div>
         {% if user.type == 'instructor' %}
         <a href="{% url 'add_subtopic' id %}" class="btn btn-primary">add subtopic</a>
                     {% endif %}
@@ -28,8 +28,8 @@
             <tbody>
                 {% for subtopic in SubTopics %}
                 <tr class="bg-blue">
-                    <td class="pt-2"> 
-                        <div class="pl-lg-5 pl-md-5 pl-1 name"><a href="{% url "assessment-list" subtopic.id %}" class="topic-link">{{ subtopic.title }}</a>
+                    <td class="px-2"> 
+                        <div class="pl-lg-5 pl-md-5 pl-1 name"><a href="{% url "assessment-list" subtopic.id %}">{{ subtopic.title }}</a>
                         </div>
                     </td>
                     {% if user.type == 'instructor' %}

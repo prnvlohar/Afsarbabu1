@@ -60,6 +60,14 @@
             margin-bottom: 0.5rem;
         }
 
+        .question-image {
+          max-width: 100%;
+          height: auto;
+          margin-top: 10px;
+          margin-bottom: 10px;
+        }
+
+        
         .question .question-num {
             font-weight: 700;
             font-size: 0.9rem;
@@ -75,26 +83,42 @@
             cursor: pointer;
         }
 
-        .answer-item.checked {
-            background: #4563c8;
-            color: #fff;
-        }
-
+        
         .answer-item.wrong {
-            background: #4563c8 ;
-            color: #fff;
+          background: #4563c8 ;
+          color: #fff;
         }
-
+        
         .answer-item span {
-            display: block;
-            padding-left: 2rem;
-            overflow-wrap: break-word;
+          display: block;
+          padding-left: 2rem;
+          overflow-wrap: break-word;
         }
-
+        
         .answer-item:hover,
         .answer-item:active {
-            background: #aabdff;
-            color: #fff;
+          background: #aabdff;
+          color: #fff;
+        }
+        
+        .answer-item.checked {
+            background: #4563c8 !important;
+            color: #fff !important;
+        }
+
+        .need-help-text{
+          display: none;
+        }
+
+        @media (max-width: 992px){
+          .need-help-text{
+              display: inline-block;
+              font-size: 15px;
+              margin: auto;
+          }
+          .need-help-text-bottom{
+          display: none;
+        }
         }
 
         .answer-item input[type="radio"] {
@@ -113,7 +137,7 @@
           box-shadow: 0 7px 7px rgba(0, 0, 0, 0.1);
           border-radius: 0.5rem;
           overflow: auto;
-          height: 70vh;
+          min-height: 40vh;
         }
 
 
@@ -199,7 +223,8 @@
         }
         .action {
           position: fixed;
-          left: 50%;
+          left: 40%;
+          margin-bottom: 2rem;
           transform: translateX(-50%);
           display: flex;
           justify-content: center;
@@ -220,6 +245,7 @@
           </div>
           <div class="col-4 d-flex justify-content-end">
             <span class="me-3" id="timer">{{ assessment.duration }}</span>
+            <span class="need-help-text">Need help?</span>
           </div>
         </div>
         <div class="row">
@@ -232,6 +258,9 @@
                   <div class="question">
                     <h2 class="question-num">Question {{forloop.counter}}</h2>
                     <p class="question-text">{{q.question}}</p>
+                    {% if q.images and q.images.url %}
+                    <img src="{{ q.images.url }}" alt="Question Image" class="question-image">
+                    {% endif %}
                   </div>
                   <div class="answer">
                     <label class="answer-item">
@@ -284,7 +313,7 @@
             <div class="navbar navbar-expand-lg navbar-light bg-light">
               <div class="container-fluid">
                 <button
-                  class="navbar-toggler"
+                  class="navbar-toggler ms-auto mb-2"
                   type="button"
                   data-bs-toggle="collapse"
                   data-bs-target="#navbarSupportedContent"
@@ -302,7 +331,7 @@
                     <p class="question-context">
                       <span class="question-num1">1/{{questions|length}}</span>
                       <a href="#"
-                        ><span class="question-help">Need Help?</span></a
+                        ><span class="question-help need-help-text-bottom">Need Help?</span></a
                       >
                     </p>
                     <div class="d-flex">
@@ -338,7 +367,7 @@
 
         <div class="row mt-2">
           <div class="col-12">
-            <div class="action">
+            <div class="action text-center">
               <button
                 type="button"
                 class="btn btn-outline-info me-2"

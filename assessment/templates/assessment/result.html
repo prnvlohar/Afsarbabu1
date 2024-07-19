@@ -1,6 +1,8 @@
 {% load static %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 
 <head>
   <!-- Required meta tags -->
@@ -20,7 +22,25 @@
   <!-- Layout styles -->
   <link rel="stylesheet" href="{% static "assets/css/style.css" %}">
   <!-- End layout styles -->
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Result analytics</title>
+  <link href="{% static "business/images/logo_square.png" %}" rel="icon">
+  <!-- plugins:css -->
+  <link rel="stylesheet" href="{% static "assets/vendors/mdi/css/materialdesignicons.min.css" %}">
+  <link rel="stylesheet" href="{% static "assets/vendors/css/vendor.bundle.base.css" %}">
+  <link rel="stylesheet" href="{% static "assets/css/style1.css" %}">
+  <!-- endinject -->
+  <!-- Plugin css for this page -->
+  <!-- End plugin css for this page -->
+  <!-- inject:css -->
+  <!-- endinject -->
+  <!-- Layout styles -->
+  <link rel="stylesheet" href="{% static "assets/css/style.css" %}">
+  <!-- End layout styles -->
 </head>
+
 
 <body>
 
@@ -37,6 +57,7 @@
       </div>
 
       
+      {% if result.pass_fail_status.status %}
       <main class="cd__main">
         <!-- Start DEMO HTML (Use the following code into your project)-->
         <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="none" x="0px" y="0px" width="500px" height="800px" viewBox="0 0 500 800">
@@ -415,11 +436,26 @@ L -3.4 -18.05 2.25 -18.05 13.9 14.35 15.25 14.35 3.25 -19.05 -3.05 -19.05 Z" />
    </g>
  </g>
 </svg>
+
         <!-- END EDMO HTML (Happy Coding!)-->
      </main>
+     {% endif %}
+     {% if result.pass_fail_status.status %}
       <div class="card-body">
       <h3><center>🏆 Congratulations! You passed the test with flying colors. Keep up the great work! 🌟</center></h3>
   </div>
+  {% else %}
+  <div class="card-body">
+    <h3><center>You didn't pass this time, but prepare well and you'll succeed next time! 💪✨</center></h3>
+</div>
+  {% endif %}
+    <div style="display: none;" id="result-id">{{result.id}}</div>
+    <div style="display: none;" id="result-no_of_questions">{{result.assessment.no_of_questions}}</div>
+    <div style="display: none;" id="result-correct">{{result.correct}}</div>
+    <div style="display: none;" id="result-incorrect">{{result.incorrect}}</div>
+    <div style="display: none;" id="result-formatted_created_at">{{result.formatted_created_at}}</div>
+    
+
       <div class="row">
         <div class="col-md-4 stretch-card grid-margin">
           <div class="card bg-gradient-info card-img-holder text-white">
@@ -427,7 +463,7 @@ L -3.4 -18.05 2.25 -18.05 13.9 14.35 15.25 14.35 3.25 -19.05 -3.05 -19.05 Z" />
               <img src="{% static "assets/images/dashboard/circle.svg" %}" class="card-img-absolute" alt="circle-image" />
               <h4 class="font-weight-normal mb-3">Total question answered 
               </h4>
-              <h2 class="mb-5">47</h2>
+              <h2 class="mb-5">{{result.attempted}}</h2>
               <h6 class="card-text">Decreased by 10%</h6>
             </div>
           </div>
@@ -439,7 +475,7 @@ L -3.4 -18.05 2.25 -18.05 13.9 14.35 15.25 14.35 3.25 -19.05 -3.05 -19.05 Z" />
             <div class="card-body">
               <img src="{% static "assets/images/dashboard/circle.svg" %}" class="card-img-absolute" alt="circle-image" />
               <h4 class="font-weight-normal mb-3">Correct answers </h4>
-              <h2 class="mb-5">38</h2>
+              <h2 class="mb-5">{{result.correct}}</h2>
               <h6 class="card-text">Increased by 5%</h6>
             </div>
           </div>
@@ -450,7 +486,7 @@ L -3.4 -18.05 2.25 -18.05 13.9 14.35 15.25 14.35 3.25 -19.05 -3.05 -19.05 Z" />
               <img src="{% static "assets/images/dashboard/circle.svg" %}" class="card-img-absolute" alt="circle-image" />
               <h4 class="font-weight-normal mb-3">Incorrect answers
               </h4>
-              <h2 class="mb-5">9</h2>
+              <h2 class="mb-5">{{result.incorrect}}</h2>
               <h6 class="card-text">Increased by 60%</h6>
             </div>
           </div>
@@ -483,7 +519,10 @@ L -3.4 -18.05 2.25 -18.05 13.9 14.35 15.25 14.35 3.25 -19.05 -3.05 -19.05 Z" />
         <div class="col-12 grid-margin">
           <div class="card">
             <div class="card-body">
-              <h4 class="card-title">Answer key</h4>
+              <div class="d-flex">
+                <h4 class="card-title">Answer key</h4>
+                <button id="view-more-btn1" onclick="goToAnswerKey()">View in detail explanation</button>
+              </div>
               <div class="table-responsive">
                 <table class="table">
                   <thead>
@@ -496,50 +535,36 @@ L -3.4 -18.05 2.25 -18.05 13.9 14.35 15.25 14.35 3.25 -19.05 -3.05 -19.05 Z" />
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
+                    {% for question in question_data %}
+                    <tr class="question-row" {% if forloop.counter > 3 %}style="display: none;"{% endif %}>
+                      <td>Q{{forloop.counter}} : {{ question.question }}</td>
                       <td>
-                        1. What is chemical formula of....
+                        {% if question.correct_or_not %}
+                          <label class="badge badge-gradient-success">Correct</label>
+                        {% elif not question.correct_or_not and not question.answer_given %}
+                          <label class="badge badge-gradient-info">Not attempted</label>
+                        {% else %}
+                          <label class="badge badge-gradient-danger">Incorrect</label>
+                        {% endif %}
                       </td>
+                      <td>{{ question.answer_given }}</td>
+                      <td>{{ question.correct_answer_alias }}</td>
                       <td>
-                        <label class="badge badge-gradient-success">Correct</label>
+                        <a href="{{answer_key_url}}#question{{forloop.counter}}">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="3" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0z"/>
+                            <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"/>
+                          </svg>
+                        </a>
                       </td>
-                      <td> A </td>
-                      <td> A </td>
-                      <td><a href="#"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="3" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0z"/>
-                        <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"/>
-                      </svg></a></td>
                     </tr>
-                    <tr>
-                      <td>
-                        2. What is chemical formula of....
-                      </td>
-                      <td>
-                        <label class="badge badge-gradient-info">Not attempted</label>
-                      </td>
-                      <td> NA </td>
-                      <td> NA </td>
-                      <td><a href="#"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="3" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0z"/>
-                        <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"/>
-                      </svg></a></td>
-                    </tr>
-                    <tr>
-                      <td>
-                        3. What is chemical formula of....
-                      </td>
-                      <td>
-                        <label class="badge badge-gradient-danger">Incorrect</label>
-                      </td>
-                      <td> B </td>
-                      <td> A </td>
-                      <td><a href="#"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="3" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0z"/>
-                        <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"/>
-                      </svg></a></td>
-                    </tr>
+                  {% endfor %}
+
+
                   </tbody>
                 </table>
+                <button id="view-more-btn" style="margin-top: 10px;">View More</button>
+
               </div>
             </div>
           </div>
@@ -547,7 +572,7 @@ L -3.4 -18.05 2.25 -18.05 13.9 14.35 15.25 14.35 3.25 -19.05 -3.05 -19.05 Z" />
       </div>
      
       <div class="row">
-        <div class="col-md-7 grid-margin stretch-card">
+        {% comment %} <div class="col-md-7 grid-margin stretch-card">
           <div class="card">
             <div class="card-body">
               <h4 class="card-title">Project Status</h4>
@@ -633,7 +658,7 @@ L -3.4 -18.05 2.25 -18.05 13.9 14.35 15.25 14.35 3.25 -19.05 -3.05 -19.05 Z" />
               </div>
             </div>
           </div>
-        </div>
+        </div> 
         <div class="col-md-5 grid-margin stretch-card">
           <div class="card">
             <div class="card-body">
@@ -692,6 +717,7 @@ L -3.4 -18.05 2.25 -18.05 13.9 14.35 15.25 14.35 3.25 -19.05 -3.05 -19.05 Z" />
             </div>
           </div>
         </div>
+        {% endcomment %}
       </div>
     </div>
 
@@ -713,4 +739,15 @@ L -3.4 -18.05 2.25 -18.05 13.9 14.35 15.25 14.35 3.25 -19.05 -3.05 -19.05 Z" />
     <!-- End custom js for this page -->
 </body>
 
+<script>
+  function goToAnswerKey() {
+   window.open("{{answer_key_url}}"); // Replace with your URL
+}
+
+  document.getElementById('view-more-btn').addEventListener('click', function() {
+    const rows = document.querySelectorAll('.question-row');
+    rows.forEach(row => row.style.display = '');
+    this.style.display = 'none'; // Hide the "View More" button after clicking
+  });
+</script>
 </html>
