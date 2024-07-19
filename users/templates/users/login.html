@@ -59,7 +59,7 @@
             </div>
             <div class="field btn">
               <div class="btn-layer"></div>
-              <input type="submit" value="Signup">
+              <input type="submit" class = "Signup-submit" value="Signup">
             </div>
           </form>
         </div>
@@ -72,6 +72,7 @@
       const loginBtn = document.querySelector("label.login");
       const signupBtn = document.querySelector("label.signup");
       const signupLink = document.querySelector("form .signup-link a");
+      const Signup = document.querySelector("form .Signup-submit")
       signupBtn.onclick = (()=>{
         loginForm.style.marginLeft = "-50%";
         loginText.style.marginLeft = "-50%";
@@ -84,6 +85,10 @@
         signupBtn.click();
         return false;
       });
+      Signup.onclick = (()=>{
+        Signup.click();
+        return true;
+      })
 
     </script>
 </body>
