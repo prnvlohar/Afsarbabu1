@@ -24,6 +24,7 @@
             </thead>
             <tbody>
                 {% for topic in Topics %}
+                {% if user.type == 'instructor' %}
                 <tr class="bg-blue">
                     <td class="px-2"> 
                         <div class="pl-lg-5 pl-md-5 pl-1 name"><a href="{% url 'sub-topic-list' topic.id %}">{{ topic.title }}</a></div>
@@ -32,6 +33,15 @@
                     <td class="pl-lg-5 pl-md-5 pl-1 name"><a href="{% url 'update_topic' topic.id %}">Edit</a></td>
                     {% endif %}
                 </tr>
+                {% else %}
+                <tr class="bg-blue">
+                    <td class="px-2">
+                        <a href="{% url 'sub-topic-list' topic.id %}" class="d-block">
+                            <div class="pl-lg-5 pl-md-5 pl-1 name">{{ topic.title }}</div>
+                        </a>
+                    </td>
+                </tr>                
+                {% endif %}
                 <tr class="spacing-row">
                     <td></td>
                 </tr>
