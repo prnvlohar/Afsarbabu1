@@ -24,6 +24,7 @@ from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.views import View
 
 from assessment.models import Assessment
+from assessment.utils import send_mail_tread
 from users.forms import LoginForm, RegisterForm, UsersForm
 from users.models import CustomUser
 from users.tokens import email_verification_token, generate_referral_code
@@ -67,11 +68,8 @@ class RegisterView(View):
                 }
             )
             plain_text = strip_tags(html_content)
-            message = EmailMultiAlternatives(
-                subject=subject, body=plain_text, to=[user.email]
-            )
-            message.attach_alternative(html_content, "text/html")
-            message.send()
+
+            send_mail_tread(subject, plain_text, html_content, user.email)
 
             messages.success(request, 'Please verify your email.')
             return redirect("login")
@@ -197,7 +195,12 @@ class ActivateView(View):
             user.is_active = True
             user.is_staff = True
             user.save()
-        return HttpResponseRedirect(reverse('login'))
+
+        if user is not None:
+            login(request, user)
+            return HttpResponseRedirect(reverse('index'))
+        else:
+            return HttpResponseRedirect(reverse('login'))
 
 
 @login_required

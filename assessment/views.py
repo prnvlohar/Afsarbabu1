@@ -25,7 +25,6 @@ from urllib.parse import urlencode
 
 
 class TopicListView(LoginRequiredMixin, ListView):
-
     " Showing all topic present in project "
     model = Topic
     template_name = 'assessment/topic.html'
@@ -186,85 +185,6 @@ class AddQuestionView(LoginRequiredMixin, View):
         else:
             messages.error(request, 'User is not instructor.')
             return HttpResponseRedirect(reverse('index'))
-
-
-class ShowQuizView(LoginRequiredMixin, View):
-
-    " Showing quiz according to user request "
-
-    def get(self, request, *args, **kwargs):
-        try:
-
-            assessment = Assessment.objects.get(id=self.kwargs['pk'])
-
-            questions = assessment.question_set.all()
-            # retrive passfailmodel object
-            passfail = PassFailStatus.objects.filter(
-                user=request.user, assessment=assessment).first()
-            return render(request, 'assessment/quiz.html', {'questions': questions,
-                                                            'assessment': assessment,
-                                                            'passfail': passfail, })
-
-        except Exception as e:
-            messages.success(
-                request, e)
-            return HttpResponseRedirect(reverse("show-assessment"))
-
-    def post(self, request, *args, **kwargs):
-        assessment = Assessment.objects.get(id=self.kwargs['pk'])
-        if assessment.id in request.session:
-            messages.success(request, 'Assessment already submitted.')
-            return HttpResponseRedirect(reverse("show-assessment"))
-
-        score = 0
-        payload = request.POST
-        questions = Question.objects.filter(assessment=assessment)
-        for q in questions:
-            if str(q.id) in payload:
-                if payload[str(q.id)] == q.answer:
-                    score += 1
-
-        # convert score into percentage
-        score = score / len(questions) * 100
-        # check score is above 80 and change status of passfail model
-        if score > 80:
-            try:
-                passfail = PassFailStatus.objects.get(
-                    assessment=assessment, user=request.user)
-            except:
-                passfail = PassFailStatus(
-                    assessment=assessment, user=request.user)
-            passfail.status = True
-            passfail.save()
-        else:
-            try:
-                passfail = PassFailStatus.objects.get(
-                    assessment=assessment, user=request.user)
-            except:
-                passfail = PassFailStatus(
-                    assessment=assessment, user=request.user)
-            passfail.status = False
-            passfail.save()
-
-        request.session['assessment.id'] = True
-        form = RatingForm
-        # send_email_with_marks(request, score)x
-        messages.success(
-            request, 'Answer submmited successfully. Check your email for score.')
-        return render(request, 'assessment/score.html', {'score': score, 'form': form,
-                                                         'assessment': assessment})
-
-
-def rating_quiz(request):
-    if request.method == 'POST':
-        form = RatingForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Rating submmited successfully.')
-            return HttpResponseRedirect(reverse("show-assessment"))
-        else:
-            messages.error(request, 'Assessment Rating Failed.')
-            return HttpResponseRedirect(reverse("show-assessment"))
 
 
 class QuestionDeleteView(LoginRequiredMixin, DeleteView):
