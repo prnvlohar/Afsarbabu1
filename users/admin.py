@@ -4,9 +4,12 @@ from users.models import CustomUser
 
 # Register your models here.
 
-admin.site.register(CustomUser)
+# admin.site.register(CustomUser)
 
-# @admin.register(CustomUser)
-# class CustomUserAdmin(admin.ModelAdmin):
+@admin.register(CustomUser)
+class CustomUserAdmin(admin.ModelAdmin):
 
-#     list_display = ['id', 'email']
+    list_display = ['id', 'email', 'type']
+    search_fields = ['email']
+    list_filter = ['email','type']
+    ordering = ['id']
