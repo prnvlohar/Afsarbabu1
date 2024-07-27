@@ -1,7 +1,10 @@
 from django.shortcuts import render
 from django.template.loader import render_to_string
 from django.core.mail import EmailMultiAlternatives
+import threading
 from django.utils.html import strip_tags
+from assessment.utils import send_mail_tread
+from django.conf import settings
 
 # Create your views here.
 
@@ -10,7 +13,6 @@ def home(request):
 
 def about(request):
     return render(request, 'portal/about.html')
-import threading
 def contact(request):
     if request.method == "GET":
         return render(request, 'portal/contact.html')
@@ -31,16 +33,8 @@ def contact(request):
         )
         plain_text = strip_tags(html_content)
 
-        def send_mail(subject, plain_text, html_content):
-            message = EmailMultiAlternatives(
-                subject=subject, body=plain_text, to=["afsarbabu010124@gmail.com"]
-            )
-            message.attach_alternative(html_content, "text/html")
-            message.send()
+        send_mail_tread(subject, plain_text, html_content, settings.EMAIL_HOST_USER)
 
-        t = threading.Thread(target=send_mail,
-                             args=(subject, plain_text, html_content))
-        t.start()
         return render(request, 'portal/contact.html', {"flag":"Enquiry submitted successfully"})
 
 def pricing(request):

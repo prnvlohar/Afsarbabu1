@@ -1,5 +1,4 @@
-{% load static %}
-<!DOCTYPE html>
+{% load static %}<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -9,82 +8,83 @@
 </head>
 <body>
     <div class="wrapper">
-      <div class="title-text">
-        <div class="title login">Login Form</div>
-        <div class="title signup">Signup Form</div>
-      </div>
-      {% if messages %}
-
-        {% for message in messages %}
-        <div class="alert alert-danger">
-            {{ message }}
+        <div class="title-text">
+            <div class="title login">Login Form</div>
+            <div class="title signup">Signup Form</div>
         </div>
-        {% endfor %}
-
-      {% endif %}
-      <div class="form-container">
-        <div class="slide-controls">
-          <input type="radio" name="slide" id="login" checked>
-          <input type="radio" name="slide" id="signup">
-          <label for="login" class="slide login">Login</label>
-          <label for="signup" class="slide signup">Signup</label>
-          <div class="slider-tab"></div>
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-danger">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+        <div class="form-container">
+            <div class="slide-controls">
+                <input type="radio" name="slide" id="login" checked>
+                <input type="radio" name="slide" id="signup">
+                <label for="login" class="slide login">Login</label>
+                <label for="signup" class="slide signup">Signup</label>
+                <div class="slider-tab"></div>
+            </div>
+            <div class="form-inner">
+                <form action="{% url 'login' %}" method="post" class="login">
+                    {% csrf_token %}
+                    <div class="field">
+                        <input type="email" name="{{login_form.email.name}}" id="your_name" placeholder="YOUR EMAIL"/>
+                    </div>
+                    <div class="field">
+                        <input type="password" name="{{login_form.password.name}}" id="your_pass" placeholder="PASSWORD"/>
+                    </div>
+                    <div class="pass-link"><a href="{% url 'password-reset' %}">Forgot password?</a></div>
+                    <div class="field btn">
+                        <div class="btn-layer"></div>
+                        <input type="submit" value="Login">
+                    </div>
+                    <div class="signup-link">Not a member? <a href="">Signup now</a></div>
+                </form>
+                <form action="{% url 'register' %}" method="post" class="signup">
+                    {% csrf_token %}
+                    <div class="field">
+                        <input type="email" name="{{form.email.name}}" id="email" placeholder="EMAIL"/>
+                    </div>
+                    <div class="field">
+                        <input type="number" name="{{form.phone.name}}" id="phone" placeholder="CONTACT"/>
+                    </div>
+                    <div class="field">
+                        <input type="password" name="{{form.password.name}}" id="pass" placeholder="PASSWORD"/>
+                    </div>
+                    <div class="field btn">
+                        <div class="btn-layer"></div>
+                        <input type="submit" class="Signup-submit" value="Signup">
+                    </div>
+                </form>
+            </div>
         </div>
-        <div class="form-inner">
-          <form action = "{% url "login" %}" method = "post" class="login">
-            {% csrf_token %}
-            <div class="field">
-              <input type="email" name="{{login_form.email.name}}" id="your_name" placeholder="YOUR EMAIL"/>
-            </div>
-            <div class="field">
-              <input type="password" name="{{login_form.password.name}}" id="your_pass" placeholder="PASSWORD"/>
-            </div>
-            <div class="pass-link"><a href="{% url "password-reset" %}">Forgot password?</a></div>
-            <div class="field btn">
-              <div class="btn-layer"></div>
-              <input type="submit" value="Login">
-            </div>
-            <div class="signup-link">Not a member? <a href="">Signup now</a></div>
-          </form>
-          <form action= "{% url "register" %}" method = "post" class="signup">
-            {% csrf_token %}
-            <div class="field">
-                <input type="email" name="{{form.email.name}}" id="email" placeholder="EMAIL"/>
-            </div>
-            <div class="field">
-                <input type="number" name="{{form.phone.name}}" id="phone" placeholder="CONTACT"/>
-            </div>
-            <div class="field">
-                <input type="password" name="{{form.password.name}}" id="pass" placeholder="PASSWORD"/>
-            </div>
-            <div class="field btn">
-              <div class="btn-layer"></div>
-              <input type="submit" value="Signup">
-            </div>
-          </form>
-        </div>
-      </div>
     </div>
 
     <script>
-      const loginText = document.querySelector(".title-text .login");
-      const loginForm = document.querySelector("form.login");
-      const loginBtn = document.querySelector("label.login");
-      const signupBtn = document.querySelector("label.signup");
-      const signupLink = document.querySelector("form .signup-link a");
-      signupBtn.onclick = (()=>{
-        loginForm.style.marginLeft = "-50%";
-        loginText.style.marginLeft = "-50%";
-      });
-      loginBtn.onclick = (()=>{
-        loginForm.style.marginLeft = "0%";
-        loginText.style.marginLeft = "0%";
-      });
-      signupLink.onclick = (()=>{
-        signupBtn.click();
-        return false;
-      });
-
+        const loginText = document.querySelector(".title-text .login");
+        const loginForm = document.querySelector("form.login");
+        const loginBtn = document.querySelector("label.login");
+        const signupBtn = document.querySelector("label.signup");
+        const signupLink = document.querySelector("form .signup-link a");
+        
+        signupBtn.onclick = () => {
+            loginForm.style.marginLeft = "-50%";
+            loginText.style.marginLeft = "-50%";
+        };
+        
+        loginBtn.onclick = () => {
+            loginForm.style.marginLeft = "0%";
+            loginText.style.marginLeft = "0%";
+        };
+        
+        signupLink.onclick = () => {
+          event.preventDefault(); // Prevent the default link action
+          signupBtn.click(); // Trigger the signup button click event
+          return true; 
+        };
     </script>
 </body>
 </html>

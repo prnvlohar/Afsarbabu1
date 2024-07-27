@@ -1,65 +1,77 @@
-
 {% extends "users/base.html" %}
 {% load static %}
 {% block main %}
 
-<div class="container rounded mt-5 bg-white p-md-5">
-    <div class="container mt-3">
+<div class="container bg-white p-3">
+    <div class="mb-3">
         <a href="{% url 'sub-topic-list' id1 %}" class="btn btn-secondary">Back</a>
-    </div><br>
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <div class="h2 font-weight-bold">Tests</div>
-
-            
-        {% if user.type == 'instructor' %}
-        <a href="{% url 'add-assessment' id %}" class="btn btn-primary">add test</a>
-                    {% endif %}
-        
     </div>
+    
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="fs-2 fw-bold">Tests</div>
+
+        {% if user.type == 'instructor' %}
+            <a href="{% url 'add-assessment' id %}" class="btn btn-primary">Add Test</a>
+        {% endif %}
+    </div>
+    
     <div class="table-responsive">
         <table class="table">
             <thead>
                 <tr>
                     <th scope="col">Title</th>
-                    <th scope="col">Topic</th>
-                    <th scope="col">Subtopic</th>
+                    <th scope="col" class="d-none d-md-table-cell">Topic</th>
+                    <th scope="col" class="d-none d-md-table-cell">Subtopic</th>
                     <th scope="col">Duration</th>
                     {% if user.type == 'instructor' %}
-                    <th scope="col">Edit</th>
+                        <th scope="col">Edit</th>
                     {% endif %}
                 </tr>
             </thead>
             <tbody>
                 {% for assess in Assessments %}
-                <tr class="bg-blue">
-                    {% if user.type == 'student' %}
+                {% if user.type == 'student' %}
+                <tr class="bg-blue clickable-row" data-href="{% url 'guideline' assess.id %}">
+
                     <td class="pt-2"> 
-                        <div class="pl-lg-5 pl-md-5 pl-1 name"><a href="{% url "guideline" assess.id %}" class="topic-link">{{ assess.title }}</a>
-                        </div>
+                        <div class="pl-3">{{ assess.title }}</div>
                     </td>
+                    <td class="pt-2 d-none d-md-table-cell">{{ assess.topic }}</td>
+                    <td class="pt-2 d-none d-md-table-cell">{{ assess.subtopic }}</td>
+                    <td>{{ assess.duration }}</td>
+                <tr>
                     {% else %}
+                    <tr class="bg-blue">
                     <td class="pt-2"> 
-                        <div class="pl-lg-5 pl-md-5 pl-1 name"><a href="{% url "question-list" assess.id %}" class="topic-link">{{ assess.title }}</a>
-                        </div>
+                        <div class="pl-3"><a href="{% url 'question-list' assess.id %}">{{ assess.title }}</a></div>
                     </td>
+                    <td class="pt-2 d-none d-md-table-cell">{{ assess.topic }}</td>
+                    <td class="pt-2 d-none d-md-table-cell">{{ assess.subtopic }}</td>
+                    <td>{{ assess.duration }}</td>
+                    <td class="pt-2"><a href="{% url 'update-assessment' assess.id %}" class="text-decoration-none">Edit</a></td>
                     {% endif %}
-                    <td class="pt-3">{{assess.topic}}</td>
-                    <td class="pt-3">{{assess.subtopic}}</td>
-                    <td class="pt-3">{{assess.duration}}</td>
-                    {% if user.type == 'instructor' %}
-                    <td class="pl-lg-5 pl-md-5 pl-1 name"><a href="{% url "update-assessment" assess.id %}">Edit</a></td>
-                    {% endif %}
-                    
                 </tr>
                 <tr id="spacing-row">
                     <td></td>
                 </tr>
-
                 {% endfor %}
             </tbody>
         </table>
     </div>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var rows = document.querySelectorAll('.clickable-row');
+        rows.forEach(function(row) {
+            row.addEventListener('click', function() {
+                var href = row.getAttribute('data-href');
+                if (href) {
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    </script>
+    
 
-
-{% endblock main %}
+    {% endblock main %}

@@ -1,17 +1,13 @@
 {% extends "users/base.html" %} 
 {% load static %}
-{% comment %} {% load crispy_forms_tags %}{% endcomment %} 
 {% block title %}Add assessment{% endblock title %} 
 {% block main %}
 
-
-
-<div class="main-form container">
-  <div class="container mt-3">
+<div class="main-form container p-3">
+  <div class="mb-3">
     <a href="{% url 'assessment-list' id %}" class="btn btn-secondary">Back</a>
-</div><br>
+  </div>
   <h1>Add Assessment</h1>
-
 
   <div>
     <form action="#" method="post" id="assessment-form">
@@ -27,7 +23,6 @@
         <input type="text" step="1" class="form-control" name="{{form.duration.name}}" id="duration"
           placeholder="Enter time in hh:mm:ss format."/>
       </div>
-      {% comment %} {{form|crispy}} {% endcomment %}
       <button class="btn btn-primary add-assessment">Add</button>
     </form>
   </div>

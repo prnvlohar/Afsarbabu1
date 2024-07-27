@@ -9,8 +9,6 @@ urlpatterns = [
     path('show-question/', QuestionListView.as_view(), name='show-question'),
     path('update-question/<int:pk>/',
          QuestionUpdateView.as_view(), name='update-question'),
-    path('show-quiz/<str:pk>/', ShowQuizView.as_view(), name='show-quiz'),
-    path('rating/', rating_quiz, name='rating'),
     path('list-assessment',ListAssessment.as_view(),name='list-assessment'),
     
     path('topic-list',TopicListView.as_view(),name='topic-list'),
