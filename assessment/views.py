@@ -15,9 +15,7 @@ from assessment.models import ( Assessment, Question,
                                Rating, PassFailStatus, Topic, Subtopic, Exams,
                                ResultAnalysis)
 from assessment.utils import send_email_with_marks, get_option_alias
-from django.db.models.functions import Substr, Length
-from django.db.models import Value, Case, When, CharField
-from django.db.models.functions import Concat
+from django.db.models import F
 from django.contrib.auth.mixins import LoginRequiredMixin
 import json
 from django.urls import reverse
@@ -78,7 +76,7 @@ class QuestionListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         # Filter questions based on assessment
-        queryset = Question.objects.filter(assessment=self.kwargs['pk'])
+        queryset = Question.objects.filter(assessment=self.kwargs['pk']).order_by('no')
 
         # Process queryset to truncate question_text without using annotate
         for question in queryset:
@@ -103,6 +101,7 @@ class QuestionListView(LoginRequiredMixin, ListView):
             try:
                 # Assuming the JSON file contains a list of assessments
                 assessments_data = json.load(json_file)
+                count = 1
                 for i in assessments_data:
                     question = i['question']
                     option1 = i['options'][0]
@@ -111,8 +110,9 @@ class QuestionListView(LoginRequiredMixin, ListView):
                     option4 = i['options'][3]
                     answer = i['answer']
                     explanation = i.get('explanation', None)
-                    Question.objects.create(assessment=assessment, question=question, option1=option1,
+                    Question.objects.create(no=count, assessment=assessment, question=question, option1=option1,
                                             option2=option2, option3=option3, option4=option4, answer=answer, explanation=explanation)
+                    count+=1
                 messages.success(request, 'Questions added successfully.')
 
             except:
@@ -227,9 +227,37 @@ class TopicDeleteView(LoginRequiredMixin, DeleteView):
 
 class QuestionUpdateView(LoginRequiredMixin, UpdateView):
     model = Question
-    fields = ['question','images', 'option1', 'option2', 'option3', 'option4', 'answer','explanation']
+    fields = ['no','question','images', 'option1', 'option2', 'option3', 'option4', 'answer','explanation']
     template_name = "assessment/question_confirm_update.html"
 
+    def form_valid(self, form):
+        # Get the current question object and its assessment
+        question = self.get_object()
+        current_no = question.no
+        new_no = form.cleaned_data['no']
+        assessment = question.assessment
+
+        # Handle the reordering if the question number is changed
+        if current_no != new_no:
+            # If the new number is less than the current number, increment questions in the range
+            if new_no < current_no:
+                Question.objects.filter(
+                    assessment=assessment,
+                    no__gte=new_no,
+                    no__lt=current_no
+                ).update(no=F('no') + 1)
+
+            # If the new number is greater than the current number, decrement questions in the range
+            else:
+                Question.objects.filter(
+                    assessment=assessment,
+                    no__gt=current_no,
+                    no__lte=new_no
+                ).update(no=F('no') - 1)
+
+        # Save the form with the updated data
+        return super().form_valid(form)
+    
     def get_success_url(self) -> str:
         # add assessment id to success url
         assessment_id = self.object.assessment.id
@@ -359,7 +387,7 @@ class TestShow(View):
         return render(request, 'assessment/test.html', context)
 
     def post(self, request, *args, **kwargs):
-        queryset = self.queryset.filter(assessment=self.kwargs['pk'])
+        queryset = self.queryset.filter(assessment=self.kwargs['pk']).order_by('no')
         
         total_attempted = len(request.POST)-1
         correct_ans = 0
@@ -375,7 +403,6 @@ class TestShow(View):
             questions_status=questions_status
         )
         
-        percentage = correct_ans/len(queryset)*100
         return redirect(reverse('result', kwargs={'pk': result.id}))
 
 
@@ -386,7 +413,7 @@ def result(request, pk):
         'result': result,
         'answer_key_url':answer_key_url,
     }
-    questions = Question.objects.filter(assessment=result.assessment.id)
+    questions = Question.objects.filter(assessment=result.assessment.id).order_by('no')
     question_data = []
     for i in questions:
         question_data.append({
@@ -471,7 +498,7 @@ def answer_key_page(request, pk):
     context = {
         'result': result
     }
-    questions = Question.objects.filter(assessment=result.assessment.id)
+    questions = Question.objects.filter(assessment=result.assessment.id).order_by('no')
     question_data = []
     for i in questions:
         question_data.append({

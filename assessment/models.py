@@ -46,6 +46,7 @@ class Assessment(models.Model):
 class Question(models.Model):
 
     assessment = models.ForeignKey(Assessment, on_delete=models.CASCADE)
+    no = models.IntegerField(null=True, blank=True)
     question = models.CharField(max_length=1024, null=True)
     images = models.ImageField(upload_to="images/", null = True, blank=True)
     option1 = models.CharField(max_length=1024, null=True)
@@ -68,6 +69,9 @@ class Question(models.Model):
         
     def __str__(self) -> str:
         return self.question
+    
+    class meta:
+        unique_together = ('assessment', 'no')
 
 
 class Rating(models.Model):
