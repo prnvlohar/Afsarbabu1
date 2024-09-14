@@ -33,7 +33,7 @@ class AssessmentAdmin(admin.ModelAdmin):
 class QuestionAdmin(admin.ModelAdmin):
     search_fields = ['question', 'assessment__title']
     list_filter = ['assessment']
-    list_display = ['question', 'assessment']
+    list_display = ['no','question', 'assessment']
     ordering = ['assessment__title', 'question']
 
 @admin.register(PassFailStatus)

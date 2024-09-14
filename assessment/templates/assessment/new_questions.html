@@ -34,7 +34,7 @@
             <tbody>
                 {% for q in Questions %}
                 <tr class="bg-blue">
-                    <td class="pt-3">{{forloop.counter}}</td>
+                    <td class="pt-3">{{q.no}}</td>
                     <td class="pt-2"> 
                         <div class="pl-lg-5 pl-md-5 pl-1 name"><a href="{% url "update-question" q.id %}" class="topic-link">{{ q.short_question }}</a>
                         </div>
