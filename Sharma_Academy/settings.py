@@ -13,7 +13,6 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 import os
 from pathlib import Path
 
-from dotenv import find_dotenv, load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = "django-insecure-ghv#+wl($1jh8f4%x7k9g6ohvs4^iyc9bah(ev7)=*ixlgh1du"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -55,10 +54,8 @@ INSTALLED_APPS = [
     'users',
     'assessment',
     'business',
-    'boto3',
     # extra packages
-    'crispy_forms',
-    'crispy_bootstrap4',
+    # 'crispy_bootstrap4',
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -181,12 +178,6 @@ EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 
-# Load environment definition file
-ENV_FILE = find_dotenv()
-if ENV_FILE:
-    load_dotenv(ENV_FILE)
-
-
 # settings.py
 
 # # Use Amazon S3 for storage for static files.
@@ -211,3 +202,6 @@ STATICFILES_DIRS = [
 
 # STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/'
 # STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'

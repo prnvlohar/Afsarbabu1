@@ -8,7 +8,7 @@ class AssessmentForm(forms.ModelForm):
 
     class Meta:
         model = Assessment
-        fields = ['title','duration']
+        fields = ['title','duration', 'is_active']
         # widgets = {
         #     'duration' : forms.TextInput(attrs={'class':'durationInputWidget'})
         # }

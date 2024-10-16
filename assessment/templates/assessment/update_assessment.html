@@ -3,7 +3,20 @@
 {% load static %}
 {% block title %}Assessment update{% endblock title %}
 {% block main %}
+<style>
 
+  .form-check-input {
+    width: 40px;
+    height: 40px;
+    transform: scale(1.5); /* Scale up the checkbox */
+    margin-top: 0.3rem; /* Align with the label */
+  }
+
+  .form-check-label {
+    font-size: 1.2rem; /* Increase label font size for better visibility */
+    margin-left: 10px; /* Space between checkbox and label */
+  }
+</style>
 
 <div class="main-form container p-3">
     <div class="mb-3">
@@ -15,8 +28,14 @@
         {% comment %} {{form.as_p}} {% endcomment %}
         {% for f in form %}
         <label for="{{ f.id_for_label }}">{{ f.label|title }}</label>
+        {% if f.name == 'is_active' %}
+        <br>
+        <input type="checkbox" class="form-check-input" name="{{f.name}}"> <br>
+        {% else %}
         <input type="text", name="{{f.name}}", value="{{f.value}}" class="form-control"> <br>
+        {% endif %}
         {% endfor %}
+        <br>
         <button type="submit" class="btn btn-primary auto">Update</button> <a href="{% url 'delete-assessment' id %}" class="btn btn-danger">Delete this assessment</a>
     </form>
     {% if messages %}

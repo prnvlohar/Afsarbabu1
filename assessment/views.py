@@ -20,6 +20,16 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 import json
 from django.urls import reverse
 from urllib.parse import urlencode
+import google.generativeai as genai
+import os
+
+genai.configure(api_key="AIzaSyBOW2L_bcv8mEtPBWT0ulVxC8ijUIFkkBk")
+
+model = genai.GenerativeModel("gemini-1.5-flash")
+
+import json
+    
+
 
 
 class TopicListView(LoginRequiredMixin, ListView):
@@ -102,17 +112,26 @@ class QuestionListView(LoginRequiredMixin, ListView):
                 # Assuming the JSON file contains a list of assessments
                 assessments_data = json.load(json_file)
                 count = 1
+            
+                # Now `data` is an iterable dictionary
                 for i in assessments_data:
-                    question = i['question']
-                    option1 = i['options'][0]
-                    option2 = i['options'][1]
-                    option3 = i['options'][2]
-                    option4 = i['options'][3]
-                    answer = i['answer']
-                    explanation = i.get('explanation', None)
-                    Question.objects.create(no=count, assessment=assessment, question=question, option1=option1,
-                                            option2=option2, option3=option3, option4=option4, answer=answer, explanation=explanation)
-                    count+=1
+                    json_string = json.dumps(i)
+                    response = model.generate_content(f"convert this json to hindi and dont give any other text or anything jsut want hindi converted json string: {json_string}")
+                    try:
+                        hindi_json_dict = json.loads(response.text)
+                    
+                        question = hindi_json_dict['question']
+                        option1 = hindi_json_dict['options'][0]
+                        option2 = hindi_json_dict['options'][1]
+                        option3 = hindi_json_dict['options'][2]
+                        option4 = hindi_json_dict['options'][3]
+                        answer = hindi_json_dict['answer']
+                        explanation = hindi_json_dict.get('explanation', None)
+                        Question.objects.create(no=count, assessment=assessment, question=question, option1=option1,
+                                                option2=option2, option3=option3, option4=option4, answer=answer, explanation=explanation)
+                        count+=1
+                    except:
+                        print(f"Failed to decode JSON")
                 messages.success(request, 'Questions added successfully.')
 
             except:
@@ -273,7 +292,7 @@ class QuestionUpdateView(LoginRequiredMixin, UpdateView):
 
 class AssessmentUpdateView(LoginRequiredMixin, UpdateView):
     model = Assessment
-    fields = ['title', 'duration']
+    fields = ['title', 'duration', 'is_active']
     template_name = "assessment/update_assessment.html"
 
     def get_success_url(self) -> str:

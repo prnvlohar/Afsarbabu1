@@ -1,34 +1,43 @@
-
 {% extends "users/base.html" %}
 {% load static %}
 {% block title %}Question update{% endblock title %}
+
 {% block main %}
-
-
-
 <div class="main-form container p-3">
     <div class="mb-3">
         <a href="{% url 'question-list' id1 %}" class="btn btn-secondary">Back</a>
     </div>
     <h1>Update here</h1>
-    <form action="" method="post">
+    
+    <form action="" method="post" enctype="multipart/form-data">
+        {{ form.errors }}
         {% csrf_token %}
-        {% comment %} {{form.as_p}} {% endcomment %}
         {% for f in form %}
-        <label for="{{ f.id_for_label }}">{{ f.label|title }}</label>
-        <input type="text", name="{{f.name}}", value="{{f.value}}" class="form-control"> <br>
+            <label for="{{ f.id_for_label }}">{{ f.label|title }}</label>
+            {% if f.name == 'images' %}
+                {% if f.value %}
+                    <!-- Display the existing image if it's already uploaded -->
+                     <a href="{{ f.value.url }}">
+                    <img src="{{ f.value.url }}" alt="Existing Image" class="img-thumbnail" style="max-width: 200px; height: auto;"></a>
+                    <br><br>
+                {% endif %}
+                <input type="file" name="{{ f.name }}" class="form-control"> <br>
+            {% else %}
+                <input type="text" name="{{ f.name }}" value="{{ f.value }}" class="form-control"> <br>
+            {% endif %}
         {% endfor %}
-        <button type="submit" class="btn btn-primary auto">Update</button> <a href="{% url 'delete-question' id %}" class="btn btn-danger">Delete this question</a>
+        
+        <button type="submit" class="btn btn-primary auto">Update</button> 
+        <a href="{% url 'delete-question' id %}" class="btn btn-danger">Delete this question</a>
     </form>
+
     {% if messages %}
-
-    {% for message in messages %}
-    <div class="alert alert-info">
-        {{ message }}
-    </div>
-    {% endfor %}
-
+        {% for message in messages %}
+        <div class="alert alert-info">
+            {{ message }}
+        </div>
+        {% endfor %}
     {% endif %}
 </div>
-
 {% endblock main %}
+

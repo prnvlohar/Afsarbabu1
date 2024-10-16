@@ -1,8 +1,24 @@
-{% extends "users/base.html" %} 
+{% extends "users/base.html" %}
 {% load static %}
-{% block title %}Add assessment{% endblock title %} 
+{% block title %}Add assessment{% endblock title %}
 {% block main %}
+<style>
+  .form-group{
+    padding-top: 10px;
+    padding-bottom: 10px
+  }
+  .form-check-input {
+    width: 40px;
+    height: 40px;
+    transform: scale(1.5); /* Scale up the checkbox */
+    margin-top: 0.3rem; /* Align with the label */
+  }
 
+  .form-check-label {
+    font-size: 1.2rem; /* Increase label font size for better visibility */
+    margin-left: 10px; /* Space between checkbox and label */
+  }
+</style>
 <div class="main-form container p-3">
   <div class="mb-3">
     <a href="{% url 'assessment-list' id %}" class="btn btn-secondary">Back</a>
@@ -15,23 +31,23 @@
   
       <div class="form-group">
         <label for="title">Title :-</label>
-        <input type="text" class="form-control" name="{{form.title.name}}" id="title"
-          placeholder="Title"/>
+        <input type="text" class="form-control" name="{{form.title.name}}" id="title" placeholder="Title"/>
       </div>
       <div class="form-group">
         <label for="duration">Duration :-</label>
-        <input type="text" step="1" class="form-control" name="{{form.duration.name}}" id="duration"
-          placeholder="Enter time in hh:mm:ss format."/>
+        <input type="text" step="1" class="form-control" name="{{form.duration.name}}" id="duration" placeholder="Enter time in hh:mm:ss format."/>
+      </div>
+      <div class="form-group form-check">
+        <input type="checkbox" class="form-check-input" name="{{form.is_active.name}}" id="is_active" />
+        <label class="form-check-label" for="is_active">Is Active</label>
       </div>
       <button class="btn btn-primary add-assessment">Add</button>
     </form>
   </div>
 
   <div class="alert alert-info" id="msg" style="display: none"></div>
-
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
 <script src="{% static 'assessment/js/addassessment.js' %}"></script>
 {% endblock main %}
