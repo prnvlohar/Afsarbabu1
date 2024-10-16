@@ -35,6 +35,7 @@ class Assessment(models.Model):
     exam = models.ForeignKey(Exams, on_delete=models.CASCADE, null = True)
     title = models.CharField(max_length=100, null = True)
     duration = models.DurationField(null = True)
+    is_active = models.BooleanField(default=False)
 
     @property
     def no_of_questions(self):
@@ -106,7 +107,6 @@ class ResultAnalysis(models.Model):
     
     @property
     def formatted_created_at(self):
-        print(self.created_at.strftime("%Y/%m/%d %H:%M"))
         return self.created_at.strftime("%Y/%m/%d %H:%M")
     @property
     def incorrect(self):

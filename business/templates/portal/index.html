@@ -3,6 +3,7 @@
 {% block main %}
 
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
 <main class="flex-shrink-0">
 <!-- Header-->
@@ -24,6 +25,561 @@
         </div>
     </div>
 </header>
+
+
+
+
+
+<!-- News Section with Two Horizontal Containers -->
+<section class="news-section py-5">
+    <div class="container">
+        <!-- News Heading -->
+        <div class="heading-container bg-blue text-white py-3 mb-4">
+            <h2 class="fw-bolder text-center">Latest News</h2>
+        </div>
+        <div class="row">
+            <!-- Hindi News Container -->
+            <div class="col-lg-6">
+                <div class="subheading-container bg-lightblue text-center py-2 mb-3">
+                    <h4>हिंदी समाचार</h4>
+                </div>
+                <div class="news-container" id="news-container-hindi">
+                    {% for news in hindi_news %}
+                    <div class="news-item">
+                        <p>{{news}}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- English News Container -->
+            <div class="col-lg-6">
+                <div class="subheading-container bg-lightblue text-center py-2 mb-3">
+                    <h4>English News</h4>
+                </div>
+                <div class="news-container" id="news-container-english">
+                    {% for news in english_news %}
+                    <div class="news-item">
+                        <p>{{news}}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+
+
+<!-- Test and Contest Section -->
+<section class="test-contest-section py-5">
+    <div class="container">
+        <!-- Test and Contest Information Heading -->
+        <div class="heading-container mb-5">
+            <h2 class="text-center">Test and Contest Information</h2>
+        </div>
+
+        <div class="row gx-5 justify-content-center">
+            <!-- Subjects Container -->
+            <div class="col-lg-4 col-md-6">
+                <div class="subheading-container mb-3">
+                    <h3 class="text-center">Subjects</h3>
+                </div>
+                <div class="subject-grid">
+                    <div class="subject-item">
+                        <i class="fas fa-landmark subject-icon"></i>
+                        <span>History</span>
+                    </div>
+                    <div class="subject-item">
+                        <i class="fas fa-globe subject-icon"></i>
+                        <span>Geography</span>
+                    </div>
+                    <div class="subject-item">
+                        <i class="fas fa-gavel subject-icon"></i>
+                        <span>Indian Polity</span>
+                    </div>
+                    <div class="subject-item">
+                        <i class="fas fa-flask subject-icon"></i>
+                        <span>General Science</span>
+                    </div>
+                    <div class="subject-item">
+                        <i class="fas fa-calculator subject-icon"></i>
+                        <span>General Aptitude</span>
+                    </div>
+                    <div class="subject-item">
+                        <i class="fas fa-brain subject-icon"></i>
+                        <span>Reasoning</span>
+                    </div>
+                    <div class="subject-item">
+                        <i class="fas fa-desktop subject-icon"></i>
+                        <span>Computers</span>
+                    </div>
+                    <div class="subject-item">
+                        <i class="fas fa-language subject-icon"></i>
+                        <span>General Hindi</span>
+                    </div>
+                    <div class="subject-item">
+                        <i class="fas fa-book-open subject-icon"></i>
+                        <span>General English</span>
+                    </div>
+                </div>
+            </div>
+            
+
+           <!-- Types of Tests Container -->
+           <div class="col-lg-4 col-md-6">
+            <div class="subheading-container mb-3">
+                <h3 class="text-center">Types of Tests</h3>
+            </div>
+            <div class="content-container">
+                <div class="test-card">
+                    <i class="fas fa-tasks"></i>
+                    <h4>FLT (Full Length Test)</h4>
+                    <p>100 questions</p>
+                    <p>2 hours <i class="fas fa-clock ms-2"></i></p>
+                </div>
+                <div class="test-card">
+                    <i class="fas fa-tasks"></i>
+                    <h4>HLT (Half Length Test)</h4>
+                    <p>50 questions</p>
+                    <p>1 hour <i class="fas fa-clock ms-2"></i></p>
+                </div>
+                <div class="test-card">
+                    <i class="fas fa-tasks"></i>
+                    <h4>SLT (Short Length Test)</h4>
+                    <p>20 questions</p>
+                    <p>30 min <i class="fas fa-clock ms-2"></i></p>
+                </div>
+            </div>
+        </div>
+        
+        
+                    <!-- Contests Proposed Container -->
+                   <!-- Contests Proposed Container -->
+        <div class="col-lg-4 col-md-6">
+            <div class="subheading-container mb-3">
+                <h3 class="text-center">Contests Proposed</h3>
+            </div>
+            <div class="content-container contest-cont">
+                <div class="contest-card">
+                    <i class="fas fa-trophy"></i>
+                    <h4>Weekly Contest</h4>
+                </div>
+                <div class="contest-card">
+                    <i class="fas fa-trophy"></i>
+                    <h4>Bi-weekly Contest</h4>
+                </div>
+                <div class="contest-card">
+                    <i class="fas fa-trophy"></i>
+                    <h4>Monthly Contest</h4>
+                </div>
+                <p class="text-center mt-3" style="color:#000000 !important; ">Leaderboard ranks will be decided based on your performance in the contests.</p>
+            </div>
+        </div>
+        
+                </div>
+            </div>
+        </section>
+        
+        <!-- CSS Styling -->
+        <style>
+            .contest-cont {
+                display: flex;
+                flex-direction: column;
+                gap: 15px; /* Space between cards */
+                align-items: center; /* Center align cards */
+                background-color: #f8f9fa;
+            }
+            
+            .contest-card {
+                background-color: #ffffff; /* Light background for cards */
+                border-radius: 8px; /* Rounded corners */
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+                padding: 15px; /* Inner padding */
+                text-align: center; /* Center text */
+                width: 100%; /* Full width of parent */
+                transition: transform 0.3s, box-shadow 0.3s; /* Animation for hover effects */
+            }
+            
+            .contest-card:hover {
+                transform: translateY(-5px); /* Lift effect on hover */
+                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Stronger shadow on hover */
+            }
+            
+            .contest-card i {
+                font-size: 2rem; /* Icon size */
+                color: #28a745; /* Icon color */
+                margin-bottom: 10px; /* Space below icon */
+            }
+            
+            .contest-card h4 {
+                font-size: 1.2rem; /* Title font size */
+                margin: 10px 0; /* Margin for title */
+            }
+            
+            .text-center {
+                font-size: 1rem; /* Text font size */
+                color: #ffffff; /* Color for additional information */
+                font-size: 20px;
+            }
+            
+        
+            .content-container {
+                display: flex;
+                flex-direction: column;
+                gap: 15px; /* Space between cards */
+                background-color: red;
+            }
+            
+            .test-card {
+                background-color: #ffffff; /* Card background color */
+                border-radius: 8px; /* Rounded corners */
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+                padding: 15px; /* Inner padding */
+                text-align: center; /* Center text */
+                transition: transform 0.3s, box-shadow 0.3s; /* Animation for hover effects */
+            }
+            
+            .test-card:hover {
+                transform: translateY(-5px); /* Lift effect on hover */
+                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Stronger shadow on hover */
+            }
+            
+            .test-card i {
+                font-size: 2rem; /* Icon size */
+                color: #007bff; /* Icon color */
+                margin-bottom: 10px; /* Space below icon */
+            }
+            
+            .test-card h4 {
+                font-size: 1.2rem; /* Title font size */
+                margin: 10px 0; /* Margin for title */
+            }
+            
+            .test-card p {
+                font-size: 1rem; /* Description font size */
+                margin: 5px 0; /* Margin for description */
+            }
+            
+    /* General styling for the subject section */
+.subject-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.subject-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background-color: #ffffff;
+    padding: 15px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    text-align: center;
+}
+
+.subject-item:hover {
+    transform: translateY(-5px); /* Lift effect on hover */
+                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Stronger shadow on hover */
+}
+
+.subject-icon {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    color: #007bff; /* Default icon color */
+}
+
+.subject-item span {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .subject-grid {
+        grid-template-columns: 1fr; /* Single column layout on small screens */
+    }
+}
+
+    /* General Section Styling */
+    .news-section, .test-contest-section {
+        background-color: #f9f9f9;
+    }
+
+    /* Heading Container Styling */
+    .heading-container {
+        background-color: #007bff; /* Blue background */
+        border-radius: 8px;
+        padding: 10px 0;
+    }
+
+    .subheading-container {
+        background-color: #3399ff; /* Light blue for subheadings */
+        border-radius: 8px;
+        color: #fff;
+        padding: 10px;
+    }
+
+    /* Heading and Subheading Styling */
+    .heading-container h2,
+    .subheading-container h3,
+    .subheading-container h4 {
+        margin: 0;
+        padding: 0;
+        font-weight: bold;
+        color: white;
+    }
+
+    .content-container {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin-bottom: 30px;
+        transition: transform 0.3s ease;
+    }
+
+    .content-container:hover {
+        transform: scale(1.05);
+    }
+
+    /* Scrollable News Container */
+    .news-container {
+        max-height: 300px;
+        overflow-y: auto;
+        padding: 10px;
+        border: 1px solid #ddd;
+        background-color: #f8f9fa;
+        scrollbar-width: thin; /* For Firefox */
+    }
+
+    .news-container::-webkit-scrollbar {
+        width: 10px; /* Scrollbar width */
+    }
+
+    .news-container::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 5px;
+    }
+
+    .news-container::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+
+    .news-item {
+        padding: 10px;
+        margin-bottom: 15px;
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    @media (max-width: 768px) {
+        .row {
+            flex-direction: column; /* Stack containers vertically on smaller screens */
+        }
+    }
+</style>
+
+
+
+
+
+
+<!-- Try Our Test as Demo Section -->
+<section class="demo-test-section py-5">
+    <div class="container">
+        <div class="demo-header">
+            <h2 class="fw-bolder text-center">Try Our Free Tests</h2>
+        </div>
+        <div class="demo-test-table">
+            <!-- History Subject Card -->
+            <div class="demo-card">
+                <h3>History</h3>
+                <img src="{% static 'business/images/history.jpg' %}" alt="History Test" class="img-fluid">
+                <div class="demo-card-body">
+                    <p>Time: 60 minutes</p>
+                    <a href="#" class="btn btn-primary">Start Test</a>
+                </div>
+            </div>
+            
+            <!-- Geography Subject Card -->
+            <div class="demo-card">
+                <h3>Geography</h3>
+                <img src="{% static 'business/images/geography.jpeg' %}" alt="Geography Test" class="img-fluid">
+                <div class="demo-card-body">
+                    <p>Time: 60 minutes</p>
+                    <a href="#" class="btn btn-primary">Start Test</a>
+                </div>
+            </div>
+            
+            <!-- Indian Polity Subject Card -->
+            <div class="demo-card">
+                <h3>Indian Polity</h3>
+                <img src="{% static 'business/images/polity.jpeg' %}" alt="Polity Test" class="img-fluid">
+                <div class="demo-card-body">
+                    <p>Time: 50 minutes</p>
+                    <a href="#" class="btn btn-primary">Start Test</a>
+                </div>
+            </div>
+            
+            <!-- General Science Subject Card -->
+            <div class="demo-card">
+                <h3>General Science</h3>
+                <img src="{% static 'business/images/science.jpg' %}" alt="Science Test" class="img-fluid">
+                <div class="demo-card-body">
+                    <p>Time: 40 minutes</p>
+                    <a href="#" class="btn btn-primary">Start Test</a>
+                </div>
+            </div>
+            
+            <!-- General Aptitude Subject Card -->
+            <div class="demo-card">
+                <h3>General Aptitude</h3>
+                <img src="{% static 'business/images/aptitude.jpeg' %}" alt="Aptitude Test" class="img-fluid">
+                <div class="demo-card-body">
+                    <p>Time: 45 minutes</p>
+                    <a href="#" class="btn btn-primary">Start Test</a>
+                </div>
+            </div>
+
+            <!-- Reasoning Subject Card -->
+            <div class="demo-card">
+                <h3>Reasoning</h3>
+                <img src="{% static 'business/images/reasoning.jpeg' %}" alt="Reasoning Test" class="img-fluid">
+                <div class="demo-card-body">
+                    <p>Time: 35 minutes</p>
+                    <a href="#" class="btn btn-primary">Start Test</a>
+                </div>
+            </div>
+
+            <!-- Computers Subject Card -->
+            <div class="demo-card">
+                <h3>Computers</h3>
+                <img src="{% static 'business/images/computer.jpeg' %}" alt="Computers Test" class="img-fluid">
+                <div class="demo-card-body">
+                    <p>Time: 30 minutes</p>
+                    <a href="#" class="btn btn-primary">Start Test</a>
+                </div>
+            </div>
+
+            <!-- General Hindi Subject Card -->
+            <div class="demo-card">
+                <h3>General Hindi</h3>
+                <img src="{% static 'business/images/hindi.jpeg' %}" alt="Hindi Test" class="img-fluid">
+                <div class="demo-card-body">
+                    <p>Time: 40 minutes</p>
+                    <a href="#" class="btn btn-primary">Start Test</a>
+                </div>
+            </div>
+
+            <!-- General English Subject Card -->
+            <div class="demo-card">
+                <h3>General English</h3>
+                <img src="{% static 'business/images/english.png' %}" alt="English Test" class="img-fluid">
+                <div class="demo-card-body">
+                    <p>Time: 45 minutes</p>
+                    <a href="#" class="btn btn-primary">Start Test</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .demo-test-section {
+        text-align: center;
+        background-color: #f1f1f1; /* Add a light background */
+        padding: 50px 0; /* More vertical space */
+    }
+
+    .demo-header {
+        background-color: #007bff; /* Blue background */
+        color: white; /* White text for contrast */
+        padding: 20px 0; /* Vertical padding */
+        margin-bottom: 30px; /* Space below header */
+    }
+
+    .demo-test-table {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr); /* 5 columns for large screens */
+        gap: 20px; /* Space between cards */
+    }
+
+    .demo-card {
+        background-color: #fff; /* Change to white for better contrast */
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s; /* Animation on hover */
+        padding-top: 11px;
+    }
+
+    .demo-card:hover {
+        transform: scale(1.05); /* Slightly enlarge the card on hover */
+    }
+
+    .demo-card img {
+        width: 100%;
+        height: 150px; /* Fixed height for all images */
+        object-fit: cover; /* Maintain aspect ratio */
+        padding-left: 7px;
+        padding-right: 7px;
+        border-radius: 11px;    
+    }
+
+    .demo-card-body {
+        padding: 20px; /* More padding for a spacious look */
+    }
+
+    .demo-card-body h3 {
+        font-size: 1.5em; /* Increased heading size */
+        margin-bottom: 10px; /* Space below heading */
+    }
+
+    .demo-card-body p {
+        font-weight: bold;
+        color: #333; /* Darker text color */
+    }
+
+    .demo-card-body .btn {
+        width: 100%;
+        margin-top: 10px;
+        background-color: #007bff; /* Button background color */
+        border: none; /* No border */
+        transition: background-color 0.2s; /* Animation on hover */
+    }
+
+    .demo-card-body .btn:hover {
+        background-color: #0056b3; /* Darker shade on hover */
+    }
+
+    @media (max-width: 1200px) {
+        .demo-test-table {
+            grid-template-columns: repeat(4, 1fr); /* 4 columns for medium screens */
+        }
+    }
+
+    @media (max-width: 768px) {
+        .demo-test-table {
+            grid-template-columns: repeat(2, 1fr); /* 2 columns for smaller screens */
+        }
+        .demo-card img {
+            height: 75px;
+    }
+</style>
+
+
+
 
 <!-- Features section-->
 <section class="py-5" id="features">

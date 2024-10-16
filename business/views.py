@@ -5,11 +5,18 @@ import threading
 from django.utils.html import strip_tags
 from assessment.utils import send_mail_tread
 from django.conf import settings
+from .utils import get_news_fast
 
 # Create your views here.
 
 def home(request):
-    return render(request, 'portal/index.html')
+    english_news, hindi_news = get_news_fast()
+    print(len(english_news), len(hindi_news))
+    context = {
+        'english_news': english_news,
+        'hindi_news': hindi_news
+    }
+    return render(request, 'portal/index.html', context=context)
 
 def about(request):
     return render(request, 'portal/about.html')

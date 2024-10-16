@@ -20,6 +20,16 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 import json
 from django.urls import reverse
 from urllib.parse import urlencode
+import google.generativeai as genai
+import os
+
+genai.configure(api_key="AIzaSyBOW2L_bcv8mEtPBWT0ulVxC8ijUIFkkBk")
+
+model = genai.GenerativeModel("gemini-1.5-flash")
+
+import json
+    
+
 
 
 class TopicListView(LoginRequiredMixin, ListView):
@@ -101,7 +111,6 @@ class QuestionListView(LoginRequiredMixin, ListView):
             try:
                 # Assuming the JSON file contains a list of assessments
                 assessments_data = json.load(json_file)
-                count = 1
                 for i in assessments_data:
                     question = i['question']
                     option1 = i['options'][0]
@@ -110,9 +119,8 @@ class QuestionListView(LoginRequiredMixin, ListView):
                     option4 = i['options'][3]
                     answer = i['answer']
                     explanation = i.get('explanation', None)
-                    Question.objects.create(no=count, assessment=assessment, question=question, option1=option1,
+                    Question.objects.create(assessment=assessment, question=question, option1=option1,
                                             option2=option2, option3=option3, option4=option4, answer=answer, explanation=explanation)
-                    count+=1
                 messages.success(request, 'Questions added successfully.')
 
             except:
@@ -273,7 +281,7 @@ class QuestionUpdateView(LoginRequiredMixin, UpdateView):
 
 class AssessmentUpdateView(LoginRequiredMixin, UpdateView):
     model = Assessment
-    fields = ['title', 'duration']
+    fields = ['title', 'duration', 'is_active']
     template_name = "assessment/update_assessment.html"
 
     def get_success_url(self) -> str:
