@@ -12,7 +12,11 @@
     <form action="" method="post" enctype="multipart/form-data">
         {{ form.errors }}
         {% csrf_token %}
-        {% for f in form %}
+        {{ form.as_p }}
+            {{ form.media }}
+            
+        
+        {% comment %} {% for f in form %}
             <label for="{{ f.id_for_label }}">{{ f.label|title }}</label>
             {% if f.name == 'images' %}
                 {% if f.value %}
@@ -25,7 +29,7 @@
             {% else %}
                 <input type="text" name="{{ f.name }}" value="{{ f.value }}" class="form-control"> <br>
             {% endif %}
-        {% endfor %}
+        {% endfor %} {% endcomment %}
         
         <button type="submit" class="btn btn-primary auto">Update</button> 
         <a href="{% url 'delete-question' id %}" class="btn btn-danger">Delete this question</a>

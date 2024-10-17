@@ -3,6 +3,7 @@ from django.db import models
 
 from users.models import CustomUser
 from django.core.exceptions import ValidationError
+from ckeditor.fields import RichTextField
 # Create your models here.
 
 class Topic(models.Model):
@@ -55,7 +56,7 @@ class Question(models.Model):
     option3 = models.CharField(max_length=1024, null=True)
     option4 = models.CharField(max_length=1024, null=True)
     answer = models.CharField(max_length=1024, null=True)
-    explanation = models.CharField(max_length=2024, null=True)
+    explanation = RichTextField(null=True, blank=True)
     
     @property
     def correct_answer_alias(self):
