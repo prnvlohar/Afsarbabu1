@@ -83,7 +83,7 @@
             <p {% if question.correct_answer_alias == 'D' %}class="correct-answer"{% elif question.answer_given == 'D' %}class="incorrect-answer"{% endif %}>D) {{question.option4}}</p>
         </div>
         <p><strong>Your Answer:</strong> {{question.answer_given}}</p>
-        <p class="explanation"><strong>Explanation:</strong> {{question.explanation}}</p>
+        <p class="explanation"><strong>Explanation:</strong> {{question.explanation | safe }}</p>
     </div>
     {% endfor %}
     

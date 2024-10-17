@@ -517,7 +517,7 @@ def answer_key_page(request, pk):
             'option3': i.option3,
             'option4': i.option4,
             'correct_answer_alias': i.correct_answer_alias,
-            'explanation': i.explanation,
+            'explanation': str(i.explanation),
             'correct_or_not': result.questions_status[str(i.id)]==i.correct_answer_alias,
             'answer_given': result.questions_status[str(i.id)]
         })
