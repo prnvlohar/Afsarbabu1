@@ -20,12 +20,12 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 import json
 from django.urls import reverse
 from urllib.parse import urlencode
-import google.generativeai as genai
-import os
+# import google.generativeai as genai
+# import os
 
-genai.configure(api_key="AIzaSyBOW2L_bcv8mEtPBWT0ulVxC8ijUIFkkBk")
+# genai.configure(api_key="AIzaSyBOW2L_bcv8mEtPBWT0ulVxC8ijUIFkkBk")
 
-model = genai.GenerativeModel("gemini-1.5-flash")
+# model = genai.GenerativeModel("gemini-1.5-flash")
 
 import json
     
