@@ -111,6 +111,7 @@ class QuestionListView(LoginRequiredMixin, ListView):
             try:
                 # Assuming the JSON file contains a list of assessments
                 assessments_data = json.load(json_file)
+                count = 1
                 for i in assessments_data:
                     question = i['question']
                     option1 = i['options'][0]
@@ -119,8 +120,13 @@ class QuestionListView(LoginRequiredMixin, ListView):
                     option4 = i['options'][3]
                     answer = i['answer']
                     explanation = i.get('explanation', None)
-                    Question.objects.create(assessment=assessment, question=question, option1=option1,
-                                            option2=option2, option3=option3, option4=option4, answer=answer, explanation=explanation)
+                    Question.objects.create(
+                        no=count, assessment=assessment,
+                        question=question, option1=option1,
+                        option2=option2, option3=option3, option4=option4,
+                        answer=answer, explanation=explanation
+                    )
+                    count+=1
                 messages.success(request, 'Questions added successfully.')
 
             except:
